@@ -10,18 +10,37 @@
 <body>
     <img src="assets/logo.png" class="logo" />
     <h1 class="logo">
-        7UKECREAT0R - my personal page
+        7UKECREAT0R (luke creator)
     </h1>
-    <h2 class="logo">You can take a look around my github, check out a</h2>
-    <h2 class="logoalt">few of my projects, or join my discord server here!</h2>
+    <h2 class="logo">Go to my socials, check out my projects, or goto my GitHub!</h2>
+    <h2 class="logoalt">You can also join my discord, which has updates on all my projects!</h2>
 
     <div class="buttoncontainer">
-        <button class="discord fade-in-a" onclick="gotoDiscord()">Discord</button>
-        <button class="projects fade-in-b" onclick="gotoProjects()">Projects</button>
-        <button class="github fade-in-c" onclick="gotoGithub()">GitHub</button>
+        <button class="discord fade-in-a slim" onclick="gotoDiscord()">Discord</button>
+        <button class="projects fade-in-b slim" onclick="gotoProjects()">Projects</button>
+        <button class="github fade-in-c slim" onclick="gotoGithub()">GitHub</button>
+    </div>
+
+    <div id="socials" class="socials">
+        <button class="social social1" onclick="gotoYoutube()"></button>
+        <button class="social social2" onclick="gotoTwitter()"></button>
+        <button class="social social3" onclick="showDiscord()">
+            <p id="tag" class="discordTag">7UKECREAT0R#8170 · Copied!</p>
+        </button>
+        
     </div>
 
     <script>
+        const element = document.getElementById("tag");
+        element.style.animation = 'none';
+        element.offsetHeight;
+        element.style.animation = null;
+
+        window.setTimeout(function () {
+            const socials = document.getElementById("socials");
+            socials.style.animationPlayState = "running";
+        }, 2750);
+
         function gotoDiscord() {
             window.location.href = "https://discord.gg/tJsEcseENM";
         }
@@ -30,6 +49,26 @@
         }
         function gotoGithub() {
             window.location.href = "https://github.com/7UKECREAT0R";
+        }
+        function gotoYoutube() {
+            window.location.href = "https://youtube.com/7UKECREAT0R";
+        }
+        function gotoTwitter() {
+            window.location.href = "https://twitter.com/lukecreator";
+        }
+        function showDiscord() {
+            const element = document.getElementById("tag");
+            element.style.animation = 'none';
+            element.offsetHeight;
+            element.style.animation = null;
+            element.style.animationPlayState = "running";
+
+            navigator.permissions.query({ name: "clipboard-write" }).then(cb => {
+                if (cb.state == "granted" || cb.state == "prompt")
+                    navigator.clipboard.writeText("7UKECREAT0R#8170").then(function () {}, function () {
+                        alert("Failed to copy to clipboard.")
+                    });
+            });
         }
     </script>
 </body>
