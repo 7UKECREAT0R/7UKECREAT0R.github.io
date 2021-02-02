@@ -47,9 +47,15 @@ p.big {
     margin-top: 12px;
     margin-bottom: 12px;
 }
-
 p.small {
     font-size: 24px;
+}
+img.down {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	top: 90%;
+	text-align: center;
 }
 .maxcontainer {
     display: flex;
@@ -81,7 +87,7 @@ p.small {
 }
 
 .parallaxbg {
-    height: 80%;
+    height: 1080px;
     width: 100%;
     background-attachment: fixed;
     background-position: center;
