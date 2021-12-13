@@ -1,74 +1,255 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
+
+<!-- SPOILER: i am NOT a web developer lmao -->
 
 <html lang="en">
 <head>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="http://7ukecreat0r.github.io/assets/logo.png" />
+    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-discord.png" />
+    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-yt.png" />
+    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-twitter.png" />c
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <img src="assets/logo.png" class="logo" />
-    <h1 class="logo">
-        7UKECREAT0R (luke creator)
-    </h1>
-    <h2 class="logo">Go to my socials, check out my projects, or goto my GitHub!</h2>
-    <h2 class="logoalt">You can also join my discord, which has updates on all my projects!</h2>
 
-    <div class="buttoncontainer">
-        <button class="discord fade-in-a slim" onclick="gotoDiscord()">Discord</button>
-        <button class="projects fade-in-b slim" onclick="gotoProjects()">Projects</button>
-        <button class="github fade-in-c slim" onclick="gotoGithub()">GitHub</button>
+    <!-- main logo -->
+    <div id="collection" class="main">
+        <div id="insidecollection" class="maincl" onclick="toggleMenu()">
+            <img src="http://7ukecreat0r.github.io/assets/logo.png" alt="LOGO" class="logo" />
+            <div id="textcontainer">
+                <h1>LUKECREATOR</h1>
+                <h2>SOFTWARE ENGINEER</h2>
+            </div>
+        </div>
     </div>
 
-    <div id="socials" class="socials">
-        <button class="social social1" onclick="gotoYoutube()"></button>
-        <button class="social social2" onclick="gotoTwitter()"></button>
-        <button class="social social3" onclick="showDiscord()">
-            <p id="tag" class="discordTag">7UKECREAT0R#8170 - Copied!</p>
-        </button>
-        
+    <!-- sub menu items-->
+    <div class="items" style="margin-top: 48px;">
+        <div class="item" id="i_home" selected="false" onclick="clicked(this)">
+            <p class="itemicon">⌂</p>
+            <p class="itemtext">home</p>
+        </div>
+        <div class="item" id="i_about" selected="false" onclick="clicked(this)">
+            <p class="itemicon">⌞</p>
+            <p class="itemtext">about</p>
+        </div>
+        <div class="item" id="i_projects" selected="false" onclick="clicked(this)">
+            <p class="itemicon">⌞</p>
+            <p class="itemtext">projects</p>
+        </div>
+        <div class="item" id="i_contact" selected="false" onclick="clicked(this)">
+            <p class="itemicon">⌞</p>
+            <p class="itemtext">contact</p>
+        </div>
+    </div>
+
+
+    <!-- loading screen -->
+    <div id="fill" class="fill" style="opacity: 1;">
+        <p class="fill">hey there</p>
     </div>
 
     <script>
-        const element = document.getElementById("tag");
-        element.style.animation = 'none';
-        element.offsetHeight;
-        element.style.animation = null;
+        const homeInnerHTML = `
+<img src="http://7ukecreat0r.github.io/assets/logo.png" alt="LOGO" class="logo">
+<div id="textcontainer">
+    <h1>LUKECREATOR</h1>
+    <h2>SOFTWARE ENGINEER</h2>
+</div>
+`;
+        const aboutInnerHTML = `
+<p class="text">
+    <b>Hey I'm Luke; I'm a software engineer based in South Carolina.</b><br />
+    I'm extremely knowledgable with Java and C# backends along with a massive tech stack regarding low-level computing. Web and front-end terrify me.
+    For the most part I'm extremely casual and never serious unless it's work related. If you'd like to get in contact, just hit me up on Discord and we'll work something out!
+</p>
+`;
+        const projectsInnerHTML = `
+<button onclick="transitionPage('projects.html')">open_terminal</button>
+`;
+        const contactInnerHTML = `
+<img src="https://7ukecreat0r.github.io/assets/social-yt.png" class="social" onclick="transitionPage('https://www.youtube.com/7ukecreat0r')"/>
+<img src="https://7ukecreat0r.github.io/assets/social-discord.png" class="social" onclick="transitionPage('https://discord.com/invite/tJsEcseENM')" />
+<img src="https://7ukecreat0r.github.io/assets/social-twitter.png" class="social" onclick="transitionPage('https://twitter.com/lukecreator')" />
+`
 
-        window.setTimeout(function () {
-            const socials = document.getElementById("socials");
-            socials.style.animationPlayState = "running";
-        }, 2750);
+        // Element instances
+        var fadeElement; // element
+        var mainElement; // element
+        var itemElements; // element[]
 
-        function gotoDiscord() {
-            window.location.href = "https://discord.gg/tJsEcseENM";
+        // Item Actions Based on Index
+        function item_home() {
+            if (!menuOpen)
+                return;
+            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
+            titlePresent = true;
+            setTimeout(function () {
+                mainElement.innerHTML = homeInnerHTML;
+                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
+            }, 300);
         }
-        function gotoProjects() {
-            window.location.href = "projects.html";
+        function item_about() {
+            if (!menuOpen)
+                return;
+            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
+            titlePresent = false;
+            setTimeout(function () {
+                mainElement.innerHTML = aboutInnerHTML;
+                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
+            }, 300);
         }
-        function gotoGithub() {
-            window.location.href = "https://github.com/7UKECREAT0R";
+        function item_projects() {
+            if (!menuOpen)
+                return;
+            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
+            titlePresent = false;
+            setTimeout(function () {
+                mainElement.innerHTML = projectsInnerHTML;
+                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
+            }, 300);
         }
-        function gotoYoutube() {
-            window.location.href = "https://youtube.com/7UKECREAT0R";
+        function item_contact() {
+            if (!menuOpen)
+                return;
+            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
+            titlePresent = false;
+            setTimeout(function () {
+                mainElement.innerHTML = contactInnerHTML;
+                const socials = document.getElementsByClassName("social");
+                var delay = 0.0;
+                for (const element of socials) {
+                    element.style.animationDelay = delay + 's';
+                    delay -= 0.4;
+                }
+                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
+            }, 300);
         }
-        function gotoTwitter() {
-            window.location.href = "https://twitter.com/lukecreator";
-        }
-        function showDiscord() {
-            const element = document.getElementById("tag");
-            element.style.animation = 'none';
-            element.offsetHeight;
-            element.style.animation = null;
-            element.style.animationPlayState = "running";
+        const itemFunctions = [
+            item_home,
+            item_about,
+            item_projects,
+            item_contact
+        ];
 
-            navigator.permissions.query({ name: "clipboard-write" }).then(cb => {
-                if (cb.state == "granted" || cb.state == "prompt")
-                    navigator.clipboard.writeText("7UKECREAT0R#8170").then(function () {}, function () {
-                        alert("Failed to copy to clipboard.")
-                    });
-            });
+        // Loading screen
+        const oStep = 0.1;
+        const itemDelay = 75;
+        var fadeTicks = 10;
+        var opacity = 1.0;
+        var fading = false;
+
+        // Menu
+        var menuOpen = false;
+        var titlePresent = true;
+
+        // Fade out loading element when DOM is loaded
+        window.addEventListener("load", function () {
+            fadeElement = this.document.getElementById("fill");
+            mainElement = this.document.getElementById("insidecollection");
+            itemElements = this.document.querySelectorAll(".item");
+            fading = true;
+
+            // Control loading screen fade
+            window.setInterval(function () {
+                if (fading) {
+                    if (fadeTicks-- < 1) {
+                        fadeElement.remove();
+                        fading = false;
+                        return;
+                    }
+                    opacity -= oStep;
+                    fadeElement.style.opacity = opacity;
+                }
+                for (var i = 0; i < itemElements.length; i++) {
+                    const menu = itemElements[i];
+                    menu.style.animationDelay = ((i + 1) * itemDelay) + "ms";
+                }
+            }, 16);
+        });
+
+        function resetAnimation(e, animation) {
+            e.style.animation = "";
+            void e.offsetWidth;
+            e.style.animation = animation;
+        }
+        function transitionPage(url) {
+            menuOpen = false;
+            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
+            for (var i = 0; i < itemElements.length; i++) {
+                const menu = itemElements[i];
+                resetAnimation(menu, "itemdisable 0.2s ease-out both");
+            }
+
+            setTimeout(function () {
+                window.location.href = url;
+            }, 500);
+        }
+        function toggleMenu() {
+            if (!titlePresent)
+                return;
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                defaultItems();
+                resetAnimation(mainElement, "open-menu 0.4s ease forwards");
+            } else {
+                resetAnimation(mainElement, "open-menu 0.4s ease reverse");
+            }
+
+            for (var i = 0; i < itemElements.length; i++) {
+                const menu = itemElements[i];
+                if (menuOpen) {
+                    resetAnimation(menu, "itemenable 0.2s ease-out forwards");
+                } else {
+                    resetAnimation(menu, "itemdisable 0.2s ease-out both");
+                }
+            }
+        }
+
+        // When category is clicked, replace the title logo with looked up text.
+        function defaultItems() {
+            resetItems();
+            itemElements[0].setAttribute("selected", "true");
+        }
+        function resetItems() {
+            for (var i = 0; i < itemElements.length; i++) {
+                const disable = itemElements[i];
+                disable.setAttribute("selected", "false");
+            }
+        }
+        function resetTimeouts() {
+            const n = window.setTimeout(function() {
+                for (var i = n; i >= 0; i--)
+                    window.clearInterval(i);
+            }, 0);
+        }
+        function clicked(element) {
+
+            if (element.getAttribute("selected") === "true")
+                return;
+            resetItems();
+
+            element.setAttribute("selected", "true");
+
+            var index = -1;
+            for (var i = 0; i < itemElements.length; i++) {
+                if (itemElements[i].id == element.id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) {
+                alert("unknown button");
+                return;
+            }
+
+            resetTimeouts();
+            itemFunctions[index]();
         }
     </script>
 </body>
