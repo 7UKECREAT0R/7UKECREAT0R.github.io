@@ -34,12 +34,17 @@
         var goalY = 0;
 
         const files = {
-            "textmod2": "TextMod 2.0 is obviously the sequel to the original TextMod. It's a program which allows you to extend the functionality of Discord in ways never thought possible. It usually works through messing with UIAutomation but Discord likes to break it every other week so I reverted back to a more primitive approach. TextMod allows you to run various commands straight inside the Discord chatbox, along with many other awesome features like animated rich presence, scripting, utilities for Discord, and more. It's one of my only projects that has some focus to front-end development as well as a heavy back-end. It runs on the windows forms GUI framework but still sports a modern flashy style.\n  Project Page: https://7UKECREAT0R.github.io/apps/textmod.html.",
-            "bonzibot": "BonziBot is my largest project to date. It originally came out about 3 years ago, but the codebase was messy and during a time when I was still figuring out more advanced programming. Over the past year and a half, I did a complete infrastructure rework and redesign from the ground up and built a massive framework entirely for the bot. BonziBot is intended for smaller friend groups or communities and has features to link them all together in a sense. It boasts an expansive framework with many neat features like GUIs, hosted events, and event waiters. Overall, BonziBot has been a 3 year, grunt-work filled, hunk of software which illustrates my skills in complex systems beautifully.\n  Source Code: https://github.com/7UKECREAT0R/BonziBot \n  Project Page: https://7UKECREAT0R.github.io/apps/bonzibot.html",
+            "textmod2": "TextMod 2.0 is obviously the sequel to the original TextMod. It's a program which allows you to extend the functionality of Discord in ways never thought possible. It usually works through messing with UIAutomation but Discord likes to break it every other week so I reverted back to a more primitive approach. TextMod allows you to run various commands straight inside the Discord chatbox, along with many other awesome features like animated rich presence, scripting, utilities for Discord, and more. It's one of my only projects that has some focus to front-end development as well as a heavy back-end. It runs on the windows forms GUI framework but still sports a modern flashy style.\n  <a href=\"https://7UKECREAT0R.github.io/apps/textmod.html\">Project Page</a>",
+            "bonzibot": "BonziBot is my largest project to date. It originally came out about 3 years ago, but the codebase was messy and during a time when I was still figuring out more advanced programming. Over the past year and a half, I did a complete infrastructure rework and redesign from the ground up and built a massive framework entirely for the bot. BonziBot is intended for smaller friend groups or communities and has features to link them all together in a sense. It boasts an expansive framework with many neat features like GUIs, hosted events, and event waiters. Overall, BonziBot has been a 3 year, grunt-work filled, hunk of software which illustrates my skills in complex systems beautifully.\n  <a href=\"https://github.com/7UKECREAT0R/BonziBot\">Source Code</a>\n  <a href=\"https://7UKECREAT0R.github.io/apps/bonzibot.html\">Project Page</a>",
             "csharptester": "CSharpTester was an experiment built to mess around with the Roslyn compiler collection. It has basic syntax highlighting and can run code both by extending its assembly or running an external application. This program doesn't really illustrate any particular skills on the tech stack that are noteworthy, but it was the backbone for some of my future projects which utilized dynamic script compilation.",
             "galactic-client": "GalacticClient was my first ever commissioned job. It features a beautifully designed installer and launcher (by someone else) and a completely from-scratch backend. GalacticClient is a Minecraft client built for the now retired server GalacticPvP. It's since been reused by the owners on another server and I don't know where it's gone today. The client itself was made of two parts, the launcher and the client. The launcher managed login sessions and actually started the game after authenticating with Mojang. The client had a massive set of mods and features which could be toggled through a menu. It aimed to add features which assisted players of the particular gamemodes implemented by the original server owners. In the end this project solidified my understanding of HTTP protocol and let me learn a bunch about OpenGL rendering.",
-            "mccompiled": "MCCompiled is my first project that is intended for production use. I began working on this after being taken in as a command desiger for Lifeboat Network. I realized that writing Minecraft commands in replacement for actual code was a hassle, and so I began work on an advanced compiled language which went straight to Minecraft commands. MCCompiled boasts a massive set of functionality and features which go completely overboard, but are also totally worth it. A lot of reverse engineering was involved with the development of the more advanced features. The language also uses tons of tricks and hacks to its advantage to implement highly complex features that would normally be trivial in any regular language, as compared to in Minecraft Commands. When MCCompiled is finished, it will be intended for production environments and independent developers alike.\n  Source Code: https://github.com/7UKECREAT0R/MCCompiledSource \n  Documentation: https://github.com/7UKECREAT0R/MCCompiled \n  Project Page: https://7UKECREAT0R.github.io/apps/mccompiled.html",
+            "mccompiled": "MCCompiled is my first project that is intended for production use. I began working on this after being taken in as a command desiger for Lifeboat Network. I realized that writing Minecraft commands in replacement for actual code was a hassle, and so I began work on an advanced compiled language which went straight to Minecraft commands. MCCompiled boasts a massive set of functionality and features which go completely overboard, but are also totally worth it. A lot of reverse engineering was involved with the development of the more advanced features. The language also uses tons of tricks and hacks to its advantage to implement highly complex features that would normally be trivial in any regular language, as compared to in Minecraft Commands. When MCCompiled is finished, it will be intended for production environments and independent developers alike.\n  <a href=\"https://github.com/7UKECREAT0R/MCCompiledSource\">Source Code</a>\n  <a href=\"https://github.com/7UKECREAT0R/MCCompiled\">Documentation</a>\n  <a href=\"https://7UKECREAT0R.github.io/apps/mccompiled.html\">Project Page</a>",
             "operatingsystem": "Writing an operating system has been an incredible 6 month experience. The difficulty of writing an operating system is rooted in its sheer complexity. Modern CPUs have so many bits and bobs it would be impossible to learn every little thing about them, yet some people do. I still am definitely not that amazing but I did write a small x86-64 microkernel with a combination of C and x86 Assembly. This project was right up my alley because I love both low-level stuff and reinventing the wheel with EVERYTHING; writing an operating system is definitely reinventing the wheel. I'm still working on bugs and I'm still ironing out my knowledge but my operating system project has taught me a massive amount about the inner workings of computers, along with upgrading my understanding of hardware in a way that no guide or tutorial could replicate.",
+        };
+        const urls = {
+            "textmod2": `https://7UKECREAT0R.github.io/apps/textmod.html`,
+            "bonzibot": `https://7UKECREAT0R.github.io/apps/bonzibot.html`,
+            "mccompiled": `https://7UKECREAT0R.github.io/apps/mccompiled.html`
         };
 
         terminal.addEventListener("keydown", keyDown);
@@ -73,7 +78,7 @@
             caret.style.top = currentY + 'px';
         }, 16);
         window.setTimeout(function () {
-            terminal.value += `Luke's Projects [Version 1.0.0]\n`;
+            terminal.value += `Luke's Projects [Version 1.0.1]\n`;
         }, 100);
         window.setTimeout(function () {
             terminal.value += `Type 'help' for help.\n`;
@@ -198,8 +203,8 @@
         }
 
         const commands = [
-            'echo', 'clear', 'help', 'dir', 'read', 'exit', 'version',
-            'rm', 'touch', 'pwd'
+            'echo', 'clear', 'help', 'dir', 'read', 'open',
+            'exit', 'version', 'rm', 'touch', 'pwd', 
         ]
         function echo(text) {
             if (text == null)
@@ -215,6 +220,7 @@
         function help() {
             terminal.value += `Use 'dir' to list files.
 Use 'read <file>' to read the project file.
+Use 'open <file>' to go to the project's web-page.
 Use 'exit' to return to the main page.
 
 (there's other hidden stuff too!)`
@@ -240,6 +246,34 @@ Use 'exit' to return to the main page.
             terminal.value += '\n' + thing + '\n';
             return true;
         }
+        function open(file) {
+            if (file == null) {
+                terminal.value += "no file specified";
+                return true;
+            }
+
+            const thing = files[file.toLowerCase()];
+            if (thing == null) {
+                terminal.value += "file not found: " + file;
+                return true;
+            }
+
+            const url = urls[file.toLowerCase()];
+            if (url == null) {
+                terminal.value += "file cannot be opened: " + file;
+                return true;
+            }
+
+            terminal.value += "Opening " + file + "...";
+            window.setTimeout(function () {
+                terminal.value = "";
+                terminal.setAttribute("disabled", "true");
+            }, 120);
+            window.setTimeout(function () {
+                window.location.href = url;
+            }, 350);
+            return null;
+        }
         function exit() {
             terminal.value += "Exiting terminal...";
             window.setTimeout(function () {
@@ -252,7 +286,7 @@ Use 'exit' to return to the main page.
             return null;
         }
         function version() {
-            terminal.value += "Luke's Projects [Version 1.0.0]";
+            terminal.value += "Luke's Projects [Version 1.0.1]";
             return true;
         }
         function rm(file) {
