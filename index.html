@@ -81,13 +81,15 @@
         var mainElement; // element
         var itemElements; // element[]
 
+        var activeTimeout = null;
+
         // Item Actions Based on Index
         function item_home() {
             if (!menuOpen)
                 return;
             resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
             titlePresent = true;
-            setTimeout(function () {
+            activeTimeout = setTimeout(function () {
                 mainElement.innerHTML = homeInnerHTML;
                 resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
             }, 300);
@@ -97,7 +99,7 @@
                 return;
             resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
             titlePresent = false;
-            setTimeout(function () {
+            activeTimeout = setTimeout(function () {
                 mainElement.innerHTML = aboutInnerHTML;
                 resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
             }, 300);
@@ -107,7 +109,7 @@
                 return;
             resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
             titlePresent = false;
-            setTimeout(function () {
+            activeTimeout = setTimeout(function () {
                 mainElement.innerHTML = projectsInnerHTML;
                 resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
             }, 300);
@@ -117,7 +119,7 @@
                 return;
             resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
             titlePresent = false;
-            setTimeout(function () {
+            activeTimeout = setTimeout(function () {
                 mainElement.innerHTML = contactInnerHTML;
                 const socials = document.getElementsByClassName("social");
                 var delay = 0.0;
@@ -184,7 +186,7 @@
                 resetAnimation(menu, "itemdisable 0.2s ease-out both");
             }
 
-            setTimeout(function () {
+            activeTimeout = setTimeout(function () {
                 window.location.href = url;
             }, 500);
         }
@@ -221,10 +223,9 @@
             }
         }
         function resetTimeouts() {
-            const n = window.setTimeout(function() {
-                for (var i = n; i >= 0; i--)
-                    window.clearInterval(i);
-            }, 0);
+            if (activeTimeout)
+                clearTimeout(activeTimeout);
+            activeTimeout = null;
         }
         function clicked(element) {
 
