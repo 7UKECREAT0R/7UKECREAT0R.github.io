@@ -3,5 +3,14 @@
   "name": "CSharpTester",
   "color": [ 190, 68, 195 ],
   "description": "program designed to quickly compile and test C# code",
-  "tags": [ "csharp", "compiler" ]
+  "tags": [ "csharp", "compiler" ],
+
+  "html": {
+    "sections": {
+      "ABOUT": "A small but useful development tool to quickly test small snippets of code. Includes syntax highlighting and the ability to build DLLs and EXEs. This isn't super useful, but I still find ways to use it sometimes."
+    },
+    "links": {
+      "SOURCE": "https://github.com/7UKECREAT0R/CSharpTester"
+    }
+  }
 }

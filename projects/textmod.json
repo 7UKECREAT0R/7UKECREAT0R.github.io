@@ -1,8 +1,23 @@
-{
+﻿{
   "id": "textmod",
   "name": "TextMod 2",
   "color": [ 11, 175, 116 ],
   "description": "completely external mod for Discord with utilities and commands.",
   "description-color": [ 255, 255, 255 ],
-  "tags": [ "csharp", "discord", "api", "rich-presence" ]
+  "tags": [ "csharp", "discord", "api", "rich-presence" ],
+
+  "html": {
+    "sections": {
+      "METHOD": "TextMod 2 is the complete redo of one of my old prototypes called TextMod (obviously). It features a unique system which allows you run commands in Discord by running a basic three step procedure when you press F12 on your keyboard:<br /><br />•    Simulate CTRL+A, CTRL+C.<br />•    Get clipboard contents and process command.<br />•    Restore clipboard contents.",
+      "COMMANDS": "Commands gave you powerful tools and utilities manipulate your text in ways nobody else can.<br />For example, <code>-pyramid [text]</code> would send your text in a pyramid form. <code>-snippet [name]</code> sends a text file from its name. There's 21 commands total as of right now.",
+      "EMOJI": "Commands aren't the only thing TextMod can do. You can also create a list of images which will be resized to look like custom emojis when :filename: is in the text field.",
+      "PLUGINS": "TextMod 2 has a basic API that compiles C# scripts on startup, allowing users to develop custom commands or other features for the client.",
+      "RICH PRESENCE": "Additionally, a powerful rich presence system is present to animate and show off anything from plain text to ever-changing variables. Show your time, cpu, memory usage, etc... Or create custom variables using plugins.",
+      "TOOLS": "TextMod 2 also has a large collection of tools to enhance your experience, including: an automatic counter, text encryptor/decryptor, ascii art drawing tool, keyboard mods, id decoder, and a tool which shows you as typing for however long you specify."
+    },
+    "links": {
+      "DOWNLOAD": "https://github.com/7UKECREAT0R/TextMod2/releases",
+      "RELEASE VIDEO": "https://www.youtube.com/watch?v=8iF4qyqTUhU"
+    }
+  }
 }
