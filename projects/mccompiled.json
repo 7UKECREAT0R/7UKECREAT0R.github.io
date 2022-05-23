@@ -1,0 +1,8 @@
+{
+  "id": "mcc",
+  "name": "MCCompiled",
+  "color": [ 205, 133, 108 ],
+  "description": "production-ready programming language that compiles to minecraft bedrock commands.",
+  "description-color": [ 255, 255, 255 ],
+  "tags": [ "csharp", "mccompiled", "language" ]
+}

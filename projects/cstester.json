@@ -1,0 +1,7 @@
+{
+  "id": "cstester",
+  "name": "CSharpTester",
+  "color": [ 190, 68, 195 ],
+  "description": "program designed to quickly compile and test C# code",
+  "tags": [ "csharp", "compiler" ]
+}

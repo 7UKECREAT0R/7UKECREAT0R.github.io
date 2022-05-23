@@ -1,0 +1,25 @@
+﻿{
+  "id": "bb",
+  "name": "BonziBot",
+  "color": [ 143, 64, 185 ],
+  "description": "a year's worth of engineering and tech packed into a small multipurpose bot",
+  "tags": [ "java", "discord-bot" ],
+
+  "html": {
+    "sections": {
+      "ABOUT": "BonziBot is a Discord bot carefully designed over 1.5 years that does everything extremely well. It focuses more on its infrastructure/core more than the application itself.",
+      "THE PROBLEM": "Bots like this that pledge to do everything are generally very watered down and uninspired. They do everything, but they do it very poorly. I set out to crack this problem with BonziBot.",
+      "_line0": "hr",
+      "⚙️ SETTINGS": "Server settings allow you to use a GUI to configure Bonzi across your server. Configure smart filtering, custom words, tag privacy, logging, join/leave messages, join roles, rules board, disable commands, enable minigames, setup ban appeals/messages, scan for leaked tokens and setup a starboard!",
+      "📜 SCRIPTING": "Use the built in scripting engine to create custom coded buttons, phrases, slash commands, and other events. With a completely sandboxed system of memory and storage, you can create tons of new things from the easy to use GUI.",
+      "🎧 MUSIC": "The custom music player is operated entirely through its animated UI, using dropdowns and buttons to streamline the playing experience. I took all the things I didn't like about traditional music bots and completley reworked them.",
+      "🟡 ECONOMY": "(it has to have economy, doesn't it?) A basic economy system with a shop to buy special commands. Gambling addiction is fueled, unlock the rest of the bot's features. It's a win-win.",
+      "_line1": "hr",
+      "... AND MORE": "And BonziBot has so much more to offer that you'll have to discover on your own. This sounds like an advertisement, doesn't it? Oh yeah, and the entire bot is open source and available for anyone to study. Check it out!"
+    },
+    "links": {
+      "GET BONZIBOT": "https://discord.com/api/oauth2/authorize?client_id=545806922209558537&permissions=2150927424&scope=applications.commands%20bot",
+      "SOURCE CODE": "https://github.com/7UKECREAT0R/BonziBot"
+    }
+  }
+}

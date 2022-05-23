@@ -1,0 +1,7 @@
+{
+  "id": "galactic",
+  "name": "GalacticClient",
+  "color": [ 82, 33, 197 ],
+  "description": "optifine infused pvp client for the now-retired server GalacticPvP.",
+  "tags": [ "java", "modding", "minecraft" ]
+}

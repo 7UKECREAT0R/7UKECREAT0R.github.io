@@ -1,0 +1,8 @@
+{
+  "id": "pregowars",
+  "name": "Prego Wars",
+  "color": [ 208, 85, 43 ],
+  "description": "fast paced ridiculous first person shooter deathmatch; 2023",
+  "description-color": [ 220, 220, 220 ],
+  "tags": [ "csharp", "game" ]
+}
