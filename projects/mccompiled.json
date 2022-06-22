@@ -10,11 +10,12 @@
     "sections": {
       "WHAT": "MCCompiled is a programming language that, rather than compile to instructions or any sort of IL, compiles to Minecraft: Bedrock Edition function files. Function files are collections of commands that are run sequentially, presenting a unique challenge as a compile target.",
       "WHY": "I work part time as an addons/commands developer for <a target=\"_blank\" href=\"https://www.lbsg.net/\">Lifeboat Network</a>'s marketplace team. Developing large, sustainable projects with complex logic just wasn't possible, so I began this project on the side to help speed up my work. I open sourced it and released it to the Bedrock community. The demand isn't there, but that's fine.",
-      "PARADIGM": "Generally, MCCompiled operates as any traditional procedural programming language, similarly to C. Minecraft doesn't inherently have scope or even blocks, so code flow is boiled down to a little more than jumping in and out of subroutines. This was a challenge which was overcome well, but some adjustments need to be learned for one to actually write in MCCompiled effectively; specifically good knowledge about Minecraft's command system."
+      "PARADIGM": "Generally, MCCompiled operates as any traditional procedural programming language, similarly to C. Minecraft doesn't inherently have scope or even blocks, so code flow is boiled down to a little more than jumping in and out of subroutines. This was a challenge which was overcome well, but some adjustments need to be learned for one to actually write in MCCompiled effectively; specifically good knowledge about Minecraft's command system.",
+      "IDE": "MCCompiled also now has an IDE based entirely in a web-app, supporting easy file i/o, live code linting, symbol information, and compilation straight into development folders. It works using protocol URLs and a local http server to process the code. There's also good developer documentation with the support for other devs to develop software on top of this HTTP server."
     },
     "links": {
       "DOWNLOADS": "https://github.com/7UKECREAT0R/MCCompiled/releases",
-      "WIKI": "https://github.com/7UKECREAT0R/MCCompiled/wiki/Cheat-Sheet"
+      "IDE": "../mccompiled/editor.html"
     }
   }
 }
