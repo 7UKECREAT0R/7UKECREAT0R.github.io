@@ -1,0 +1,641 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="editor.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+    <title>MCCompiled Editor</title>
+    <meta name="title" content="Projects">
+    <meta name="description" content="">
+</head>
+
+<body>
+    <div id="nav" class="navbar">
+        <p id="saveButton" class="navitem" enabled="true" onclick="save()">SAVE</p>
+        <p id="loadButton" class="navitem" enabled="true" onclick="loadFile()">LOAD</p>
+        <p id="compileButton" class="navitem" enabled="true" onclick="heartbeat()">CONNECT</p>
+        <p id="wikiButton" class="navitem" enabled="true" onclick="takeoverScreen(takeover_wiki)">WIKI</p>
+        <div style="display: block; float: left;">
+            <label for="projectField" class="navitem">PROJECT NAME</label>
+            <input id="projectField" class="navitem" value="web_project" maxlength="32" spellcheck="false" onchange="setProjectNameByElement(this)" />
+        </div>
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        var require = { paths: { vs: 'monaco/min/vs', root: 'monaco' } }
+    </script>
+    <script src="monaco/min/vs/loader.js"></script>
+    <script src="monaco/min/vs/editor/editor.main.nls.js"></script>
+    <script src="monaco/min/vs/editor/editor.main.js"></script>
+    <script src="monaco/mcc-monarch.js"></script>
+    <script>
+        'use strict';
+
+        const wikiURL = "https://github.com/7UKECREAT0R/MCCompiled/wiki/Cheat-Sheet";
+        const navElement = document.getElementById('nav');
+        const projectInputElement = document.getElementById('projectField');
+        const compileButton = document.getElementById('compileButton');
+        const green = '#3cc741';
+        const red = '#db4b35';
+
+        const takeover_installserver = `<h1>Installing MCCompiled Server:</h1>
+<h2 style="max-width:480px">
+    Granted you have MCCompiled setup on your system, open an administrator command prompt and run the command: <code>mc-compiled --protocol</code>.
+    You should now be able to open the server through the web-interface.
+</h2>
+<div>
+    <button onclick="startServer()">DONE</button>
+    <button onclick="removeTakeover()">WILL DO</button>
+</div>`;
+        const takeover_startserver = `<h1>Open MCCompiled Server?</h1>
+<h2 style="max-width:400px">
+    Failed to connect to an MCCompiled server running on your system. Do you want to start one? This requires that you have 'installed' the MCCompiled server. <a onclick="takeoverScreen(takeover_installserver)">How to install?</a>
+</h2>
+<div>
+    <button onclick="startServer()">YES</button>
+    <button onclick="removeTakeover()">NO</button>
+</div>`;
+        const takeover_wiki = `<h1>Open Wiki?</h1>
+<h2 style="max-width:400px">
+    The wiki contains useful information you should have open for effectively writing in MCCompiled.
+</h2>
+<div>
+    <button onclick="wiki()">YES</button>
+    <button onclick="removeTakeover()">NO</button>
+</div>`;
+
+        var isConnectedToServer = false;
+        var isBusy = false;
+        var isSaving = false;
+
+        var fileHandle = null;
+        var notification = null;
+        var takeover = null;
+
+        function showNotification(text, color) {
+            if (notification)
+                notification.remove();
+
+            notification = document.createElement("p");
+            notification.innerText = text;
+            notification.style.color = color;
+            notification.className = "notification";
+            navElement.appendChild(notification);
+        }
+        function takeoverScreen(html) {
+            const hasExisting = removeTakeover();
+
+            takeover = document.createElement('div');
+            const sub = document.createElement('div');
+            sub.innerHTML = html;
+            takeover.appendChild(sub);
+
+            if (hasExisting) {
+                window.setTimeout(function () {
+                    takeover.className = "takeover";
+                    document.body.appendChild(takeover);
+                }, 300);
+            } else {
+                takeover.className = "takeover";
+                document.body.appendChild(takeover);
+            }
+        }
+        function removeTakeover() {
+            if (takeover) {
+                takeover.style.animation = 'takeover-fade-out 0.3s cubic-bezier(.66,-0.01,1,.48) forwards';
+                const holder = takeover;
+                takeover = null;
+
+                window.setTimeout(function () {
+                    holder.remove();
+                }, 300);
+                return true;
+            }
+
+            return false;
+        }
+
+        // server heartbeat services
+        function onConnectedToServer() {
+            compileButton.innerText = "COMPILE";
+            compileButton.onclick = compile;
+            isConnectedToServer = true;
+
+            tryLint();
+        }
+        function onDisconnectedFromServer() {
+            compileButton.innerText = "CONNECT";
+            compileButton.onclick = heartbeat;
+            isConnectedToServer = false;
+        }
+        async function heartbeat() {
+
+            if (isConnectedToServer) {
+                while (isBusy) // wait
+                    await new Promise(resolve => setTimeout(resolve, 250));
+            } else {
+                if (isBusy)
+                    return;
+                showNotification("Attempting to connect to the MCCompiled server...", '#AAAAAA');
+                compileButton.setAttribute('enabled', 'false');
+                isBusy = true;
+            }
+
+            const url = "http://localhost:11830/heartbeat";
+            fetch(url).then(response => {
+                isBusy = false;
+                compileButton.setAttribute('enabled', 'true');
+                if (!isConnectedToServer) {
+                    showNotification("Connected to MCCompiled server.", green);
+                    isConnectedToServer = true;
+                    onConnectedToServer();
+                }
+                window.setTimeout(heartbeat, 1000);
+                return response;
+            }).catch(err => {
+                showNotification("Couldn't connect to MCCompiled server.", red);
+                isConnectedToServer = false;
+                compileButton.setAttribute('enabled', 'true');
+                isBusy = false;
+                onDisconnectedFromServer();
+                takeoverScreen(takeover_startserver);
+            });
+        }
+        function startServer() {
+            removeTakeover();
+            window.location.assign("mccompiled://");
+        }
+
+        // linting service
+        const lintTimer = 750;
+        var lintCooldown = null;
+        function tryLint() {
+            if (lintCooldown)
+                window.clearTimeout(lintCooldown);
+            lintCooldown = window.setTimeout(lint, lintTimer);
+        }
+
+        var projectName = "web_project";
+        function setProjectNameByElement(element) {
+            if (element.value.length == 0) {
+                showNotification(`Project name cannot be empty.`, 'red');
+                projectInputElement.value = projectName;
+                return;
+            }
+
+            projectName = element.value.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]+/g, "");
+            projectInputElement.value = projectName;
+            fileHandle = null;
+            showNotification(`Set project name to ${projectName}.`, 'white');
+        }
+        function setProjectName(name) {
+            if (name.length == 0)
+                name = "empty_name";
+            projectName = name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]+/g, "");
+            projectInputElement.value = projectName;
+        }
+
+        var userPPVs = []; 
+        var userVariables = [];
+        var userFunctions = [];
+
+        const mcc_completion_provider = {
+            provideCompletionItems: (currentModel, position) => {
+                const matches = [
+                    ...mcc_preprocessor.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Function,
+                            insertText: key.word,
+                            range: {
+                                startLineNumber: position.lineNumber,
+                                startColumn: position.column - 1,
+                                endLineNumber: position.lineNumber,
+                                endColumn: position.column
+                            }
+                        }
+                    }),
+                    ...userPPVs.map(key => {
+                        return {
+                            label: key,
+                            detail: "Preprocessor Variable",
+                            kind: monaco.languages.CompletionItemKind.User,
+                            insertText: key,
+                        }
+                    }),
+                    ...userVariables.map(key => {
+                        return {
+                            label: key.name,
+                            detail: "Type: " + key.type,
+                            kind: monaco.languages.CompletionItemKind.User,
+                            insertText: key.name,
+                        }
+                    }),
+                    ...userFunctions.map(key => {
+                        const ret = key.return ? key.return : 'null';
+                        const args = key.arguments.map(arg => arg.type + ' ' + arg.name).join("  ");
+                        return {
+                            label: key.name,
+                            detail: "Arguments: " + args + ", Returns: " + ret,
+                            kind: monaco.languages.CompletionItemKind.User,
+                            insertText: key.name,
+                        }
+                    }),
+                    ...mcc_commands.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Function,
+                            insertText: key.word
+                        }
+                    }),
+                    ...mcc_selectors.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: key.word,
+                            range: {
+                                startLineNumber: position.lineNumber,
+                                startColumn: position.column - 1,
+                                endLineNumber: position.lineNumber,
+                                endColumn: position.column
+                            }
+                        }
+                    }),
+                    ...mcc_literals.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: key.word
+                        }
+                    }),
+                    ...mcc_types.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Class,
+                            insertText: key.word
+                        }
+                    }),
+                    ...mcc_comparisons.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Property,
+                            insertText: key.word
+                        }
+                    }),
+                    ...mcc_options.map(key => {
+                        return {
+                            label: key.word,
+                            detail: key.docs,
+                            kind: monaco.languages.CompletionItemKind.Field,
+                            insertText: key.word
+                        }
+                    })
+                ];
+                return { suggestions: matches };
+            },
+            triggerCharacters: ['$', '@', '&', '~', '^']
+        }
+        const mcc_solar = {
+            base: 'vs-dark',
+            inherit: false,
+            rules: [
+                { token: '', foreground: 'D4D4D4', background: '352F35' },
+                { token: 'comment', foreground: '3E8C42' },
+                { token: 'numbers', foreground: 'E0C1FF' },
+                { token: 'strings', foreground: 'E0C1FF' },
+
+                { token: 'operators', foreground: 'E0C1FF' },
+                { token: 'selectors', foreground: 'FF4F4F' },
+                { token: 'selectors.properties', foreground: 'E8A8FF' },
+                { token: 'preprocessor', foreground: '0BA4DD' },
+                { token: 'commands', foreground: 'EE5BAF' },
+                { token: 'literals', foreground: 'E0C1FF' },
+                { token: 'types', foreground: 'FF8080' },
+                { token: 'comparisons', foreground: 'FF5F42' },
+                { token: 'options', foreground: 'D7AEFF' }
+            ],
+            colors: {
+                ["editor.background"]: '#352F35',
+                ["editor.foreground"]: '#D4D4D4'
+            }
+        }
+
+        var editor = null;
+        var editorContainer = null;
+
+        function load() {
+            editorContainer = document.createElement('div');
+            editorContainer.className = "editor";
+            document.body.appendChild(editorContainer);
+
+            monaco.editor.defineTheme("mcc-solar", mcc_solar);
+            monaco.languages.register({
+                id: 'mccompiled',
+                extensions: ["mcc"],
+                aliases: ["mcc"]
+            });
+            monaco.languages.setMonarchTokensProvider('mccompiled', mccompiled);
+            monaco.languages.registerCompletionItemProvider('mccompiled', mcc_completion_provider);
+
+            editor = monaco.editor.create(editorContainer, {
+                value: `// Example function
+function example {
+    print "[color: green]Hello World!"
+}
+
+/*
+	Simple magic system!
+	Multiline comment.
+*/
+
+define mana
+
+function reset {
+    init mana
+    mana = 50
+}
+
+function useSpell amount {
+    mana -= amount
+    print "[color: cyan]Used {amount} mana."
+}`,
+                language: "mccompiled",
+                theme: "mcc-solar",
+                codeLensFontFamily: "Roboto Mono",
+                fontFamily: "Roboto Mono",
+                fontSize: "24px",
+                suggestFontSize: "14px",
+                suggestLineHeight: "18px",
+                cursorBlinking: "blink",
+                fontLigatures: true,
+                formatOnPaste: true,
+                tabCompletion: "on",
+                wrappingIndent: "indent",
+                wordSeparators: "`~!#%^&*()-=+[{]}\|;'\",.<>/?",
+                wordBasedSuggestions: false,
+                renderWhitespace: "trailing",
+                quickSuggestionsDelay: 100,
+                quickSuggestions: {
+                    comments: false,
+                    other: true,
+                    strings: false
+                },
+                suggest: {
+                    showColors: true,
+                    showWords: false
+                },
+                padding: {
+                    bottom: "24px",
+                    top: "24px"
+                },
+                lightbulb: {
+                    enabled: false
+                },
+                find: {
+                    loop: true,
+                    cursorMoveOnType: true,
+                    autoFindInSelector: "multiline",
+                    addExtraSpaceOnTop: false
+                },
+                minimap: {
+                    enabled: false
+                }
+            });
+
+            const model = editor.getModel();
+            model.onDidChangeContent(function (event) {
+                tryLint();
+            });
+            model.updateOptions({
+                tabSize: 4
+            });
+        }
+
+        // keyboard handler
+        const mac = window.navigator.platform.match("Mac");
+        document.addEventListener('keydown', function (event) {
+            const ctrl = mac ? event.metaKey : event.ctrlKey;
+            if (ctrl && event.keyCode == 83) {
+                event.preventDefault();
+                save();
+                return;
+            }
+        }, false);
+
+        async function save() {
+            if (isSaving)
+                return;
+        
+            showNotification("Attempting to save file...", '#AAAAAA');
+
+            if (!fileHandle) {
+                fileHandle = await window.showSaveFilePicker({
+                    types: [
+                        {
+                            "description": "MCCompiled Code",
+                            "accept": { 'text/plain': ['.mcc'] }
+                        }
+                    ],
+                    suggestedName: projectName
+                });
+            }
+
+            showNotification("Saving file...", '#AAAAAA');
+            isSaving = true;
+
+            if (fileHandle) {
+                const stream = await fileHandle.createWritable();
+                const content = editor.getValue();
+                await stream.write(new Blob([content], { type: "text/plain" }));
+                await stream.close();
+                showNotification("Saved file!", green);
+                isSaving = false;
+            }
+        }
+        async function loadFile() {
+            fileHandle = await window.showOpenFilePicker({
+                multiple: false,
+                types: [
+                    {
+                        "description": "MCCompiled Code",
+                        "accept": { 'text/plain': ['.mcc'] }
+                    }
+                ]
+            });
+            if (fileHandle.length && fileHandle.length > 0) {
+                fileHandle = fileHandle[0];
+                showNotification("Loading file...", '#AAAAAA');
+                const file = await fileHandle.getFile();
+                const pName = file.name;
+
+                if (pName.endsWith(".mcc"))
+                    setProjectName(pName.substr(0, pName.length - 4));
+                else
+                    setProjectName(pName);
+
+                file.text().then(contents => {
+                    editor.setValue(contents);
+                    showNotification(`Loaded project ${projectName}!`, green);
+                });
+            }
+        }
+        function compile() {
+            if (!isConnectedToServer)
+                return;
+            if (isBusy)
+                return;
+
+            const url = "http://localhost:11830/compile/" + projectName;
+            const data = editor.getValue();
+
+            const params = {
+                headers: {
+                    "Content-Type": "text/plain; charset=UTF-8"
+                },
+                body: data,
+                method: "POST"
+            };
+
+            showNotification("Compiling code...", '#AAAAAA');
+            compileButton.setAttribute('enabled', 'false');
+            isBusy = true;
+
+            fetch(url, params).then(response => {
+
+                compileButton.setAttribute('enabled', 'true');
+                isBusy = false;
+
+                if (response.status == 500) {
+                    showNotification("Error during compilation. Check code.", red);
+                    tryLint();
+                    return;
+                }
+                if (response.status == 413) {
+                    showNotification("Code is too long to send to server.", red);
+                    return;
+                }
+
+                showNotification("Compilation completed.", green);
+                return response;
+            }).catch(err => {
+                showNotification(err.toString(), red);
+                compileButton.setAttribute('enabled', 'true');
+                isBusy = false;
+            });
+        }
+        function lint() {
+
+            lintCooldown = null;
+
+            if (!isConnectedToServer)
+                return;
+            if (isBusy) {
+                tryLint();
+                return;
+            }
+
+            const url = "http://localhost:11830/lint/" + projectName;
+            const data = editor.getValue();
+
+            const params = {
+                headers: {
+                    "Content-Type": "text/plain; charset=UTF-8"
+                },
+                body: data,
+                method: "POST"
+            };
+
+            isBusy = true;
+            compileButton.setAttribute('enabled', 'false');
+            fetch(url, params).then(response => {
+                if (response.status == 500) {
+                    showNotification("Fatal compiler error.", red);
+                    return;
+                }
+                if (response.status == 413) {
+                    showNotification("Code is too long to send to server.", red);
+                    return;
+                }
+                return response.json();
+            }).then(json => {
+                isBusy = false;
+                compileButton.setAttribute('enabled', 'true');
+                handleLintJSON(json);
+            }).catch(err => {
+                showNotification(err.toString(), red);
+                isBusy = false;
+                compileButton.setAttribute('enabled', 'true');
+            });
+        }
+        function handleLintSuccess(json) {
+            userVariables = json["variables"];
+            userFunctions = json["functions"];
+            userPPVs = json["ppvs"];
+
+            console.log("Lint, Success.");
+            monaco.editor.setModelMarkers(editor.getModel(), 'mcc-lint', []);
+        }
+        function handleLintError(json) {
+            var line = json["line"];
+            if (line == 0)
+                line = 1;
+
+            const message = json["message"];
+            const model = editor.getModel();
+            const code = model.getLineContent(line);
+
+            var startIndex = 0;
+            const beginningWhitespace = code.match(/^\s+/);
+            if (beginningWhitespace && beginningWhitespace[0])
+                startIndex = beginningWhitespace[0].length;
+
+            console.log("Lint, Error: " + code.trim());
+            monaco.editor.setModelMarkers(model, 'mcc-lint', [
+                {
+                    message: message,
+                    code: code.trim(),
+                    severity: 8,
+                    startLineNumber: line,
+                    endLineNumber: line,
+                    startColumn: startIndex + 1,
+                    endColumn: code.length + 1
+                }
+            ]);
+        }
+        function handleLintJSON(json) {
+            const type = json["type"];
+            if (type == 'error')
+                handleLintError(json);
+            else if (type == 'success')
+                handleLintSuccess(json);
+            else
+                console.log("Unknown lint result type: " + type);
+        }
+        function wiki() {
+            window.open(wikiURL, "_blank");
+            removeTakeover();
+        }
+
+        require(['vs/editor/editor.main'], function () {
+            load();
+        });
+        window.onresize = function () {
+            if (editor)
+                editor.layout();
+        }
+    </script>
+</body>
+</html>
