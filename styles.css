@@ -60,7 +60,7 @@ button {
 }
     button:hover:not(:focus) {
         transition: border-width ease-out 0.1s;
-        border-width: 10px;
+        border-width: 6px;
     }
     button:focus {
         transition: border-width ease-out 0.1s;

@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="blurrable">
+    <div>
         <div class="title">
             <div>
                 <h1>projects</h1>
@@ -62,13 +62,8 @@
                 const el = document.getElementById("overlay");
                 if (el)
                     el.remove();
-                const blurrable = document.querySelector(".blurrable");
-                blurrable.setAttribute("blur", false);
                 return;
             }
-
-            const blurrable = document.querySelector(".blurrable");
-            blurrable.setAttribute("blur", true);
 
             const overlayElement = document.createElement("div");
             overlayElement.id = "overlay";
