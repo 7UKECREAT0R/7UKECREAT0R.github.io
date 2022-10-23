@@ -8,9 +8,13 @@
 
   "html": {
     "sections": {
-      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 7 months, bringing tons of new skills to the table.",
-      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Fez. They are all actual real life models I put together with PIFuHD and given the most ridiculous abilities and weapons we could think of. More news to come.",
-      "STEAM": "The game will be on steam for $5-$10 USD sometime in 2023. It will start with a server located in US-East and we'll expand out if the project is successful."
+      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 12 months, bringing tons of skills to the table and teaching me as a person what game development is truly about.",
+      
+      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Fez. They are all actual real life models I put together with PIFuHD and given the most ridiculous abilities and weapons we could think of in a single afternoon. We recorded over 150 unique voice lines and modelled 40 unique weapons/assets for the characters. Additionally, Onyx was comissioned to create a 5-piece energy-fueled soundtrack.",
+      
+      "GAMEPLAY": "Prego Wars features deathmatch-like gameplay where the one with the most points at the end of the timer wins. Points are <i>usually</i> earned by kills, but the match creators can unlock/choose from 32 unique mutators which entirely modify the way the game plays! Make everyone into a mouse, make them drop money instead of points, turn everyone into smoothie ingredients, or mix and match them all to create an entirely new mode!",
+      
+      "STEAM": "The game will be on steam for $5-$10 USD sometime in 2023. It will start with a server located in US-East and we'll expand out if the project is successful!"
     },
     "links": {}
   }
