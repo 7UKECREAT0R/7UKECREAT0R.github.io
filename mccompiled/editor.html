@@ -24,7 +24,6 @@
             <label for="projectField" class="navitem">PROJECT NAME</label>
             <input id="projectField" class="navitem" value="web_project" maxlength="32" spellcheck="false" onchange="setProjectNameByElement(this)" />
         </div>
-        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -38,6 +37,7 @@
     <script>
         'use strict';
 
+        const takeoverAnimationLength = 200;
         const wikiURL = "https://github.com/7UKECREAT0R/MCCompiled/wiki/Cheat-Sheet";
         const navElement = document.getElementById('nav');
         const projectInputElement = document.getElementById('projectField');
@@ -74,20 +74,21 @@
         var isConnectedToServer = false;
         var isBusy = false;
         var isSaving = false;
+        var unsavedChanges = true;
 
         var fileHandle = null;
-        var notification = null;
+        var currentNotification = null;
         var takeover = null;
 
         function showNotification(text, color) {
-            if (notification)
-                notification.remove();
+            if (currentNotification)
+            currentNotification.remove();
 
-            notification = document.createElement("p");
-            notification.innerText = text;
-            notification.style.color = color;
-            notification.className = "notification";
-            navElement.appendChild(notification);
+            currentNotification = document.createElement("p");
+            currentNotification.innerText = text;
+            currentNotification.style.color = color;
+            currentNotification.className = "notification";
+            navElement.appendChild(currentNotification);
         }
         function takeoverScreen(html) {
             const hasExisting = removeTakeover();
@@ -101,7 +102,7 @@
                 window.setTimeout(function () {
                     takeover.className = "takeover";
                     document.body.appendChild(takeover);
-                }, 300);
+                }, takeoverAnimationLength);
             } else {
                 takeover.className = "takeover";
                 document.body.appendChild(takeover);
@@ -109,13 +110,13 @@
         }
         function removeTakeover() {
             if (takeover) {
-                takeover.style.animation = 'takeover-fade-out 0.3s cubic-bezier(.66,-0.01,1,.48) forwards';
+                takeover.style.animation = 'takeover-fade-out 0.2s cubic-bezier(.3,.09,.54,1) forwards';
                 const holder = takeover;
                 takeover = null;
 
                 window.setTimeout(function () {
                     holder.remove();
-                }, 300);
+                }, takeoverAnimationLength);
                 return true;
             }
 
@@ -143,7 +144,7 @@
             } else {
                 if (isBusy)
                     return;
-                showNotification("Attempting to connect to the MCCompiled server...", '#AAAAAA');
+                showNotification("Attempting to connect to an MCCompiled server...", '#AAAAAA');
                 compileButton.setAttribute('enabled', 'false');
                 isBusy = true;
             }
@@ -153,14 +154,14 @@
                 isBusy = false;
                 compileButton.setAttribute('enabled', 'true');
                 if (!isConnectedToServer) {
-                    showNotification("Connected to MCCompiled server.", green);
+                    showNotification("Connected to an MCCompiled server.", green);
                     isConnectedToServer = true;
                     onConnectedToServer();
                 }
                 window.setTimeout(heartbeat, 1000);
                 return response;
             }).catch(err => {
-                showNotification("Couldn't connect to MCCompiled server.", red);
+                showNotification("Couldn't connect to an MCCompiled server.", red);
                 isConnectedToServer = false;
                 compileButton.setAttribute('enabled', 'true');
                 isBusy = false;
@@ -174,7 +175,7 @@
         }
 
         // linting service
-        const lintTimer = 750;
+        const lintTimer = 500;
         var lintCooldown = null;
         function tryLint() {
             if (lintCooldown)
@@ -194,12 +195,19 @@
             projectInputElement.value = projectName;
             fileHandle = null;
             showNotification(`Set project name to ${projectName}.`, 'white');
+
+            unsavedChanges = true;
+            updateTitle();
         }
         function setProjectName(name) {
             if (name.length == 0)
-                name = "empty_name";
+                name = "web_project";
             projectName = name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]+/g, "");
             projectInputElement.value = projectName;
+            fileHandle = null;
+
+            unsavedChanges = true;
+            updateTitle();
         }
 
         var userPPVs = []; 
@@ -337,6 +345,9 @@
         var editorContainer = null;
 
         function load() {
+            unsavedChanges = true;
+            updateTitle();
+
             editorContainer = document.createElement('div');
             editorContainer.className = "editor";
             document.body.appendChild(editorContainer);
@@ -349,6 +360,7 @@
             });
             monaco.languages.setMonarchTokensProvider('mccompiled', mccompiled);
             monaco.languages.registerCompletionItemProvider('mccompiled', mcc_completion_provider);
+            //monaco.languages.registerHoverProvider('mccompiled', mcc_hover_provider);
 
             editor = monaco.editor.create(editorContainer, {
                 value: `// Example function
@@ -376,10 +388,11 @@ function useSpell amount {
                 theme: "mcc-solar",
                 codeLensFontFamily: "Roboto Mono",
                 fontFamily: "Roboto Mono",
-                fontSize: "24px",
-                suggestFontSize: "14px",
+                fontSize: "16px",
+                suggestFontSize: "10px",
                 suggestLineHeight: "18px",
                 cursorBlinking: "blink",
+                mouseWheelZoom: true,
                 fontLigatures: true,
                 formatOnPaste: true,
                 tabCompletion: "on",
@@ -387,10 +400,16 @@ function useSpell amount {
                 wordSeparators: "`~!#%^&*()-=+[{]}\|;'\",.<>/?",
                 wordBasedSuggestions: false,
                 renderWhitespace: "trailing",
-                quickSuggestionsDelay: 100,
+                copyWithSyntaxHighlighting: false,
+                emptySelectionClipboard: true,
+                inlineSuggest: {
+                    enabled: true,
+                    mode: "prefix"
+                },
+                quickSuggestionsDelay: 0,
                 quickSuggestions: {
                     comments: false,
-                    other: true,
+                    other: "inline",
                     strings: false
                 },
                 suggest: {
@@ -418,6 +437,10 @@ function useSpell amount {
             const model = editor.getModel();
             model.onDidChangeContent(function (event) {
                 tryLint();
+                if (!unsavedChanges) {
+                    unsavedChanges = true;
+                    updateTitle();
+                }
             });
             model.updateOptions({
                 tabSize: 4
@@ -463,6 +486,9 @@ function useSpell amount {
                 await stream.close();
                 showNotification("Saved file!", green);
                 isSaving = false;
+
+                unsavedChanges = false;
+                updateTitle();
             }
         }
         async function loadFile() {
@@ -489,6 +515,9 @@ function useSpell amount {
                 file.text().then(contents => {
                     editor.setValue(contents);
                     showNotification(`Loaded project ${projectName}!`, green);
+
+                    unsavedChanges = false;
+                    updateTitle();
                 });
             }
         }
@@ -585,7 +614,6 @@ function useSpell amount {
             userFunctions = json["functions"];
             userPPVs = json["ppvs"];
 
-            console.log("Lint, Success.");
             monaco.editor.setModelMarkers(editor.getModel(), 'mcc-lint', []);
         }
         function handleLintError(json) {
@@ -602,7 +630,6 @@ function useSpell amount {
             if (beginningWhitespace && beginningWhitespace[0])
                 startIndex = beginningWhitespace[0].length;
 
-            console.log("Lint, Error: " + code.trim());
             monaco.editor.setModelMarkers(model, 'mcc-lint', [
                 {
                     message: message,
@@ -628,6 +655,13 @@ function useSpell amount {
             window.open(wikiURL, "_blank");
             removeTakeover();
         }
+        function updateTitle() {
+            var title = "MCCompiled - " + projectName;
+            if (unsavedChanges)
+                title += '*';
+
+            document.title = title;
+        }
 
         require(['vs/editor/editor.main'], function () {
             load();
@@ -635,6 +669,14 @@ function useSpell amount {
         window.onresize = function () {
             if (editor)
                 editor.layout();
+        }
+        window.onbeforeunload = function (e) {
+            if (unsavedChanges) {
+                e.preventDefault();
+
+                // doesnt show on most browsers
+                return "You have unsaved changes in the project " + projectName + ". Exit page?";
+            }
         }
     </script>
 </body>
