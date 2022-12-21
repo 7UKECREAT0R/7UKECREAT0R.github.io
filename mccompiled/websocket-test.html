@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        <title>Websocket Test Page</title>
+        <style>
+            h1, h2, h3, h4, h5, h6 {
+                margin-left: 10px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+            }
+            p {
+                margin-left: 10px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 400;
+            }
+            button {
+                padding: 5px 20px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+            }
+            ol {
+                border-radius: 7px;
+                background-color: rgb(230, 230, 230);
+                padding: 10px 10px 10px 10px;
+                max-width: 45%;
+            }
+            li {
+                margin-left: 15px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Websocket Test</h1>
+        <p>This page is used to test the MCCompiled Language server's websocket support.</p>
+
+        <hr />
+        
+        <h2>Info</h2>
+        <ul>
+            <li>
+                <p>Upon clicking the 'test' button, this page does a couple of things:</p>
+                <ol>
+                    <li>Begins a socket connection on <code>localhost:11830</code>.</li>
+                    <li>Sends the websocket handshake to the server.</li>
+                    <li>Expects a handshake response.</li>
+                    <li>Finalizes connection to the server.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Clicking the 'clear' button will clear the console at the bottom.</p>
+            </li>
+            <li>
+                <p>The 'payload' button is only enabled if a connection is established from pressing 'test'.</p>
+                <ol>
+                    <li>A message in JSON is constructed on the client.</li>
+                    <li>The message is then sent to the server in a WebSocket frame.</li>
+                    <li>The server can parse and read the JSON message.</li>
+                </ol>
+            </li>
+            <li>
+                <p>The 'close' button prompts the server to close the connection.</p>
+                <ol>
+                    <li>A CLOSE (0x8) frame is sent to the server.</li>
+                    <li>The server must echo another CLOSE frame back.</li>
+                    <li>The connection will close like normal.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Pressing 'ping' will send a chunk of UTF-8 encoded JSON to the server: <code>{"action":"ping"}</code></p>
+            </li>
+            <li>
+                <p>Incoming messages will be decoded as UTF-8 text and printed to the console at the bottom.</p>
+            </li>
+        </ui>
+        <hr />
+
+        <button onclick="wstest()" id="testButton">test</button>
+        <button onclick="clearDisplay()" id="clearButton">clear</button>
+        <button onclick="wspayload()" id="payloadButton" disabled>payload</button>
+        <button onclick="wsclose()" id="closeButton" disabled>close</button>
+        <button onclick="wsping()" id="pingButton" disabled>ping</button>
+
+
+        <hr />
+
+        <code>
+            <div id="display">
+                
+            </div>
+        </code>
+
+        <script>
+            const display = document.getElementById("display");
+
+            function addDisplay(html) {
+                const entry = document.createElement("p");
+                entry.innerHTML = html;
+                display.appendChild(entry);
+            }
+            function clearDisplay() {
+                while(display.childElementCount > 0)
+                    display.children[0].remove();
+            }
+            function enableSocketButtons(bool) {
+                const button1 = document.getElementById("payloadButton");
+                const button2 = document.getElementById("closeButton");
+                const button3 = document.getElementById("pingButton");
+                if(bool) {
+                    button1.removeAttribute("disabled");
+                    button2.removeAttribute("disabled");
+                    button3.removeAttribute("disabled");
+                } else {
+                    button1.setAttribute("disabled", "");
+                    button2.setAttribute("disabled", "");
+                    button3.setAttribute("disabled", "");
+                }
+            }
+
+            let socket = null;
+            function wstest() {
+                addDisplay("<b>Starting test...</b>");
+                socket = new WebSocket("ws://localhost:11830");
+                socket.addEventListener("open", handleOpen);
+                socket.addEventListener("close", handleClose);
+                socket.addEventListener("message", handleMessage);
+                socket.addEventListener("error", handleError);
+            }
+            function wspayload() {
+                if(!socket) {
+                    addDisplay("No socket is present.");
+                    handleClose(null);
+                    return;
+                }
+
+                // test payload to be sent to the websocket server
+                const payload = {
+                    "name": "Luke",
+                    "age": 17,
+                    "testObject": {
+                        "property": true,
+                        "confidence": 0.77
+                    },
+                    "testArray": [
+                        "item1",
+                        "item2",
+                        "item3",
+                        "item4"
+                    ]
+                };
+
+                socket.send(JSON.stringify(payload));
+                addDisplay("Sent test payload to remote server at <code>localhost:11830</code>");
+            }
+            function wsclose() {
+                if(!socket) {
+                    addDisplay("No socket is present.");
+                    handleClose(null);
+                    return;
+                }
+
+                socket.close();
+                socket = null;
+                addDisplay("<b>Requested socket close to server...</b>");
+            }
+            function wsping() {
+                if(!socket) {
+                    addDisplay("No socket is present.");
+                    handleClose(null);
+                    return;
+                }
+
+                socket.send(JSON.stringify({
+                    "action": "ping"
+                }));
+            }
+
+            function handleOpen(event) {
+                enableSocketButtons(true);
+                addDisplay("Opened connection successfully.");
+            }
+            function handleClose(event) {
+                enableSocketButtons(false);
+                addDisplay("Connection closed.");
+                socket = null;
+            }
+            function handleMessage(event) {
+                addDisplay("Message received: " + event.data);
+            }
+            function handleError(event) {
+                enableSocketButtons(false);
+                addDisplay("Error occurred.");
+                socket = null;
+            }
+        </script>
+    </body>
+
+</html>
