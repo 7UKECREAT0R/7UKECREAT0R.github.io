@@ -1,12 +1,12 @@
 const mccompiled = {
 	operators: [ `<`, `>`, `{`, `}`, `=`, `(`, `)`, `+`, `-`, `*`, `/`, `%`, `!` ],
-	selectors: [ `@e`, `@a`, `@s`, `@p` ],
-	preprocessor: [ `$var`, `$inc`, `$dec`, `$add`, `$sub`, `$mul`, `$div`, `$mod`, `$pow`, `$swap`, `$if`, `$else`, `$repeat`, `$log`, `$macro`, `$include`, `$strfriendly`, `$strupper`, `$strlower`, `$sum`, `$median`, `$mean`, `$iterate`, `$get`, `$len`, `$json` ],
-	commands: [ `mc`, `select`, `globalprint`, `print`, `define`, `init`, `if`, `else`, `give`, `tp`, `tphere`, `move`, `face`, `facehere`, `rotate`, `block`, `fill`, `scatter`, `replace`, `kill`, `remove`, `clear`, `globaltitle`, `title`, `globalactionbar`, `actionbar`, `say`, `halt`, `damage`, `effect`, `effecth`, `null`, `tag`, `limit`, `explode`, `feature`, `function`, `return`, `struct`, `for` ],
-	literals: [ `true`, `false`, `&`, `~`, `^` ],
-	types: [ `int`, `decimal`, `bool`, `time`, `struct` ],
-	comparisons: [ `block`, `type`, `family`, `mode`, `near`, `inside`, `not`, `level`, `name`, `rotation x`, `rotation y`, `any`, `count`, `item`, `holding`, `offset`, `null`, `class`, `position`, `position x`, `position y`, `position z` ],
-	options: [ `nulls`, `gametest`, `exploders`, `uninstall`, `identify`, `up`, `down`, `left`, `right`, `forward`, `backward`, `survival`, `creative`, `adventure`, `times`, `subtitle`, `destroy`, `replace`, `hollow`, `outline`, `keep`, `lockinventory`, `lockslot`, `canplaceon:`, `candestroy:`, `enchant:`, `name:`, `lore:`, `author:`, `title:`, `page:`, `dye:` ],
+	selectors: [ `@e`, `@a`, `@s`, `@p`, `@i`, `@initiator` ],
+	preprocessor: [ `$var`, `$inc`, `$dec`, `$add`, `$sub`, `$mul`, `$div`, `$mod`, `$pow`, `$swap`, `$if`, `$else`, `$repeat`, `$log`, `$macro`, `$include`, `$strfriendly`, `$strupper`, `$strlower`, `$sum`, `$median`, `$mean`, `$sort`, `$reverse`, `$iterate`, `$len`, `$json` ],
+	commands: [ `mc`, `command`, `cmd`, `globalprint`, `print`, `define`, `init`, `initialize`, `if`, `else`, `give`, `tp`, `teleport`, `move`, `face`, `lookat`, `rotate`, `setblock`, `fill`, `scatter`, `replace`, `kill`, `remove`, `clear`, `globaltitle`, `title`, `globalactionbar`, `actionbar`, `say`, `halt`, `damage`, `effect`, `playsound`, `particle`, `dummy`, `tag`, `explode`, `feature`, `function`, `fn`, `return`, `for`, `execute` ],
+	literals: [ `true`, `false`, `not`, `and`, `null`, `~`, `^` ],
+	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `folder` ],
+	comparisons: [ `count`, `any`, `block`, `blocks`, `positioned` ],
+	options: [ `dummies`, `gametest`, `exploders`, `uninstall`, `identify`, `up`, `down`, `left`, `right`, `forward`, `backward`, `ascending`, `descending`, `survival`, `creative`, `adventure`, `spectator`, `times`, `subtitle`, `destroy`, `replace`, `hollow`, `outline`, `keep`, `lockinventory`, `lockslot`, `canplaceon:`, `candestroy:`, `enchant:`, `name:`, `lore:`, `author:`, `title:`, `page:`, `dye:`, `align`, `anchored`, `as`, `at`, `facing`, `facing entity`, `in`, `positioned`, `positioned as`, `rotated`, `rotated as` ],
     tokenizer: {
         root: [
             [ /@?[a-zA-Z$][\w]*/, {
@@ -25,6 +25,7 @@ const mccompiled = {
 			
 			[ /[<>{}=()+\-*/%!]+/, 'operators' ],
             [ /"(?:[^"\\]|\\.)*"/, 'strings' ],
+            [ /'(?:[^'\\]|\\.)*'/, 'strings' ],
             [ /\[.+\]/, 'selectors.properties' ],
             [ /!?(?:\.\.)?\d+(?:\.\.)?\.?\d*[hms]?/, 'numbers' ]
         ],
@@ -44,55 +45,55 @@ const mccompiled = {
 const mcc_operators = [
 	{
 		word: `<`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `>`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `{`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `}`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `=`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `(`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `)`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `+`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `-`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `*`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `/`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `%`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 	{
 		word: `!`,
-		docs: 'No documentation available for v1.04.'
+		docs: 'No documentation available for v1.1.'
 	},
 ]
 const mcc_selectors = [
@@ -111,6 +112,14 @@ const mcc_selectors = [
 	{
 		word: `@p`,
 		docs: `References the nearest player.`
+	},
+	{
+		word: `@i`,
+		docs: `References the initiator, if this was run from dialogue.`
+	},
+	{
+		word: `@initiator`,
+		docs: `References the initiator, if this was run from dialogue.`
 	},
 ]
 const mcc_preprocessor = [
@@ -164,7 +173,7 @@ const mcc_preprocessor = [
 	},
 	{
 		word: `$repeat`,
-		docs: `Repeats the following statement/block a number of times. If a variable identifier is given, that variable will be set to the index of the current iteration. 0, 1, 2, etc.`
+		docs: `Repeats the following statement/code-block a number of times. If a variable identifier is given, that variable will be set to the index of the current iteration. 0, 1, 2, etc.`
 	},
 	{
 		word: `$log`,
@@ -172,7 +181,7 @@ const mcc_preprocessor = [
 	},
 	{
 		word: `$macro`,
-		docs: `If a block follows this call, it is treated as a definition. Arguments are passed in as preprocessor variables. If no block follows this call, it will attempt to run the macro with any inputs parameters copied to their respective preprocessor variables.`
+		docs: `If a code-block follows this call, it is treated as a definition. Arguments are passed in as preprocessor variables. If no code-block follows this call, it will attempt to run the macro with any inputs parameters copied to their respective preprocessor variables.`
 	},
 	{
 		word: `$include`,
@@ -203,16 +212,20 @@ const mcc_preprocessor = [
 		docs: `Averages all values in the given preprocessor variable together into one value and stores it in a result variable.`
 	},
 	{
-		word: `$iterate`,
-		docs: `Runs the following statement/block once for each value in the given preprocessor variable. The current iteration is held in the preprocessor variable given.`
+		word: `$sort`,
+		docs: `Sorts the order of the values in the given preprocessor variable either 'ascending' or 'descending'. Values must be comparable.`
 	},
 	{
-		word: `$get`,
-		docs: `Get the value at a specific 0-based index inside a preprocessor variable and store it in a result variable.`
+		word: `$reverse`,
+		docs: `Reverses the order of the values in the given preprocessor variable.`
+	},
+	{
+		word: `$iterate`,
+		docs: `Runs the following statement/code-block once for each value in the given preprocessor variable. The current iteration is held in the preprocessor variable given. If the target is a JSON array, the elements will be iterated upon.`
 	},
 	{
 		word: `$len`,
-		docs: `Get the number of values inside a preprocessor variable and store it in a result variable.`
+		docs: `If a preprocessor variable ID is given, the number of elements it holds is gotten. If a JSON array is given, the number of elements is gotten. If a string is given, the number of characters is gotten.`
 	},
 	{
 		word: `$json`,
@@ -225,16 +238,20 @@ const mcc_commands = [
 		docs: `Places a plain command in the output file, used for when the language lacks a certain feature.`
 	},
 	{
-		word: `select`,
-		docs: `Selects an entity based off of a selector, "name:type", or name of any managed entity (e.g., a null). If a block follows this statement, only the code in that block will use the selection specified here before returning to the previous selector.`
+		word: `command`,
+		docs: `Alias of 'mc'. Places a plain command in the output file, used for when the language lacks a certain feature.`
+	},
+	{
+		word: `cmd`,
+		docs: `Alias of 'mc'. Places a plain command in the output file, used for when the language lacks a certain feature.`
 	},
 	{
 		word: `globalprint`,
-		docs: `Prints a chat message to all players in the game. Variables/selectors can be inserted using {curly braces}.`
+		docs: `Prints a chat message to all players in the game. Supports format strings.`
 	},
 	{
 		word: `print`,
-		docs: `Prints a chat message to the selected player(s). Variables/selectors can be inserted using {curly braces}.`
+		docs: `Prints a chat message to the executing player, or to the given one if specified. Supports format strings.`
 	},
 	{
 		word: `define`,
@@ -242,11 +259,15 @@ const mcc_commands = [
 	},
 	{
 		word: `init`,
-		docs: `Ensures the selected entities have a value for the given variable, defaulting to 0 if not. This ensures the selected entities function as intended all the time.`
+		docs: `Ensures the given entities have a value for the given variable, defaulting to 0 if not. This ensures the given entities function as intended all the time.`
+	},
+	{
+		word: `initialize`,
+		docs: `Alias of 'init'. Ensures the given entities have a value for the given variable, defaulting to 0 if not. This ensures the given entities function as intended all the time.`
 	},
 	{
 		word: `if`,
-		docs: `Allows comparison of variables, along with a huge collection of other criteria. Can be chained together by '&' symbols and inverted by the keyword 'not'. Only runs the proceeding statement/block for entities where the condition returns true.`
+		docs: `Allows comparison of variables, along with a huge collection of other criteria. Can be chained together by '&' symbols and inverted by the keyword 'not'. Only runs the proceeding statement/code-block for entities where the condition returns true.`
 	},
 	{
 		word: `else`,
@@ -254,35 +275,35 @@ const mcc_commands = [
 	},
 	{
 		word: `give`,
-		docs: `Gives an item to the selected entities. Runs either a 'give' or 'structure load' depending on requirements. Utilizes builder fields.`
+		docs: `Gives item(s) to the given entity. Runs either a 'give' or 'structure load' depending on requirements. Utilizes builder fields.`
 	},
 	{
 		word: `tp`,
-		docs: `Teleports the currently selected entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., nulls).`
+		docs: `Teleports the given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
-		word: `tphere`,
-		docs: `Teleports an entity to the selected entity based off of a selector, "name:type" of entity, or name of another managed entity (e.g., nulls).`
+		word: `teleport`,
+		docs: `Alias of 'tp'. Teleports the given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
 		word: `move`,
-		docs: `Moves the selected entities in a direction (LEFT, RIGHT, UP, DOWN, FORWARD, BACKWARD) for a certain amount. Simpler alternative for teleporting using caret offsets.`
+		docs: `Moves the specified entity in a direction (LEFT, RIGHT, UP, DOWN, FORWARD, BACKWARD) for a certain amount. Simpler alternative for teleporting using caret offsets.`
 	},
 	{
 		word: `face`,
-		docs: `Faces the selected entities towards a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., nulls).`
+		docs: `Faces the given entities towards a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
-		word: `facehere`,
-		docs: `Faces an entity based off of a selector, "name:type" of entity, or name of another managed entity (e.g., nulls) towards the selected entity.`
+		word: `lookat`,
+		docs: `Alias of 'face'. Faces the given entities towards a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
 		word: `rotate`,
-		docs: `Rotates the selected entities a certain number of degrees horizontally and vertically from their current rotation.`
+		docs: `Rotates the given entities a certain number of degrees horizontally and vertically from their current rotation.`
 	},
 	{
-		word: `block`,
-		docs: `Places a block at a specific position, optionally using a replace mode.`
+		word: `setblock`,
+		docs: `Sets the block at a specific position, optionally using a replace mode.`
 	},
 	{
 		word: `fill`,
@@ -298,67 +319,67 @@ const mcc_commands = [
 	},
 	{
 		word: `kill`,
-		docs: `Kills the selected entities, causing the death animation, sounds, and particles to appear.`
+		docs: `Kills the given entities, causing the death animation, sounds, and particles to appear.`
 	},
 	{
 		word: `remove`,
-		docs: `Teleports the selected entities deep into the void, causing a silent death.`
+		docs: `Teleports the given entities deep into the void, causing a silent death.`
 	},
 	{
 		word: `clear`,
-		docs: `Clears the inventories of all selected entities, optionally searching for a specific item and limiting the number of items to remove.`
+		docs: `Clears the inventories of all given entities, optionally searching for a specific item and limiting the number of items to remove.`
 	},
 	{
 		word: `globaltitle`,
-		docs: `Displays a title on the screen of all players in the game. Can also be used to set the timings of the title. Variables/selectors can be inserted using {curly braces}`
+		docs: `Displays a title on the screen of all players in the game. Can also be used to set the timings of the title. Supports format strings.`
 	},
 	{
 		word: `title`,
-		docs: `Displays a title on the screen of the selected players. Can also be used to set the timings of the title. Variables/selectors can be inserted using {curly braces}`
+		docs: `Displays a title on the screen of the executing player, or to the given one if specified. Can also be used to set the timings of the title. Supports format strings.`
 	},
 	{
 		word: `globalactionbar`,
-		docs: `Displays an actionbar on the screen of all players in the game. Can also be used to set the timings of the actionbar. Variables/selectors can be inserted using {curly braces}`
+		docs: `Displays an actionbar on the screen of all players in the game. Can also be used to set the timings of the actionbar. Supports format strings.`
 	},
 	{
 		word: `actionbar`,
-		docs: `Displays an actionbar on the screen of the selected players. Can also be used to set the timings of the actionbar. Variables/selectors can be inserted using {curly braces}`
+		docs: `Displays an actionbar on the screen of the executing player, or to the given one if specified. Supports format strings.`
 	},
 	{
 		word: `say`,
-		docs: `Send a plain-text message as the selected entities. Plain selectors can be used, but not variables.`
+		docs: `Send a plain-text message as the executing entity. Plain selectors can be used, but not variables.`
 	},
 	{
 		word: `halt`,
-		docs: `Ends the execution of the code entirely by running out the function command limit.`
+		docs: `Ends the execution of the code entirely by hitting the function command limit.`
 	},
 	{
 		word: `damage`,
-		docs: `Damages the selected entities with a certain cause, optionally coming from a position or blaming an entity by a selector, "name:type" of entity, or name of another managed entity (e.g., nulls).`
+		docs: `Damages the given entities with a certain cause, optionally coming from a position or blaming an entity by a selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
 		word: `effect`,
-		docs: `Gives the selected entities a potion effect with visible particles. Time and amplifier can be specified to further customize the potion effect. All potion effects can be cleared using 'effect clear'.`
+		docs: `Gives the given entities a potion effect. Time and amplifier can be specified to further customize the potion effect. All potion effects can be cleared using 'effect <selector> clear'.`
 	},
 	{
-		word: `effecth`,
-		docs: `Gives the selected entities a potion effect with no particles. Time and amplifier can be specified to further customize the potion effect. All potion effects can be cleared using 'effect clear'.`
+		word: `playsound`,
+		docs: `Plays a sound effect in the world, optionally with volume, pitch, and filtering specific players.`
 	},
 	{
-		word: `null`,
-		docs: `Create a null entity, remove the selected ones, or manage the classes on the selected ones.`
+		word: `particle`,
+		docs: `Spawns a particle effect in the world.`
+	},
+	{
+		word: `dummy`,
+		docs: `Create a dummy entity, remove the selected ones, or manage the classes on the selected ones.`
 	},
 	{
 		word: `tag`,
-		docs: `Adds, removes, or singles out a tag on the selected entities.`
-	},
-	{
-		word: `limit`,
-		docs: `Limits the number of entities that the following commands can target at once.`
+		docs: `Adds, removes, or singles out a tag on the given entities.`
 	},
 	{
 		word: `explode`,
-		docs: `Create an explosion at a specific position with optional positioning, power, delay, fire, and block breaking settings.`
+		docs: `Create an explosion at a specific position with optional positioning, power, delay, fire, and block breaking settings. Requires 'exploders' feature to be enabled.`
 	},
 	{
 		word: `feature`,
@@ -366,19 +387,23 @@ const mcc_commands = [
 	},
 	{
 		word: `function`,
-		docs: `If followed by a block, it is treated as a function definition. Parameters must have types, optionally having default values. Functions should be called through 'function_name(parameters)'.`
+		docs: `Must be followed by a code-block. Parameters must have types, optionally having default values. Function calls look like this: functionName(parameters)`
+	},
+	{
+		word: `fn`,
+		docs: `Alias of 'function'. Must be followed by a code-block. Parameters must have types, optionally having default values. Function calls look like this: functionName(parameters)`
 	},
 	{
 		word: `return`,
 		docs: `Set the value that will be returned from this function when it ends. The caller can use this value however it wishes.`
 	},
 	{
-		word: `struct`,
-		docs: `Define a structure with a set of fields and optionally default values in the proceeding block. See documentation.`
+		word: `for`,
+		docs: `Runs the following statement or code-block once over every entity that matches a selector at its current position. Functionally equivalent to 'execute as <selector> at @s run <code>'`
 	},
 	{
-		word: `for`,
-		docs: `Runs the following statement or block once over every entity that is currently selected.`
+		word: `execute`,
+		docs: `Begins a vanilla minecraft 1.19.70+ execute chain, but does not implement 'run' subcommand. Can be followed by a statement or code-block.`
 	},
 ]
 const mcc_literals = [
@@ -391,8 +416,16 @@ const mcc_literals = [
 		docs: `A boolean value representing false/no.`
 	},
 	{
-		word: `&`,
-		docs: `Adds on another comparison.`
+		word: `not`,
+		docs: `Invert the following comparison.`
+	},
+	{
+		word: `and`,
+		docs: `Includes on another comparison.`
+	},
+	{
+		word: `null`,
+		docs: `No value. Goes to 0/false under all types.`
 	},
 	{
 		word: `~`,
@@ -424,105 +457,49 @@ const mcc_types = [
 		word: `struct`,
 		docs: `A user-defined structure of multiple variables.`
 	},
+	{
+		word: `ppv`,
+		docs: `A preprocessor variable that will be set on function call. Not currently supported as a variable/struct type.`
+	},
+	{
+		word: `global`,
+		docs: `Attribute that ensures the defined variable will never be tied to an entity, only the global fakeplayer.`
+	},
+	{
+		word: `folder`,
+		docs: `Attribute that places a function in the provided folder path.`
+	},
 ]
 const mcc_comparisons = [
-	{
-		word: `block`,
-		docs: `Check for a block being present in the world.`
-	},
-	{
-		word: `type`,
-		docs: `Check for a specific entity type.`
-	},
-	{
-		word: `family`,
-		docs: `Check for a specific entity family.`
-	},
-	{
-		word: `mode`,
-		docs: `Check for the player(s) in a specific gamemode.`
-	},
-	{
-		word: `near`,
-		docs: `Check for entities being near a certain position. Relative coordinates are relative to the executing entity.`
-	},
-	{
-		word: `inside`,
-		docs: `Check for entities inside a rectangular prism. Relative coordinates are relative to the executing entity.`
-	},
-	{
-		word: `not`,
-		docs: `Invert the following condition.`
-	},
-	{
-		word: `level`,
-		docs: `Compare player(s) XP level.`
-	},
-	{
-		word: `name`,
-		docs: `Check for entities with a specific name.`
-	},
-	{
-		word: `rotation x`,
-		docs: `Compare entity X rotation.`
-	},
-	{
-		word: `rotation y`,
-		docs: `Compare entity Y rotation.`
-	},
-	{
-		word: `any`,
-		docs: `Check if any entity is matched by a selector.`
-	},
 	{
 		word: `count`,
 		docs: `Compare the number of entities that match a selector.`
 	},
 	{
-		word: `item`,
-		docs: `Check for players holding or containing a specific item/number of items in their inventory.`
+		word: `any`,
+		docs: `Check if any entities match a selector.`
 	},
 	{
-		word: `holding`,
-		docs: `Check for player(s) holding a specific item/nummber of items.`
+		word: `block`,
+		docs: `Check for a block.`
 	},
 	{
-		word: `offset`,
-		docs: `Offset the execution of the next condition.`
+		word: `blocks`,
+		docs: `Check for an area of blocks matching another.`
 	},
 	{
-		word: `null`,
-		docs: `Check for entities which are nulls, optionally with a specific name.`
-	},
-	{
-		word: `class`,
-		docs: `Check for entities which are nulls and are under a specific class.`
-	},
-	{
-		word: `position`,
-		docs: `Check for entities at a specific x, y, z, position. Relative coordinates are relative to the executing entity.`
-	},
-	{
-		word: `position x`,
-		docs: `Compare entity X position. Relative coordinates are relative to the executing entity.`
-	},
-	{
-		word: `position y`,
-		docs: `Compare entity Y position. Relative coordinates are relative to the executing entity.`
-	},
-	{
-		word: `position z`,
-		docs: `Compare entity Z position. Relative coordinates are relative to the executing entity.`
+		word: `positioned`,
+		docs: `Position the next comparison.`
 	},
 ]
 const mcc_options = [
 	{
-		word: `nulls`,
-		docs: `Feature: Create null entity behavior/resource files and allow them to be spawned in the world.`
+		word: `dummies`,
+		docs: `Feature: Create dummy entity behavior/resource files and allow them to be spawned in the world.`
 	},
 	{
 		word: `gametest`,
-		docs: `Feature: Gametest Integration`
+		docs: `Feature: Gametest Integration (not implemented)`
 	},
 	{
 		word: `exploders`,
@@ -530,7 +507,7 @@ const mcc_options = [
 	},
 	{
 		word: `uninstall`,
-		docs: `Feature: Create an uninstall function to undo all effects of this project.`
+		docs: `Feature: Create an function named 'uninstall' to remove all tags/scoreboards/etc. made by this project.`
 	},
 	{
 		word: `identify`,
@@ -561,6 +538,14 @@ const mcc_options = [
 		docs: `Used with the 'move' command. Goes backward relative to where the entity is looking.`
 	},
 	{
+		word: `ascending`,
+		docs: `Used with the '$sort' command. Sorts with the lowest value first.`
+	},
+	{
+		word: `descending`,
+		docs: `Used with the '$sort' command. Sorts with the highest value first.`
+	},
+	{
 		word: `survival`,
 		docs: `Survival mode. (0)`
 	},
@@ -571,6 +556,10 @@ const mcc_options = [
 	{
 		word: `adventure`,
 		docs: `Adventure mode. (2)`
+	},
+	{
+		word: `spectator`,
+		docs: `Spectator mode. (spectator)`
 	},
 	{
 		word: `times`,
@@ -598,7 +587,7 @@ const mcc_options = [
 	},
 	{
 		word: `keep`,
-		docs: `Keep any existing blocks, and only fill where air is present.`
+		docs: `Keep any existing blocks/items, and only fill where air is present.`
 	},
 	{
 		word: `lockinventory`,
@@ -643,5 +632,49 @@ const mcc_options = [
 	{
 		word: `dye:`,
 		docs: `If this item is a piece of leather armor, set its color to an RGB value.`
+	},
+	{
+		word: `align`,
+		docs: `Execute subcommand: Runs aligned to the given axes.`
+	},
+	{
+		word: `anchored`,
+		docs: `Execute subcommand: Runs anchored to the executing entities eyes or feet.`
+	},
+	{
+		word: `as`,
+		docs: `Execute subcommand: Runs as the given entity(s).`
+	},
+	{
+		word: `at`,
+		docs: `Execute subcommand: Runs at the given location or entity.`
+	},
+	{
+		word: `facing`,
+		docs: `Execute subcommand: Runs facing a certain position.`
+	},
+	{
+		word: `facing entity`,
+		docs: `Execute subcommand: Runs facing a certain entity.`
+	},
+	{
+		word: `in`,
+		docs: `Execute subcommand: Runs in a given dimension.`
+	},
+	{
+		word: `positioned`,
+		docs: `Execute subcommand: Runs at a given position.`
+	},
+	{
+		word: `positioned as`,
+		docs: `Execute subcommand: Runs at the position of the given entity.`
+	},
+	{
+		word: `rotated`,
+		docs: `Execute subcommand: Runs at the given rotation.`
+	},
+	{
+		word: `rotated as`,
+		docs: `Execute subcommand: Runs at the rotation of the given entity.`
 	},
 ]
