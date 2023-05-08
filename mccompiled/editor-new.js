@@ -1,11 +1,6 @@
 'use strict';
 
-const exampleFile = `function double int x {
-    return 2 * x
-}
-
-define result = double(5)
-print "{result}"`
+const exampleFile = `print "Hello, user!"`
 
 const takeoverAnimationLength = 200;
 const lintDelay = 500;
@@ -437,6 +432,8 @@ function onSocketMessage(event) {
 
     console.log("Got action: " + action);
 
+    if(action.match("version"))
+        version = json["version"];
     if(action.match("postload"))
         action_postLoad(json);
     if(action.match("seterrors"))
@@ -500,6 +497,9 @@ function action_setSymbols(json) {
     userPPVs = json["ppvs"];
     userVariables = json["variables"];
     userFunctions = json["functions"];
+
+    if(version >= 1130) // 1.13+
+        userMacros = json["macros"];
 }
 function action_notification(json) {
     const text = decodeBase64(json["text"]);
@@ -513,9 +513,11 @@ function action_busy(bool) {
     enableBusyFeatures(!bool);
 }
 
+var version = 1120; // 1.12 and under
 var userPPVs = []; 
 var userVariables = [];
 var userFunctions = [];
+var userMacros = [];
 
 // Provides completions in the editor.
 const MCCompiledCompletionProvider = {
@@ -544,15 +546,20 @@ const MCCompiledCompletionProvider = {
                 }
             }),
             ...userVariables.map(key => {
+                var detail = key.type;
+
                 return {
                     label: key.name,
-                    detail: key.type,
+                    detail: detail,
+                    documentation: decodeBase64(key.docs),
                     kind: monaco.languages.CompletionItemKind.Variable,
                     insertText: key.name,
                 }
             }),
             ...userFunctions.map(key => {
                 const ret = key.return ?? 'none';
+                var detail = "Returns: " + ret;
+
                 var insert;
                 // arguments present in the function
                 if(key.arguments && key.arguments.length > 0) {
@@ -580,7 +587,8 @@ const MCCompiledCompletionProvider = {
                     return {
                         sortText: key.name,
                         label: key.name + "(" + args + ")",
-                        detail: "Returns: " + ret,
+                        detail: detail,
+                        documentation: decodeBase64(key.docs),
                         kind: monaco.languages.CompletionItemKind.Function,
                         insertText: insert,
                         insertTextRules: 4 // InsertAsSnippet
@@ -592,7 +600,8 @@ const MCCompiledCompletionProvider = {
                 return {
                     sortText: key.name,
                     label: insert,
-                    detail: "Returns: " + ret,
+                    detail: detail,
+                    documentation: decodeBase64(key.docs),
                     kind: monaco.languages.CompletionItemKind.Function,
                     insertText: insert,
                 }
