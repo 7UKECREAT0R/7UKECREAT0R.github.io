@@ -40,6 +40,9 @@
         <p id="connectButton" class="navitem" enabled="true" onclick="onClickConnect()">CONNECT</p>
         <p id="compileButton" class="navitem" enabled="false" onclick="onClickCompile()">COMPILE</p>
         <p id="extraButton" class="navitem" enabled="true" onclick="onClickExtras()">EXTRAS</p>
+
+        <img src="assets/gear.png" id="propertiesButton" class="navitem" enabled="false" onclick="onClickProperties()" alt="Project Properties" />
+
         <div style="display: block; float: left;">
             <label for="projectField" class="navitem">PROJECT NAME</label>
             <input id="projectField" class="navitem" value="web_project" maxlength="32" spellcheck="false" onchange="setProjectNameByElement(this)" />

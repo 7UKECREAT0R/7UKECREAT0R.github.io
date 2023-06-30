@@ -43,7 +43,6 @@ const takeover_extras = `
 <h2>SERVER</h2>
 <div>
     <button onclick="sendSocketPing()">PING SERVER</button>
-    <button onclick="sendSocketDebug(true)">DEBUG SERVER</button>
     <button onclick="sendSocketInfo()">INFO</button>
 </div>
 <h2>FILESYSTEM</h2>
@@ -160,11 +159,44 @@ var editor = null;
 var editorContainer = null;
 var lintCooldown = null;
 
+var propertiesPopup = null;
+var propertiesIsClosing = false;
+
+var properties = [];
+
+var mouseX = 0;
+var mouseY = 0;
+window.onmousemove = function(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    if(propertiesPopup && !propertiesIsClosing) {
+        // get rect holding the element
+        const rect = propertiesPopup.getClientRects()[0];
+        const bound = 60;
+        if(mouseX < (rect.left - bound) ||
+                mouseX > (rect.right + bound) ||
+                mouseY < (rect.top - bound) ||
+                mouseY > (rect.bottom + bound)) {
+            propertiesIsClosing = true;
+            propertiesPopup.style.animation = "propertiesOut 0.1s ease-out forwards";
+            window.setTimeout(function() {
+                propertiesPopup.remove();
+                propertiesPopup = null;
+                propertiesIsClosing = false;
+            }, 110);
+
+            propertiesPopup.select();
+        }
+    }
+}
+
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
 const connectButton = document.getElementById('connectButton');
 const compileButton = document.getElementById('compileButton');
 const wikiButton = document.getElementById('wikiButton');
+const propertiesButton = document.getElementById('propertiesButton');
 
 // Project Management
 function updateTitle() {
@@ -258,6 +290,7 @@ function enableSocketFeatures(bool) {
     loadButton.setAttribute('enabled', bool.toString());
     connectButton.setAttribute('enabled', (!bool).toString());
     compileButton.setAttribute('enabled', bool.toString());
+    propertiesButton.setAttribute('enabled', bool.toString());
 }
 // Enable/disable the features in the GUI that cannot be accessed when the server is busy.
 // Also sets the isBusy field.
@@ -266,6 +299,7 @@ function enableBusyFeatures(bool) {
     saveButton.setAttribute('enabled', bool.toString());
     loadButton.setAttribute('enabled', bool.toString());
     compileButton.setAttribute('enabled', bool.toString());
+    propertiesButton.setAttribute('enabled', bool.toString());
 }
 
 function onClickSave() {
@@ -302,6 +336,54 @@ function onClickCompile() {
 }
 function onClickExtras() {
     takeoverScreen(takeover_extras, true);
+}
+function onClickProperties() {
+    if(!hasSocketFeatures || isBusy)
+        return;
+    if(propertiesPopup)
+        return;
+    
+    // create a pop up window on the user's cursor for setting the available properties.
+    propertiesPopup = document.createElement('div');
+    propertiesPopup.className = "propertiesPanel";
+    propertiesPopup.style.left = mouseX + "px";
+    propertiesPopup.style.top = mouseY + "px";
+    propertiesIsClosing = false;
+
+    // create an element for each property
+    let i = -1;
+    for(var property of properties) {
+        i++;
+        const propertyName = property.name;
+        const propertyValue = property.value;
+
+        const element = document.createElement('div');
+
+        const nameElement = document.createElement('label');
+        const valueElement = document.createElement('input');
+        valueElement.id = propertyName + "_input";
+        nameElement.setAttribute("for", valueElement.id);
+        nameElement.innerText = propertyName;
+        valueElement.value = propertyValue;
+        valueElement.setAttribute("propertyindex", i);
+        valueElement.onclick = function() { this.select(); }
+        valueElement.onchange = function(self) {
+            const thisElement = self.target;
+            const index = thisElement.getAttribute("propertyindex");
+            const item = properties[index];
+
+            item.value = valueElement.value;
+            sendSocketPropertyChange(item);
+        };
+        valueElement.setAttribute("maxlength", 64);
+        valueElement.setAttribute("spellcheck", false);
+
+        element.appendChild(nameElement);
+        element.appendChild(valueElement);
+        propertiesPopup.appendChild(element);
+    }
+
+    document.body.appendChild(propertiesPopup);
 }
 
 // Opens a socket if one is not already open.
@@ -364,7 +446,7 @@ function sendSocketDebug(bool) {
 
     socket.send(textData);
 }
-// Attempts to enable/disable debugging on the connected server, if any.
+// Attempts to request info from the connected server, if any.
 // Shows an error if no connection is present.
 function sendSocketInfo() {
     if(!socket || socket.readyState > 1) {
@@ -394,7 +476,21 @@ function sendSocketOpenFolder(key) {
     socket.send(textData);
     removeTakeover();
 }
+// Sends a property change to the server.
+function sendSocketPropertyChange(property) {
+    if(!socket || socket.readyState > 1) {
+        showNotification("Not connected to a server.", red);
+        return;
+    }
 
+    const textData = JSON.stringify({
+        "action": "property",
+        "name": encodeBase64(property.name),
+        "value": encodeBase64(property.value)
+    });
+
+    socket.send(textData);
+}
 
 function onSocketOpen(event) {
     showNotification("Connected to Language Server", green);
@@ -446,6 +542,8 @@ function onSocketMessage(event) {
         action_menu(decodeBase64(json["html"]));
     if(action.match("busy"))
         action_busy(json["busy"]);
+    if(action.match("properties"))
+        action_properties(json["properties"]);
 }
 
 function action_postLoad(json) {
@@ -512,15 +610,28 @@ function action_menu(html) {
 function action_busy(bool) {
     enableBusyFeatures(!bool);
 }
+function action_properties(json) {
+    properties = json;
 
-var version = 1120; // 1.12 and under
+    properties.forEach(property => {
+        property.name = decodeBase64(property.name);
+        property.value = decodeBase64(property.value);
+    });
+
+    if(propertiesPopup) {
+        propertiesPopup.remove();
+        propertiesPopup = null;
+    }
+}
+
+var version = 1140; // 1.14 and under
 var userPPVs = []; 
 var userVariables = [];
 var userFunctions = [];
 var userMacros = [];
 
 // Provides completions in the editor.
-const MCCompiledCompletionProvider = {
+const mccCompletionProvider = {
     provideCompletionItems: (currentModel, position) => {
         const matches = [
             ...mcc_preprocessor.map(key => {
@@ -706,7 +817,7 @@ require(['vs/editor/editor.main'], function () {
     monaco.languages.setMonarchTokensProvider('mccompiled', mccompiled);
 
     // Provider for autocompletion.
-    monaco.languages.registerCompletionItemProvider('mccompiled', MCCompiledCompletionProvider);
+    monaco.languages.registerCompletionItemProvider('mccompiled', mccCompletionProvider);
 
     editor = monaco.editor.create(editorContainer, {
         value: exampleFile,

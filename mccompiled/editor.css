@@ -136,6 +136,32 @@ p.navitem[enabled="true"] {
     }
 p.navitem[enabled="false"] {
     color: #676767;
+    cursor: default;
+}
+
+#propertiesButton {
+    margin-right: 0;
+    padding-right: 0;
+    margin-left: 16px;
+}
+img.navitem {
+    transition: filter ease-out 0.1s;
+    width: 16px;
+    height: 16px;
+    margin: 0 7px 0 7px;
+    padding: 12px;
+    user-select: none;
+    cursor: pointer;
+}
+img.navitem[enabled="true"] {
+    filter: invert(75%) sepia(4%) saturate(10%) hue-rotate(31deg) brightness(97%) contrast(80%);
+}
+    img.navitem[enabled="true"]:hover {
+            filter: invert(100%) sepia(0%) saturate(7492%) hue-rotate(308deg) brightness(102%) contrast(103%);
+        }
+img.navitem[enabled="false"] {
+    filter: invert(42%) sepia(0%) saturate(1153%) hue-rotate(147deg) brightness(94%) contrast(92%);
+    cursor: default;
 }
 
 input.navitem {
@@ -164,19 +190,19 @@ label.navitem {
 
 @keyframes notificationHover {
     0% {
-        margin-right: -24px;
+        margin-right: -12px;
         opacity: 0;
     }
-    10% {
+    7% {
         margin-right: 0px;
         opacity: 1;
     }
-    90% {
+    93% {
         margin-right: 0px;
         opacity: 1;
     }
     100% {
-        margin-right: -24px;
+        margin-right: -12px;
         opacity: 0;
     }
 }
@@ -205,8 +231,7 @@ div.navbar {
     left: 0;
     width: 100%;
     height: 72px;
-
-    padding: 0 0 0 16px;
+    padding: 0 16px 0 16px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -223,4 +248,59 @@ div.editor {
     bottom: 0;
     margin: 0;
     padding: 0;
+}
+
+@keyframes propertiesIn {
+    0% {
+        margin-top: -12px;
+        opacity: 0;
+    }
+    100% {
+        margin-top: 0px;
+        opacity: 1;
+    }
+}
+@keyframes propertiesOut {
+    0% {
+        margin-top: 0px;
+        opacity: 1;
+    }
+    100% {
+        margin-top: 12px;
+        opacity: 0;
+    }
+}
+div.propertiesPanel {
+    animation: propertiesIn 0.1s ease-out;
+    animation-fill-mode: forwards;
+
+    position: absolute;
+    display: block;
+    width: 400px;
+    padding: 12px;
+    background-color: #241d24;;
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 10px;
+}
+div.propertiesPanel > div > label {
+    display: block;
+    background-color: #241d24;
+    color: #4e4a4e;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 3px 5px 0 5px;
+    padding: 3px 5px 0 5px;
+}
+div.propertiesPanel > div > input {
+    display: block;
+    background-color: #241d24;
+    color: #b0b0b0;
+    border: none;
+    outline: none;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0 5px 3px 5px;
+    padding: 0 5px 3px 5px;
+    width: 90%;
 }
