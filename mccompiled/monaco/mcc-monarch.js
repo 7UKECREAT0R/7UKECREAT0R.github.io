@@ -1,10 +1,10 @@
 const mccompiled = {
 	operators: [ `<`, `>`, `{`, `}`, `=`, `(`, `)`, `+`, `-`, `*`, `/`, `%`, `!` ],
 	selectors: [ `@e`, `@a`, `@s`, `@p`, `@i`, `@initiator` ],
-	preprocessor: [ `$var`, `$inc`, `$dec`, `$add`, `$sub`, `$mul`, `$div`, `$mod`, `$pow`, `$swap`, `$if`, `$else`, `$repeat`, `$log`, `$macro`, `$include`, `$strfriendly`, `$strupper`, `$strlower`, `$sum`, `$median`, `$mean`, `$sort`, `$reverse`, `$iterate`, `$len`, `$json` ],
-	commands: [ `mc`, `command`, `cmd`, `globalprint`, `print`, `define`, `init`, `initialize`, `if`, `else`, `give`, `tp`, `teleport`, `move`, `face`, `lookat`, `rotate`, `setblock`, `fill`, `scatter`, `replace`, `kill`, `remove`, `clear`, `globaltitle`, `title`, `globalactionbar`, `actionbar`, `say`, `halt`, `damage`, `effect`, `playsound`, `particle`, `dummy`, `tag`, `explode`, `feature`, `function`, `fn`, `return`, `for`, `execute` ],
+	preprocessor: [ `$var`, `$inc`, `$dec`, `$add`, `$sub`, `$mul`, `$div`, `$mod`, `$pow`, `$swap`, `$if`, `$else`, `$repeat`, `$log`, `$macro`, `$include`, `$strfriendly`, `$strupper`, `$strlower`, `$sum`, `$median`, `$mean`, `$sort`, `$reverse`, `$iterate`, `$len`, `$json`, `$call` ],
+	commands: [ `mc`, `command`, `cmd`, `globalprint`, `print`, `lang`, `define`, `init`, `initialize`, `if`, `else`, `give`, `tp`, `teleport`, `move`, `face`, `lookat`, `rotate`, `setblock`, `fill`, `scatter`, `replace`, `kill`, `remove`, `clear`, `globaltitle`, `title`, `globalactionbar`, `actionbar`, `say`, `halt`, `damage`, `effect`, `playsound`, `particle`, `dummy`, `tag`, `explode`, `feature`, `function`, `fn`, `return`, `for`, `execute` ],
 	literals: [ `true`, `false`, `not`, `and`, `null`, `~`, `^` ],
-	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `folder`, `bind` ],
+	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `extern`, `bind` ],
 	comparisons: [ `count`, `any`, `block`, `blocks`, `positioned` ],
 	options: [ `dummies`, `gametest`, `exploders`, `uninstall`, `up`, `down`, `left`, `right`, `forward`, `backward`, `ascending`, `descending`, `survival`, `creative`, `adventure`, `spectator`, `times`, `subtitle`, `destroy`, `replace`, `hollow`, `outline`, `keep`, `lockinventory`, `lockslot`, `canplaceon:`, `candestroy:`, `enchant:`, `name:`, `lore:`, `author:`, `title:`, `page:`, `dye:`, `align`, `anchored`, `as`, `at`, `facing`, `facing entity`, `in`, `positioned`, `positioned as`, `rotated`, `rotated as` ],
     tokenizer: {
@@ -45,55 +45,55 @@ const mccompiled = {
 const mcc_operators = [
 	{
 		word: `<`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `>`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `{`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `}`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `=`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `(`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `)`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `+`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `-`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `*`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `/`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `%`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 	{
 		word: `!`,
-		docs: 'No documentation available for v1.13.'
+		docs: 'No documentation available for v1.14.'
 	},
 ]
 const mcc_selectors = [
@@ -231,6 +231,10 @@ const mcc_preprocessor = [
 		word: `$json`,
 		docs: `Load a JSON file (if not previously loaded) and retrieve a value from it, storing said value in a preprocessor variable.`
 	},
+	{
+		word: `$call`,
+		docs: `Calls a function by name and passes in the given parameters. Because this is a preprocessor operation, it has the same error handling as a normal function call.`
+	},
 ]
 const mcc_commands = [
 	{
@@ -252,6 +256,10 @@ const mcc_commands = [
 	{
 		word: `print`,
 		docs: `Prints a chat message to the executing player, or to the given one if specified. Supports format strings.`
+	},
+	{
+		word: `lang`,
+		docs: `Sets the active lang file (examples: en_US, pt_BR). Once set, all text will automatically be localized into that lang file; including FStrings.`
 	},
 	{
 		word: `define`,
@@ -279,11 +287,11 @@ const mcc_commands = [
 	},
 	{
 		word: `tp`,
-		docs: `Teleports the given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
+		docs: `Teleports the executing/given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
 		word: `teleport`,
-		docs: `Alias of 'tp'. Teleports the given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
+		docs: `Alias of 'tp'. Teleports the executing/given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
 	},
 	{
 		word: `move`,
@@ -375,7 +383,7 @@ const mcc_commands = [
 	},
 	{
 		word: `tag`,
-		docs: `Adds, removes, or singles out a tag on the given entities.`
+		docs: `Add and remove tags from the given entity.`
 	},
 	{
 		word: `explode`,
@@ -466,8 +474,8 @@ const mcc_types = [
 		docs: `Makes a value global, meaning it will only be accessed in the context of the global fakeplayer, '_'.`
 	},
 	{
-		word: `folder`,
-		docs: `When attached to a function, the file will be placed in the given folder path rather than the behavior_pack/functions root.`
+		word: `extern`,
+		docs: `Makes a function extern, meaning it was written outside of MCCompiled and can now be called as any other function.`
 	},
 	{
 		word: `bind`,
@@ -651,7 +659,7 @@ const mcc_options = [
 	},
 	{
 		word: `facing`,
-		docs: `Execute subcommand: Runs facing a certain position.`
+		docs: `Teleport & Execute subcommand: Runs facing a certain position.`
 	},
 	{
 		word: `facing entity`,
