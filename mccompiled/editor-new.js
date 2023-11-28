@@ -3,7 +3,7 @@
 const exampleFile = `print "Hello, user!"`
 
 const takeoverAnimationLength = 200;
-const lintDelay = 500;
+const lintDelay = 250;
 const wikiURL = "https://github.com/7UKECREAT0R/MCCompiled/wiki/Cheat-Sheet";
 const githubURL = "https://github.com/7UKECREAT0R/MCCompiled";
 const downloadURL = "https://github.com/7UKECREAT0R/MCCompiled/releases/latest";
@@ -624,7 +624,7 @@ function action_properties(json) {
     }
 }
 
-var version = 1140; // 1.14 and under
+var version = 1150; // 1.15 and under
 var userPPVs = []; 
 var userVariables = [];
 var userFunctions = [];
@@ -694,7 +694,6 @@ const mccCompletionProvider = {
                     }
                     insert += ")$0";
 
-                    console.log(insert);
                     return {
                         sortText: key.name,
                         label: key.name + "(" + args + ")",
@@ -712,6 +711,52 @@ const mccCompletionProvider = {
                     sortText: key.name,
                     label: insert,
                     detail: detail,
+                    documentation: decodeBase64(key.docs),
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: insert,
+                }
+            }),
+            ...userMacros.map(key => {
+                var insert;
+                // arguments present in the function
+                if(key.arguments && key.arguments.length > 0) {
+                    const args = key.arguments.join(" ");
+
+                    insert = "\\$macro " + key.name + " ";
+                    var snippetIndex = 0;
+                    const length = key.arguments.length;
+                    for (let index = 0; index < length; index++) {
+                        snippetIndex++;
+                        const arg = key.arguments[index];
+
+                        // ${index:name}
+                        insert += `\$\{${snippetIndex}:${arg}\}`;
+
+                        // add a separator if this is not the last element
+                        if(snippetIndex < length) {
+                            insert += " ";
+                        }
+
+                    }
+                    insert += "$0";
+
+                    return {
+                        sortText: key.name,
+                        label: key.name,
+                        detail: "Preprocessor Macro",
+                        documentation: decodeBase64(key.docs),
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        insertText: insert,
+                        insertTextRules: 4 // InsertAsSnippet
+                    }
+                }
+
+                // no arguments in the function
+                insert = "\\$macro " + key.name;
+                return {
+                    sortText: key.name,
+                    label: key.name + " " + args,
+                    detail: "Preprocessor Macro",
                     documentation: decodeBase64(key.docs),
                     kind: monaco.languages.CompletionItemKind.Function,
                     insertText: insert,
