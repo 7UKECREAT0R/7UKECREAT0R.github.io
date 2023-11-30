@@ -2,15 +2,15 @@
   "id": "pregowars",
   "name": "Prego Wars",
   "color": [ 208, 85, 43 ],
-  "description": "fast paced ridiculous first person shooter deathmatch; 2023",
+  "description": "fast paced ridiculous first person shooter deathmatch; 2024",
   "description-color": [ 220, 220, 220 ],
   "tags": [ "csharp", "game" ],
 
   "html": {
     "sections": {
-      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 3 months, bringing tons of new skills to the table and forcing me to seriously plan my work out.",
-      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Fez. They are all actual real life models I put together with PIFuHD and given the most ridiculous abilities and weapons we could think of. More news to come.",
-      "STEAM": "The game will be on steam for $5-$10 USD early 2023. It will start with a server located in US-East and we'll expand out if the project is successful."
+      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 2 years (on-and-off), bringing tons of new skills to the table and forcing me to seriously plan my work out.",
+      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Preston. They are all actual real life models I put together with PIFuHD and given the most ridiculous abilities and weapons we could think of. More news to come.",
+      "STEAM": "The game will be on Steam for $5-$10 USD <s>some time early 2023</s> some time in 2024. It will run on full peer-to-peer with friends and will include 32 achievements, tons of match mutators, gamemodes, and more."
     },
     "links": {}
   }

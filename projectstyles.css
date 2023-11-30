@@ -6,7 +6,7 @@ html, body {
 }
 
 div, hr {
-    animation: fade_in 1s ease-out;
+    animation: fade_in 0.1s ease-out;
     animation-fill-mode: forwards;
     animation-iteration-count: 1;
 }

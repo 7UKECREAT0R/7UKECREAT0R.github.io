@@ -7,7 +7,7 @@
 
   "html": {
     "sections": {
-      "MINECRAFT??": "Yeah, I took a commission to program a Minecraft client. It honestly wasn't even that bad of an experience, but diving headfirst into designing a complete client in three months was something I really had to psyche myself up to do. We ended up spending about a month past deadline testing and adding in features, but I'm really happy with the result.",
+      "..MINECRAFT?": "Yeah, I took a commission to program a Minecraft client. It honestly wasn't even that bad of an experience, but diving headfirst into designing a complete client in three months was something I really had to psyche myself up to do. We ended up spending about a month past deadline testing and adding in features, but I'm really happy with the result.",
       "THE CLIENT": "The client part was the big-bertha of the project. It included a complete mods system with dynamic settings menus and code. I wrote up a simple UI library in pure java-opengl and got special components working like color pickers. It was really fun to work on in all honesty, and I even got the chance to reimplement a couple of forge mods and fix 10k errors due to porting problems.",
       "THE LAUNCHER": "I made a launcher too. It would load up the .jar file, authenticate with mojang's servers, and launch the client all without having to touch any vanilla content. We also worked up a news engine which could deliver a basic dynamic page from a json file."
     },
