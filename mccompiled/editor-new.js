@@ -752,10 +752,10 @@ const mccCompletionProvider = {
                 }
 
                 // no arguments in the function
-                insert = "\\$macro " + key.name;
+                insert = "$macro " + key.name;
                 return {
                     sortText: key.name,
-                    label: key.name + " " + args,
+                    label: key.name,
                     detail: "Preprocessor Macro",
                     documentation: decodeBase64(key.docs),
                     kind: monaco.languages.CompletionItemKind.Function,
