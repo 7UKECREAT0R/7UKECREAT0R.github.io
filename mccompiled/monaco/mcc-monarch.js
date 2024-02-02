@@ -1,7 +1,7 @@
 const mccompiled = {
 	operators: [ `<`, `>`, `{`, `}`, `=`, `(`, `)`, `+`, `-`, `*`, `/`, `%`, `!` ],
 	selectors: [ `@e`, `@a`, `@s`, `@p`, `@i`, `@initiator` ],
-	preprocessor: [ `$add`, `$assert`, `$call`, `$dec`, `$div`, `$else`, `$if`, `$inc`, `$include`, `$iterate`, `$json`, `$len`, `$log`, `$macro`, `$mean`, `$median`, `$mod`, `$mul`, `$pow`, `$repeat`, `$reverse`, `$sort`, `$strfriendly`, `$strlower`, `$strupper`, `$sub`, `$sum`, `$swap`, `$unique`, `$var` ],
+	preprocessor: [ `$add`, `$append`, `$assert`, `$call`, `$dec`, `$div`, `$else`, `$if`, `$inc`, `$include`, `$iterate`, `$json`, `$len`, `$log`, `$macro`, `$mean`, `$median`, `$mod`, `$mul`, `$pow`, `$prepend`, `$repeat`, `$reverse`, `$sort`, `$strfriendly`, `$strlower`, `$strupper`, `$sub`, `$sum`, `$swap`, `$unique`, `$var` ],
 	commands: [ `actionbar`, `assert`, `clear`, `damage`, `define`, `dummy`, `effect`, `else`, `execute`, `explode`, `face`, `lookat`, `feature`, `fill`, `for`, `function`, `fn`, `give`, `globalactionbar`, `globalprint`, `globaltitle`, `halt`, `if`, `init`, `initialize`, `kill`, `lang`, `mc`, `command`, `cmd`, `move`, `particle`, `playsound`, `print`, `remove`, `replace`, `return`, `rotate`, `say`, `scatter`, `setblock`, `tag`, `test`, `throw`, `title`, `tp`, `teleport` ],
 	literals: [ `true`, `false`, `not`, `and`, `null`, `~`, `^` ],
 	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `extern`, `export`, `bind`, `auto` ],
@@ -128,6 +128,10 @@ const mcc_preprocessor = [
 		docs: `Adds two preprocessor variables/values together, changing only the first one. A += B`
 	},
 	{
+		word: `$append`,
+		docs: `Adds the given item(s) to the end of the given preprocessor variable, or contents of another preprocessor variable if specified.`
+	},
+	{
 		word: `$assert`,
 		docs: `Asserts that the input comparison is true, and throws a compiler error if not.`
 	},
@@ -198,6 +202,10 @@ const mcc_preprocessor = [
 	{
 		word: `$pow`,
 		docs: `Exponentiates two preprocessor variables/values with each other, changing only the first one. A = A^B`
+	},
+	{
+		word: `$prepend`,
+		docs: `Adds the given item(s) to the start of the given preprocessor variable.`
 	},
 	{
 		word: `$repeat`,
