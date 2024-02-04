@@ -1,0 +1,134 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-colors-preset="contrast" data-primary-color="#DE3358"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-02-04T17:42:29.2212438"><title>Values | MCCompiled Wiki</title><script type="application/json" id="virtual-toc-data">[{"id":"defining-values","level":0,"title":"Defining Values","anchor":"#defining-values"},{"id":"assigning-values","level":0,"title":"Assigning Values","anchor":"#assigning-values"},{"id":"simple-math","level":0,"title":"Simple Math","anchor":"#simple-math"},{"id":"complex","level":0,"title":"Complex Statements","anchor":"#complex"},{"id":"clarification","level":0,"title":"Clarification","anchor":"#clarification"},{"id":"miscellaneous-operations","level":0,"title":"Miscellaneous Operations","anchor":"#miscellaneous-operations"},{"id":"attributes","level":0,"title":"Attributes","anchor":"#attributes"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.css" rel="stylesheet"><link rel="icon" type="image/x-icon" sizes="16x16" href="images/favicon.ico"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Values | MCCompiled Wiki"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="MCCompiled Wiki Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="values.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Values | MCCompiled Wiki"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "values.html#webpage",
+    "url": "values.html",
+    "name": "Values | MCCompiled Wiki",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "/#website",
+    "url": "/",
+    "name": "MCCompiled Wiki Help"
+}</script><!-- End Schema.org --></head><body data-id="Values" data-main-title="Values" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Language.md|Language///Runtime.md|Runtime"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MCCompiled Wiki  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Values" id="Values.md">Values</h1><p id="72fbf06a_36038">Values are the backbone of all runtime logic. Values are just scoreboard objectives under the hood, but their representation in MCCompiled is much different. There are a couple of key differences about values:</p><ol class="list _decimal" id="72fbf06a_36039" type="1"><li class="list__item" id="72fbf06a_36040"><p>Values act identical to variables in other programming languages. </p><ul class="list _ul" id="72fbf06a_36041"><li class="list__item" id="72fbf06a_36042"><p>Regular math operations: <code class="code" id="72fbf06a_36043">a + b</code></p></li><li class="list__item" id="72fbf06a_36044"><p>Compound assignment: <code class="code" id="72fbf06a_36045">a += b</code></p></li><li class="list__item" id="72fbf06a_36046"><p>Declaration: <code class="code" id="72fbf06a_36047">define int a</code></p></li></ul></li><li class="list__item" id="72fbf06a_36048"><p>Values can have <a href="types.html" id="72fbf06a_36049" data-tooltip="Values can have their own types, a way of changing how they interact, add, display to users, convert, etc... You can think of types as presets that change everything about the value in a way that is unified and makes sense.">types</a>.</p></li><li class="list__item" id="72fbf06a_36050"><p>Values have no length restrictions on names.</p></li><li class="list__item" id="72fbf06a_36051"><p>Values are formatted when displayed to a player.</p></li></ol><section class="chapter"><h2 id="defining-values" data-toc="defining-values">Defining Values</h2><p id="72fbf06a_36052">Defining a value is done using the syntax <code class="code" id="72fbf06a_36053">define [type] [name]</code>. The most common type is <code class="code" id="72fbf06a_36054">int</code>, short for integer. An integer can be any whole number between -2147483648 and 2147483647. It's versatile, and is the closest to a Minecraft scoreboard objective.</p><div class="code-block" data-lang="ts">
+define int score
+</div></section><section class="chapter"><h2 id="assigning-values" data-toc="assigning-values">Assigning Values</h2><p id="72fbf06a_36056">To assign something to a value, use the assignment <code class="code" id="72fbf06a_36057">=</code> symbol. By default, the assignment always happens to the executing entity, <code class="code" id="72fbf06a_36058">@s</code>. If you want to change which entity gets the value assigned, see <a href="#clarification" id="72fbf06a_36059" data-tooltip="By default, values point to @s, or the executing entity. This default works for a majority of cases; however, when you need to change who the value points to, clarifiers are the answer.">clarification</a>.</p><div class="code-block" data-lang="ts">
+score = 0
+</div><p id="72fbf06a_36061">Values can be assigned to other values as well; notice that the difference between <code class="code" id="72fbf06a_36062">scoreboard operation</code> and <code class="code" id="72fbf06a_36063">scoreboard set</code> is abstracted away entirely.</p><div class="code-block" data-lang="ts">
+define bonus
+
+bonus = 10
+score = bonus
+</div><section class="chapter"><h3 id="type-omission" data-toc="type-omission">Merging Define and Assignment (and type omission)</h3><p id="72fbf06a_36065">If you wish to combine an assignment and a definition into one line, you can do that! Specify the assignment just after the define command is completed. When merging definition/assignment, you can omit the type if you want, as it will be inferred from the value you're assigning.</p><p id="72fbf06a_36066">The following two examples have identical behavior. Note that in the second example, the type <code class="code" id="72fbf06a_36067">int</code> is omitted because the compiler can tell what type 'number' should be based on the input <code class="code" id="72fbf06a_36068">21</code>.</p><div class="code-block" data-lang="ts">
+define int example
+example = 21
+</div><div class="code-block" data-lang="ts">
+define example = 21
+</div></section><section class="chapter"><h3 id="initializing-values" data-toc="initializing-values">Initializing Values</h3><p id="72fbf06a_36071">If you're familiar with scoreboard objectives in Minecraft, you may know that score-holders may not have any score at all. Not 0, but nothing at all. You can use the <code class="code" id="72fbf06a_36072">init</code> command to <span class="emphasis" id="72fbf06a_36073">initialize</span> a value so that if a score-holder doesn't hold it, the value will be set to the default (usually 0).</p><div class="code-block" data-lang="ts">
+init example
+</div><aside class="prompt" data-type="tip" data-title="" id="72fbf06a_36075"><p id="72fbf06a_36076">You can use <a href="#clarification" id="72fbf06a_36077" data-tooltip="By default, values point to @s, or the executing entity. This default works for a majority of cases; however, when you need to change who the value points to, clarifiers are the answer.">clarifiers</a> to choose <span class="emphasis" id="72fbf06a_36078">who</span> the value will be initialized for.</p></aside></section></section><section class="chapter"><h2 id="simple-math" data-toc="simple-math">Simple Math</h2><p id="72fbf06a_36079">All the math operations in MCCompiled are listed here:</p><dl id="72fbf06a_36080" data-style="title-top"><dt id="72fbf06a_36081" data-expandable="false">No Compound Assignment</dt><dd><div class="tabs" id="72fbf06a_36082"><div class="tabs__content" data-gtm="tab" id="72fbf06a_36083" data-title="Addition"><p>Adds the left and right values. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               define result
+               ‎
+               result = a + b
+               assert result == 14
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36086" data-title="Subtraction"><p>Subtracts the right value from the left value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               define result
+               ‎
+               result = a - b
+               assert result == 6
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36089" data-title="Multiplication"><p>Multiplies the left and right values. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               define result
+               ‎
+               result = a * b
+               assert result == 40
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36092" data-title="Division"><p>Divides the left value by the right value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               define result
+               ‎
+               result = a / b
+               assert result == 2
+            </div><aside class="prompt" data-type="tip" data-title="" id="72fbf06a_36095"><p>If you're dividing integers, the result is rounded to the highest integer that is less or equal to the result. (flooring)</p></aside></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36096" data-title="Modulus"><p>Divides the left value by the right value, but returns the remainder. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               define result
+               ‎
+               result = a % b
+               assert result == 2
+            </div></div></div></dd></dl><section class="chapter"><h3 id="compound-assignment" data-toc="compound-assignment">Compound Assignment</h3><p id="72fbf06a_36099">When you need the left value to store the result of the operation, you can use what is called <span class="emphasis" id="72fbf06a_36100">compound assignment</span>. Compound assignment is specified by using an equals-sign <code class="code" id="72fbf06a_36101">=</code> after the operator you wish to use.</p><aside class="prompt" data-type="note" data-title="" id="72fbf06a_36102"><p id="72fbf06a_36103">In the simplest way possible, <code class="code" id="72fbf06a_36104">A ?= B</code> is equivalent to <code class="code" id="72fbf06a_36105">A = A ? B</code>, where <code class="code" id="72fbf06a_36106">?</code> is your desired operator. Compound assignment is just useful shorthand to modify the left-hand variable, just like a regular assignment would.</p></aside><dl id="72fbf06a_36107" data-style="title-top"><dt id="72fbf06a_36108" data-expandable="false">With Compound Assignment</dt><dd><div class="tabs" id="72fbf06a_36109"><div class="tabs__content" data-gtm="tab" id="72fbf06a_36110" data-title="Addition"><p>Adds the right value to the left value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               ‎
+               a += b
+               assert a == 14
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36113" data-title="Subtraction"><p>Subtracts the right value from the left value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               ‎
+               a -= b
+               assert a == 6
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36116" data-title="Multiplication"><p>Multiplies the left value with the right value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               ‎
+               a *= b
+               assert a == 40
+            </div></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36119" data-title="Division"><p>Divides the left value by the right value. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               ‎
+               a /= b
+               assert a == 2
+            </div><aside class="prompt" data-type="tip" data-title="" id="72fbf06a_36122"><p>If you're dividing integers, the result is rounded to the highest integer that is less or equal to the result. (flooring)</p></aside></div><div class="tabs__content" data-gtm="tab" id="72fbf06a_36123" data-title="Modulus"><p>Divides the left value by the right value, but sets the left value to the remainder. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = 10
+               define b = 4
+               ‎
+               a %= b
+               assert a == 2
+            </div></div></div></dd></dl></section></section><section class="chapter"><h2 id="complex" data-toc="complex">Complex Statements</h2><p id="72fbf06a_36126">MCCompiled fully supports the use of operations inline, as well as PEMDAS ordering. Using inline operations keeps code size way down, and communicates its purpose much more clearly than separating operations per-line.</p><p id="72fbf06a_36127">The order that MCCompiled evaluates complex statements mostly conforms to PEMDAS along with some extra steps added for the other features in the language:</p><ol class="list _decimal" id="72fbf06a_36128" type="1"><li class="list__item" id="72fbf06a_36129"><p>Evaluate everything inside parentheses recursively. <code class="code" id="72fbf06a_36130">()</code> <code class="code" id="72fbf06a_36131">[]</code></p></li><li class="list__item" id="72fbf06a_36132"><p>Run any <a href="preprocessor.html#dereferencing" id="72fbf06a_36133" data-tooltip="Generally, anything marked with a dollar sign $ is part of preprocessor code. It is going to affect the compiled result in some way, but it does not directly contribute to its contents. The simplest example of how the preprocessor could be used is the following example:">dereferences</a>. <code class="code" id="72fbf06a_36134">$</code></p></li><li class="list__item" id="72fbf06a_36135"><p>Run <a href="functions.html#calling-functions" id="72fbf06a_36136" data-tooltip="Now that you have functions, you need to be able to use them. Running a function is also known as &quot;calling&quot; it. The syntax of calling a function is functionName(parameters).">function calls</a>. <code class="code" id="72fbf06a_36137">name(...)</code></p></li><li class="list__item" id="72fbf06a_36138"><p>Apply any <a href="indexing.html" id="72fbf06a_36139" data-tooltip="Indexers are sets of tokens placed inside square brackets []. Its purpose is to pull an element from an array, or to change who (or what) a value points to, called &quot;clarifying.&quot;">indexers</a>. <code class="code" id="72fbf06a_36140">[...]</code></p></li><li class="list__item" id="72fbf06a_36141"><p>Evaluate multiplication/<span class="tooltip" id="72fbf06a_36142" title="&quot;division&quot; includes the modulo % operator">division</span> operations. <code class="code" id="72fbf06a_36143">a * b</code></p></li><li class="list__item" id="72fbf06a_36144"><p>Evaluate addition/subtraction operations. <code class="code" id="72fbf06a_36145">a - b</code></p></li></ol><p id="72fbf06a_36146">The following example shows the use of a complex statement to calculate the amount of score remaining until a player reaches the next level of a theoretical game:</p><div class="code-block" data-lang="ts">
+define int untilNextLevel
+define int betweenLevels = 1000
+
+untilNextLevel = ((score / betweenLevels + 1) * betweenLevels) - score
+</div></section><section class="chapter"><h2 id="clarification" data-toc="clarification">Clarification</h2><p id="72fbf06a_36148">By default, values point to <code class="code" id="72fbf06a_36149">@s</code>, or the executing entity. This default works for a majority of cases; however, when you need to change who the value points to, clarifiers are the answer.</p><p id="72fbf06a_36150">A clarifier is defined as a selector encased in square brackets (indexers). For example, a clarifier pointing to all cows would look like <code class="code" id="72fbf06a_36151">[@e[type=cow]]</code>, and one pointing to the nearest non-self player would look like <code class="code" id="72fbf06a_36152">[@p[rm=0.1]]</code>.</p><p id="72fbf06a_36153">The following example shows adding one to <code class="code" id="72fbf06a_36154">losses</code> for all players with the tag 'touched'</p><div class="code-block" data-lang="ts">
+losses[@a[tag=touched]] += 1
+</div><section class="chapter"><div class="collapse"><div class="collapse__title"><h3 id="other-ways-of-doing-the-above-example" data-toc="other-ways-of-doing-the-above-example">Other ways of doing the above example</h3></div><div class="collapse__content"><aside class="prompt" data-type="tip" data-title="" id="72fbf06a_36156"><p>There are some other ways to do this example, too, which look cleaner but may not be as efficient. </p><div class="code-block" data-lang="ts">
+for @a {
+   if @s[tag=touched]
+      losses += 1
+}
+   </div><div class="code-block" data-lang="ts">
+execute as @a if @s[tag=touched] {
+   losses += 1
+}
+   </div></aside></div></div></section></section><section class="chapter"><h2 id="miscellaneous-operations" data-toc="miscellaneous-operations">Miscellaneous Operations</h2><p id="72fbf06a_36159">Some operations don't follow the rules of the five main math operations, those of which are listed here. None of the operations listed here are mentioned as assignment or not, they just exist as-is.</p><dl id="72fbf06a_36160" data-style="title-top"><dt id="72fbf06a_36161" data-expandable="false">Miscellaneous Operations</dt><dd><div class="tabs" id="72fbf06a_36162"><div class="tabs__content" data-gtm="tab" id="72fbf06a_36163" data-title="Swap"><p>Swaps the left and right values. </p><br><div class="code-block" data-lang="ts" data-title="Typescript">
+               define a = true
+               define b = false
+               ‎
+               a &gt;&lt; b
+               assert a == false
+               assert b == true
+            </div></div></div></dd></dl></section><section class="chapter"><h2 id="attributes" data-toc="attributes">Attributes</h2><p id="72fbf06a_36166">Attributes can change the way values behave. Any number of attributes can be applied pretty much anywhere in the definition; before <span class="emphasis" id="72fbf06a_36167">or</span> after the type. See <a href="attributes.html" id="72fbf06a_36168" data-tooltip="Attributes are modifiers that change the way values or functions work. They can be specified in most places in definition commands (define or function).">attributes</a> for all attributes across the language.</p><dl id="72fbf06a_36169" data-style="title-top"><dt id="72fbf06a_36170" data-expandable="false">global</dt><dd><p>Makes the attached value global, meaning that the value's scoreboard objectives are <span class="emphasis" id="72fbf06a_36171">always</span> tied to the global fakeplayer <code class="code" id="72fbf06a_36172">_</code>. </p><br><p> Any attempts to use <a href="#clarification" id="72fbf06a_36174" data-tooltip="By default, values point to @s, or the executing entity. This default works for a majority of cases; however, when you need to change who the value points to, clarifiers are the answer.">clarifiers</a> on the value will result in a compile-time error. The value is guaranteed to never be attached to an entity. </p><section class="chapter"><h3 id="global_examples" data-toc="global_examples">Examples &amp; Use-case</h3><p>Making values global is useful for anything that applies to the world, and not a specific player/entity. If you were designing a mini-game, for example, you would want the game-related code to be global, along with the compile-time guarantees that it will remain global. </p><div class="code-block" data-lang="ts">
+            define global int playersPassed
+            define global time timeRemaining
+            ‎
+            function display {
+                globalprint &quot;PASSED: {playersPassed} | TIME LEFT: {timeRemaining}&quot;
+            }
+        </div></section></dd><dt id="72fbf06a_36176" data-expandable="false">bind</dt><dd><p>Binds the value to a given MoLang query. Requires one parameter, being a string that contains the query to use. <a href="https://github.com/7UKECREAT0R/MCCompiledSource/blob/master/mc-compiled/bindings.json" id="72fbf06a_36177" data-external="true" rel="noopener noreferrer">The current list of supported bindings is here.</a></p><br><p> Most bindings come with pre-defined entities they attach to, but in cases where they don't, the entities can be manually specified by adding more string parameters to the end of the function, i.e., <code class="code" id="72fbf06a_36179">bind(&quot;query.is_sleeping&quot;, &quot;fox&quot;)</code> to bind specifically to foxes. </p><section class="chapter"><h3 id="bind_examples" data-toc="bind_examples">Examples &amp; Use-case</h3><p>Binding replaces all cases where animation controllers were needed to access extra information about entities. </p><div class="code-block" data-lang="ts">
+            define bool bind(&quot;query.is_sleeping&quot;) isSleeping
+            ‎
+            if not isSleeping {
+                summon lightning_bolt
+                print @a &quot;{@s} IS RUINING THE SMP!!!&quot;
+            }
+        </div></section></dd></dl></section><div class="last-modified">Last modified: 04 February 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="text-commands.html" class="navigation-links__prev">Text Commands</a><a href="types.html" class="navigation-links__next">Types</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.js"></script></body></html>

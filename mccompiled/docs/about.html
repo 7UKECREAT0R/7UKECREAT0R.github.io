@@ -1,0 +1,29 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-colors-preset="contrast" data-primary-color="#DE3358"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-02-04T17:42:29.2067202"><title>About | MCCompiled Wiki</title><script type="application/json" id="virtual-toc-data">[{"id":"why","level":0,"title":"Why?","anchor":"#why"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.css" rel="stylesheet"><link rel="icon" type="image/x-icon" sizes="16x16" href="images/favicon.ico"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="About | MCCompiled Wiki"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="MCCompiled Wiki Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="about.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="About | MCCompiled Wiki"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "about.html#webpage",
+    "url": "about.html",
+    "name": "About | MCCompiled Wiki",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "/#website",
+    "url": "/",
+    "name": "MCCompiled Wiki Help"
+}</script><!-- End Schema.org --></head><body data-id="About" data-main-title="About" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MCCompiled Wiki  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="About" id="About.md">About</h1><p id="1c3794d2_30">MCCompiled 1.16 is an open source programming language designed for anyone and everyone who writes Minecraft commands. It compiles code down to a behavior pack based on a context-aware compiler. MCCompiled code is intentionally built to mirror Minecraft commands but with many extended features.</p><section class="chapter"><h2 id="why" data-toc="why">Why?</h2><p id="1c3794d2_32">Commands are hard. Not just because there are so many nuances to remember or that basically everything you make is a workaround of something else; There's just a lot of code to get a little bit done. <span class="emphasis" id="1c3794d2_33">Automation</span> is the natural next step, but the way to approach it isn't immediately obvious given the technical hurdles of writing Minecraft commands in the first place.</p><p id="1c3794d2_34">MCCompiled takes a C-style approach to code, trying to abstract away some parts of Minecraft's command system while leaving others which are more desirable. Primarily, things like Scoreboard Objectives (values), Rawtext, Translation Keys, Control Flow, and Functions are focused on. Everything else is left untouched to prevent from needing to learn more than necessary.</p><div class="code-block" data-lang="ts">
+define global int highScore
+define int score
+
+function reset {
+    // loop over all players, set high score if they hit it.
+    for @a {
+        if score &gt; highScore
+            highScore = score
+    }
+    // reset the score of all players
+    score[@a] = 0
+}
+</div></section><div class="last-modified">Last modified: 04 February 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="getting-started.html" class="navigation-links__next">Getting Started</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.js"></script></body></html>
