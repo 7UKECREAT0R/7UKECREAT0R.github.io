@@ -4,7 +4,7 @@ const exampleFile = `print "Hello, user!"`
 
 const takeoverAnimationLength = 200;
 const lintDelay = 250;
-const wikiURL = "https://github.com/7UKECREAT0R/MCCompiled/wiki/Cheat-Sheet";
+const wikiURL = "https://lukecreator.dev/mccompiled/docs/cheat-sheet.html";
 const githubURL = "https://github.com/7UKECREAT0R/MCCompiled";
 const downloadURL = "https://github.com/7UKECREAT0R/MCCompiled/releases/latest";
 const socketURL = "ws://localhost:11830"
