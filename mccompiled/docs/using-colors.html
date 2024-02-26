@@ -1,0 +1,74 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-colors-preset="contrast" data-primary-color="#DE3358"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-02-26T10:32:35.9249774"><title>Using Colors | MCCompiled Wiki</title><script type="application/json" id="virtual-toc-data">[{"id":"definitions-def","level":0,"title":"definitions.def","anchor":"#definitions-def"},{"id":"specifying-a-definition","level":0,"title":"Specifying a Definition","anchor":"#specifying-a-definition"},{"id":"escaping-definitions","level":0,"title":"Escaping Definitions","anchor":"#escaping-definitions"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.css" rel="stylesheet"><link rel="icon" type="image/x-icon" sizes="16x16" href="images/favicon.ico"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Using Colors | MCCompiled Wiki"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="MCCompiled Wiki Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.17/using-colors.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Using Colors | MCCompiled Wiki"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.17/using-colors.html#webpage",
+    "url": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.17/using-colors.html",
+    "name": "Using Colors | MCCompiled Wiki",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/#website",
+    "url": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/",
+    "name": "MCCompiled Wiki Help"
+}</script><!-- End Schema.org --></head><body data-id="Using-Colors" data-main-title="Using Colors" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Language.md|Language"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MCCompiled Wiki 1.17 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Using-Colors" id="Using-Colors.md">Using Colors</h1><p id="abac6f2f_2315">In writing any Minecraft commands that include text which will be shown to the player, you always have the option to use the section symbol <code class="code" id="abac6f2f_2316">&sect;</code> and a color code to decorate text with colors and formatting.</p><p id="abac6f2f_2317">This formatting is not very informative, but you can use a feature in MCCompiled called <code class="code" id="abac6f2f_2318">definitions</code> to improve the way colors are laid out in text.</p><aside class="prompt" data-type="warning" data-title="" id="abac6f2f_2319"><p id="abac6f2f_2320">Additionally, UTF-8 breaks when trying to use it in the web editor. This is planned on being fixed, but for the moment definitions are the only way to achieve colors in that configuration.</p></aside><section class="chapter"><h2 id="definitions-def" data-toc="definitions-def">definitions.def</h2><p id="abac6f2f_2321">In the MCCompiled installation directory, you can view the file called <a href="https://github.com/7UKECREAT0R/MCCompiledSource/blob/master/mc-compiled/definitions.def" id="abac6f2f_2322" data-external="true" rel="noopener noreferrer"><code class="code" id="abac6f2f_2323">definitions.def</code></a> to view all definitions shipped with the compiler. The file is composed of <code class="code" id="abac6f2f_2324">CATEGORY</code>s, each with a set of entries where <code class="code" id="abac6f2f_2325">&lt;key&gt; IS &lt;value&gt;</code>. The entries for the chat colors look like this:</p><div class="code-collapse" data-lang="ts" data-is-expanded="false" data-synopsis="CATEGORY COLOR AND CHATCOLOR AND CHAT COLOR">
+CATEGORY COLOR AND CHATCOLOR AND CHAT COLOR
+	BLACK IS §0
+	DARKBLUE IS §1
+	DARK BLUE IS §1
+	DARKGREEN IS §2
+	DARK GREEN IS §2
+	DARKAQUA IS §3
+	DARK AQUA IS §3
+    DARKCYAN IS §3
+    DARK CYAN IS §3
+	DARKRED IS §4
+	DARK RED IS §4
+	DARKPURPLE IS §5
+	DARK PURPLE IS §5
+	GOLD IS §6
+	GRAY IS §7
+	GREY IS §7
+	DARKGRAY IS §8
+	DARKGREY IS §8
+	DARK GRAY IS §8
+	DARK GREY IS §8
+	BLUE IS §9
+	GREEN IS §a
+	AQUA IS §b
+	CYAN IS §b
+	RED IS §c
+	LIGHT PURPLE IS §d
+	LIGHTPURPLE IS §d
+	PINK IS §d
+	YELLOW IS §e
+	WHITE IS §f
+	MINECOIN IS §g
+	MINECOINGOLD IS §g
+	MINECOIN GOLD IS §g
+	MINECOINYELLOW IS §g
+	MINECOIN YELLOW IS §g
+	OBF IS §k
+	OBFUSCATED IS §k
+	BOLD IS §l
+	STRIKE IS §m
+	STRIKETHROUGH IS §m
+	STRIKE THROUGH IS §m
+	UNDERLINE IS §n
+	UNDER LINE IS §n
+	ITALIC IS §o
+	ITALICS IS §o
+	RESET IS §r
+	NONE IS §r
+	0 IS §r
+</div><p id="abac6f2f_2327">Multiple category names are defined, and most possible variants of color names are covered. To get the entry for black, you could refer to it as <code class="code" id="abac6f2f_2328">color: black</code>, <code class="code" id="abac6f2f_2329">chatcolor: black</code>, <code class="code" id="abac6f2f_2330">chat color: black</code>, etc.</p></section><section class="chapter"><h2 id="specifying-a-definition" data-toc="specifying-a-definition">Specifying a Definition</h2><p id="abac6f2f_2331">Definitions are evaluated first, before every other process of the compiler. The text contained within a definition is evaluated the same way raw code would be if it were written. Definitions just provide a convenient and verbose way to specify code which has little meaning.</p><p id="abac6f2f_2332">To specify a definition in your code, wrap it in square brackets and provide the category name as well as the entry name.</p><div class="code-block" data-lang="ts">
+[category: entry]
+</div><aside class="prompt" data-type="tip" data-title="" id="abac6f2f_2334"><p id="abac6f2f_2335">Formatting is very lenient, as well as case-insensitive. You don't have to specify a space between the colon if you don't want to. The following formats all work the same:</p><ul class="list _ul" id="abac6f2f_2336"><li class="list__item" id="abac6f2f_2337"><p><code class="code" id="abac6f2f_2338">[Category: Entry]</code></p></li><li class="list__item" id="abac6f2f_2339"><p><code class="code" id="abac6f2f_2340">[CATEGORY:entry]</code></p></li><li class="list__item" id="abac6f2f_2341"><p><code class="code" id="abac6f2f_2342">[category:Entry]</code></p></li><li class="list__item" id="abac6f2f_2343"><p>etc.</p></li></ul></aside><section class="chapter"><h3 id="example-for-chat-coloring" data-toc="example-for-chat-coloring">Example for Chat Coloring</h3><p id="abac6f2f_2344">This is an example using the <code class="code" id="abac6f2f_2345">color</code> category to style text.</p><div class="code-block" data-lang="ts">
+// read by the compiler as &quot;§cYou don't have permission!&quot;
+print &quot;[color: red]You don't have permission!&quot;
+</div></section><section class="chapter"><h3 id="specifying-multiple-definitions" data-toc="specifying-multiple-definitions">Specifying Multiple Definitions</h3><p id="abac6f2f_2347">After specifying a category, you may specify multiple values under that category, separated by commas. The values will be concatenated together, without a space in between them.</p><div class="code-block" data-lang="ts">
+// read by the compiler as &quot;§l§aYou don't have permission!&quot;
+print &quot;[color: bold, green]Added {gold} gold!&quot;
+</div></section></section><section class="chapter"><h2 id="escaping-definitions" data-toc="escaping-definitions">Escaping Definitions</h2><p id="abac6f2f_2349">If you don't wish for a definition to be parsed, you can precede it with a backslash <code class="code" id="abac6f2f_2350">\</code> to cancel definition on that token. If two backslashes are specified, they'll cancel out, and you will end up with a single backslash before the definition is parsed as usual.</p><p id="abac6f2f_2351">The following table shows the results of different backslash counts to illustrate this idea:</p><div class="table-wrapper"><table class="wide" id="abac6f2f_2352"><thead><tr class="ijRowHead" id="abac6f2f_2353"><th id="abac6f2f_2354"><p>Backslash #</p></th><th id="abac6f2f_2355"><p>Input</p></th><th id="abac6f2f_2356"><p>Output</p></th></tr></thead><tbody><tr id="abac6f2f_2357"><td id="abac6f2f_2358"><p>0 (even)</p></td><td id="abac6f2f_2359"><p><code class="code" id="abac6f2f_2360">[color: red]</code></p></td><td id="abac6f2f_2361"><p><code class="code" id="abac6f2f_2362">&sect;c</code></p></td></tr><tr id="abac6f2f_2363"><td id="abac6f2f_2364"><p>1 (odd)</p></td><td id="abac6f2f_2365"><p><code class="code" id="abac6f2f_2366">\[color: red]</code></p></td><td id="abac6f2f_2367"><p><code class="code" id="abac6f2f_2368">[color: red]</code></p></td></tr><tr id="abac6f2f_2369"><td id="abac6f2f_2370"><p>2 (even)</p></td><td id="abac6f2f_2371"><p><code class="code" id="abac6f2f_2372">\\[color: red]</code></p></td><td id="abac6f2f_2373"><p><code class="code" id="abac6f2f_2374">\&sect;c</code></p></td></tr><tr id="abac6f2f_2375"><td id="abac6f2f_2376"><p>3 (odd)</p></td><td id="abac6f2f_2377"><p><code class="code" id="abac6f2f_2378">\\\[color: red]</code></p></td><td id="abac6f2f_2379"><p><code class="code" id="abac6f2f_2380">\[color: red]</code></p></td></tr><tr id="abac6f2f_2381"><td id="abac6f2f_2382"><p>4 (even)</p></td><td id="abac6f2f_2383"><p><code class="code" id="abac6f2f_2384">\\\\[color: red]</code></p></td><td id="abac6f2f_2385"><p><code class="code" id="abac6f2f_2386">\\&sect;c</code></p></td></tr></tbody></table></div></section><div class="last-modified">Last modified: 26 February 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="language.html" class="navigation-links__prev">Language</a><a href="syntax.html" class="navigation-links__next">Syntax</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.js"></script></body></html>

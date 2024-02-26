@@ -415,7 +415,7 @@ function sendSocketText(string) {
     if(!socket || socket.readyState > 1) 
         return;
 
-    socket.send(string);
+    socket.send(string, 'utf8');
 }
 // Sends a sub-protocol implemented ping to the server, if any.
 // Shows an error if no connection is present.
@@ -429,7 +429,7 @@ function sendSocketPing() {
         "action": "ping"
     });
 
-    socket.send(textData);
+    socket.send(textData, 'utf8');
 }
 // Attempts to enable/disable debugging on the connected server, if any.
 // Shows an error if no connection is present.
