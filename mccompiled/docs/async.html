@@ -1,0 +1,59 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#DE3358"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-04-23T21:29:49.8144422"><title>Async | MCCompiled Wiki</title><script type="application/json" id="virtual-toc-data">[{"id":"defining","level":0,"title":"Defining","anchor":"#defining"},{"id":"awaiting","level":0,"title":"Awaiting","anchor":"#awaiting"},{"id":"warning-as-of-1-18","level":0,"title":"Warning as of 1.18","anchor":"#warning-as-of-1-18"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b224/app.css" rel="stylesheet"><link rel="icon" type="image/x-icon" sizes="16x16" href="images/favicon.ico"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Async | MCCompiled Wiki"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="MCCompiled Wiki Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.18/async.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Async | MCCompiled Wiki"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.18/async.html#webpage",
+    "url": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/1.18/async.html",
+    "name": "Async | MCCompiled Wiki",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/#website",
+    "url": "https://lukecreator.dev/mccompiled/docs/mccompiled/docs/",
+    "name": "MCCompiled Wiki Help"
+}</script><!-- End Schema.org --></head><body data-id="Async" data-main-title="Async" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Language.md|Language///Runtime.md|Runtime///Functions.md|Functions"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MCCompiled Wiki 1.18 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Async" id="Async.md">Async</h1><p id="-s9lbib_6187">In a world of schedulers, state machines, and loads of nested functions, MCCompiled's async implementation is built to remove ALL boilerplate and focus entirely on logic and structure.</p><p id="-s9lbib_6188">Async functions generate state machines automatically, set up to either run locally on an entity, or globally without any executing context (directly from <code class="code" id="-s9lbib_6189">tick.json</code>).</p><section class="chapter"><h2 id="defining" data-toc="defining">Defining</h2><p id="-s9lbib_6190">To define an async function, the attribute <code class="code" id="-s9lbib_6191">async</code> can be used. The attribute accepts one parameter, being the word <code class="code" id="-s9lbib_6192">global</code> or <code class="code" id="-s9lbib_6193">local</code>, which defines if the async state machine should be run globally, or on the executing entity only.</p><div class="code-block" data-lang="ts">
+// does a countdown before starting the game.
+function async(global) countdown() {
+
+}
+
+// gives the executing player a diamond after one second.
+function async(local) giveDiamondLater() {
+
+}
+</div></section><section class="chapter"><h2 id="awaiting" data-toc="awaiting">Awaiting</h2><p id="-s9lbib_6195">The <code class="code" id="-s9lbib_6196">await</code> command is only usable inside async functions. It allows you to wait for a specific amount of time, wait for a condition to be met, or wait for another async function to finish executing.</p><section class="chapter"><h3 id="await_time" data-toc="await_time">Awaiting an amount of time</h3><p id="-s9lbib_6197">This is the most common use of async code. To await a certain amount of time, use the syntax <code class="code" id="-s9lbib_6198">await &lt;time&gt;</code>, with <code class="code" id="-s9lbib_6199">time</code> being the number of ticks to wait. You can use <a href="syntax.html#time-suffixes" id="-s9lbib_6200" data-tooltip="Numbers support suffixing to better represent time. A simple example of this is 4s, which when be represented as ticks, evaluates to 80. Time suffixes offer the advantage of being context-aware. If a command requires an input in seconds, the seconds suffix s will not apply any…">time suffixes</a> to make this number more concisely defined.</p><div class="code-block" data-lang="ts">
+function async(global) countdown() {
+    globalprint &quot;Three...&quot;
+    await 1s
+    globalprint &quot;Two...&quot;
+    await 1s
+    globalprint &quot;One...&quot;
+    await 1s
+    globaltitle &quot;GO!&quot;
+}
+</div></section><section class="chapter"><h3 id="await_condition" data-toc="await_condition">Awaiting a condition</h3><p id="-s9lbib_6202">To await a condition, use either syntax depending on what makes the most sense:</p><ul class="list _bullet" id="-s9lbib_6203"><li class="list__item" id="-s9lbib_6204"><p><code class="code" id="-s9lbib_6205">await until &lt;condition&gt;</code></p></li><li class="list__item" id="-s9lbib_6206"><p><code class="code" id="-s9lbib_6207">await while &lt;condition&gt;</code></p></li></ul><p id="-s9lbib_6208">These will wait until the given condition is true/false respectively to continue execution. You can wait <span class="emphasis" id="-s9lbib_6209">until</span> a condition is met, or wait <span class="emphasis" id="-s9lbib_6210">while</span> a condition is met.</p><p id="-s9lbib_6211">The conditions that can be used are the same as what's available with <a href="comparison.html" id="-s9lbib_6212" data-tooltip="Comparison is the most important part of writing any logic, and a majority of MCCompiled code will contain comparisons of some sort. Comparison is primarily done with two commands: if and else."><code class="code" id="-s9lbib_6213">if</code> statements</a>, <a href="loops.html#while" id="-s9lbib_6214" data-tooltip="The while command allows you to repeat code as long as a condition remains true. The conditions supported in the while command are exactly the same as with regular if-statements."><code class="code" id="-s9lbib_6215">while</code> loops</a>, etc.</p><div class="code-block" data-lang="ts">
+function async(local) forceGrabBow() {
+    if not @s[hasitem={item=bow}}] {
+        print &quot;Grab the bow.&quot;
+        await until @s[hasitem={item=bow}}]
+    }
+    
+    // ...
+}
+</div></section><section class="chapter"><h3 id="await_function" data-toc="await_function">Awaiting another function</h3><p id="-s9lbib_6217">To wait for another async function to complete its execution, call it and pass the result as a parameter to <code class="code" id="-s9lbib_6218">await</code>. Async functions return an <code class="code" id="-s9lbib_6219">awaitable</code>, and as such are not able to return any other type of value.</p><aside class="prompt" data-type="warning" data-title="" id="-s9lbib_6220"><p id="-s9lbib_6221">You cannot await an <code class="code" id="-s9lbib_6222">async(local)</code> function from an <code class="code" id="-s9lbib_6223">async(global)</code> function, as there's no way to single out which entity to wait on.</p></aside><div class="code-block" data-lang="ts">
+function async(global) countdown(int seconds) {
+    repeat seconds i {
+        print &quot;Round starts in {seconds + 1}...&quot;
+        await 1s
+    }
+}
+
+function async(global) startNextRound() {
+   await countdown(10)
+   print &quot;GO!&quot;
+   round += 1
+   running = true
+}
+</div></section></section><section class="chapter"><h2 id="warning-as-of-1-18" data-toc="warning-as-of-1-18">Warning as of 1.18</h2><aside class="prompt" data-type="warning" data-title="" id="-s9lbib_6225"><p id="-s9lbib_6226">As of MCCompiled 1.18, the use of <code class="code" id="-s9lbib_6227">await</code> is not supported inside <a href="loops.html" id="-s9lbib_6228" data-tooltip="When you need to do something multiple times in commands, the traditional option is to create a function and call it recursively. MCComplied offers three run-time commands that enable you to repeat code conditionally without having to touch function recursion, counters, etc.">runtime loops (repeat, while)</a>; you will just get a compiler error if this happens. Support is coming, but trying to port existing code over to work both with functions and scheduled stages is a monumentally complex task.</p><p id="-s9lbib_6229">No ETA on this right now, but it's in a similar priority to some other features like block states support, more commands, etc.</p></aside></section><div class="last-modified">Last modified: 24 April 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="functions.html" class="navigation-links__prev">Functions</a><a href="built-in-functions.html" class="navigation-links__next">Built-In Functions</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b224/app.js"></script></body></html>

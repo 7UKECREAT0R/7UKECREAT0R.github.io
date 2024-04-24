@@ -23,7 +23,7 @@ const takeover_startserver = `
     <button onclick="removeTakeover()">NO</button>
 </div>`;
 
-const takeover_wiki = `
+/*const takeover_wiki = `
 <h1>Open Wiki?</h1>
 <h2 style="max-width:400px">
     The wiki contains useful reference information for good code and use of features.
@@ -31,7 +31,7 @@ const takeover_wiki = `
 <div>
     <button onclick="openWiki()">YES</button>
     <button onclick="removeTakeover()">NO</button>
-</div>`;
+</div>`;*/
 
 const takeover_extras = `
 <h2>LINKS</h2>
@@ -49,6 +49,10 @@ const takeover_extras = `
 <div>
     <button onclick="sendSocketOpenFolder('current')">OPEN DIRECTORY</button>
     <button onclick="sendSocketOpenFolder('bp')">OPEN COM.MOJANG</button>
+</div>
+<h2>OTHER</h2>
+<div>
+    <button onclick="setToMinecraftFont()">MINECRAFT FONT</button>
 </div>
 <h2 style="margin:10px"></h2>
 <div>
@@ -195,16 +199,15 @@ const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
 const connectButton = document.getElementById('connectButton');
 const compileButton = document.getElementById('compileButton');
-const wikiButton = document.getElementById('wikiButton');
+//const wikiButton = document.getElementById('wikiButton');
 const propertiesButton = document.getElementById('propertiesButton');
 
 // Project Management
 function updateTitle() {
-    var title = projectName + " - MCCompiled";
-    document.title = title;
+    document.title = projectName + " - MCCompiled";
 }
 function setProjectNameByElement(element) {
-    if (element.value.length == 0) {
+    if (element.value.length === 0) {
         showNotification(`Project name cannot be empty.`, 'red');
         projectInputElement.value = projectName;
         return;
@@ -218,7 +221,7 @@ function setProjectNameByElement(element) {
     updateTitle();
 }
 function setProjectName(name) {
-    if (name.length == 0)
+    if (name.length === 0)
         name = "web_project";
 
     projectName = name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]+/g, "");
@@ -492,7 +495,7 @@ function sendSocketPropertyChange(property) {
     socket.send(textData);
 }
 
-function onSocketOpen(event) {
+function onSocketOpen() {
     showNotification("Connected to Language Server", green);
     enableSocketFeatures(true);
 
@@ -500,7 +503,7 @@ function onSocketOpen(event) {
     tryLint();
 }
 function onSocketClose(event) {
-    if(event.code == 1006) {
+    if(event.code === 1006) {
         // this is an error due to no connection
         enableConnectButton(true);
         enableSocketFeatures(false);
@@ -522,6 +525,8 @@ function onSocketError(event) {
     enableConnectButton(true);
     isBusy = false;
 }
+let version;
+
 function onSocketMessage(event) {
     const json = JSON.parse(event.data);
     const action = json["action"];
@@ -563,7 +568,7 @@ function action_postLoad(json) {
     }
 }
 function action_setErrors(errors) {
-    var markers = [];
+    const markers = [];
     const model = editor.getModel();
 
     errors.forEach(error => {
@@ -572,7 +577,7 @@ function action_setErrors(errors) {
         const errorMessage = decodeBase64(error["error"]);
 
         // start the error line at the first non-whitespace character
-        var startIndex = 0;
+        let startIndex = 0;
         const beginningWhitespace = code.match(/^\s+/);
         if (beginningWhitespace && beginningWhitespace[0])
             startIndex = beginningWhitespace[0].length;
@@ -591,6 +596,12 @@ function action_setErrors(errors) {
 
     monaco.editor.setModelMarkers(model, 'mcc-lint', markers);
 }
+ // 1.15 and under
+let userPPVs;
+let userVariables;
+let userFunctions;
+let userMacros;
+
 function action_setSymbols(json) {
     userPPVs = json["ppvs"];
     userVariables = json["variables"];
@@ -624,11 +635,24 @@ function action_properties(json) {
     }
 }
 
-var version = 1150; // 1.15 and under
-var userPPVs = []; 
-var userVariables = [];
-var userFunctions = [];
-var userMacros = [];
+function setToMinecraftFont() {
+    if(!editor)
+        return;
+
+    editor.updateOptions({
+        codeLensFontFamily: "Monocraft",
+        fontFamily: "Monocraft"
+    });
+    monaco.editor.remeasureFonts();
+
+    removeTakeover();
+}
+
+version = 1150;
+userPPVs = [];
+userVariables = [];
+userFunctions = [];
+userMacros = [];
 
 // Provides completions in the editor.
 const mccCompletionProvider = {
@@ -657,7 +681,7 @@ const mccCompletionProvider = {
                 }
             }),
             ...userVariables.map(key => {
-                var detail = key.type;
+                const detail = key.type;
 
                 return {
                     label: key.name,
@@ -669,15 +693,15 @@ const mccCompletionProvider = {
             }),
             ...userFunctions.map(key => {
                 const ret = key.return ?? 'none';
-                var detail = "Returns: " + ret;
+                const detail = "Returns: " + ret;
 
-                var insert;
+                let insert;
                 // arguments present in the function
                 if(key.arguments && key.arguments.length > 0) {
                     const args = key.arguments.map(arg => arg.type + ' ' + arg.name).join("  ");
 
                     insert = key.name + "(";
-                    var snippetIndex = 0;
+                    let snippetIndex = 0;
                     const length = key.arguments.length;
                     for (let index = 0; index < length; index++) {
                         snippetIndex++;
@@ -717,7 +741,7 @@ const mccCompletionProvider = {
                 }
             }),
             ...userMacros.map(key => {
-                var insert;
+                let insert;
                 // arguments present in the function
                 if(key.arguments && key.arguments.length > 0) {
                     const args = key.arguments.join(" ");
@@ -819,8 +843,9 @@ const mccCompletionProvider = {
         ];
         return { suggestions: matches };
     },
-    triggerCharacters: ['$', '@', '&', '~', '^']
+    triggerCharacters: ['$', '@' ]
 };
+
 // Open the monaco libraries and then run load().
 require(['vs/editor/editor.main'], function () {
     editorContainer = document.createElement('div');
@@ -834,7 +859,7 @@ require(['vs/editor/editor.main'], function () {
             { token: '', foreground: 'D4D4D4', background: '352F35' },
             { token: 'comment', foreground: '3E8C42' },
             { token: 'numbers', foreground: 'E0C1FF' },
-            { token: 'strings', foreground: 'E0C1FF' },
+            { token: 'string', foreground: 'E0C1FF' },
     
             { token: 'operators', foreground: 'E0C1FF' },
             { token: 'selectors', foreground: 'FF4F4F' },
@@ -843,7 +868,7 @@ require(['vs/editor/editor.main'], function () {
             { token: 'commands', foreground: 'EE5BAF' },
             { token: 'literals', foreground: 'E0C1FF' },
             { token: 'types', foreground: 'FF8080' },
-            { token: 'comparisons', foreground: 'FF5F42' },
+            { token: 'comparisons', foreground: 'D98250' },
             { token: 'options', foreground: 'D7AEFF' }
         ],
         colors: {
@@ -868,8 +893,8 @@ require(['vs/editor/editor.main'], function () {
         value: exampleFile,
         language: "mccompiled",
         theme: "mcc-solar",
-        codeLensFontFamily: "Roboto Mono",
-        fontFamily: "Roboto Mono",
+        codeLensFontFamily: "JetBrains Mono",
+        fontFamily: "JetBrains Mono",
         fontSize: "16px",
         suggestFontSize: "10px",
         suggestLineHeight: "18px",
@@ -888,11 +913,11 @@ require(['vs/editor/editor.main'], function () {
             enabled: true,
             mode: "prefix"
         },
-        quickSuggestionsDelay: 0,
+        quickSuggestionsDelay: 1,
         quickSuggestions: {
-            comments: false,
-            other: "inline",
-            strings: false
+            comments: "off",
+            other: "on",
+            strings: "off"
         },
         suggest: {
             showColors: true,
@@ -912,10 +937,11 @@ require(['vs/editor/editor.main'], function () {
             addExtraSpaceOnTop: false
         },
         minimap: {
-            enabled: false
+            enabled: true,
+            renderCharacters: false,
+            autohide: true
         }
     });
-
     const model = editor.getModel();
 
     model.onDidChangeContent(function (event) {
@@ -933,7 +959,10 @@ require(['vs/editor/editor.main'], function () {
 
 // Update the editor layout when the screen resizes.
 window.onresize = function () {
-    if (editor) editor.layout();
+    if (!editor)
+        return;
+    
+    editor.layout();
 }
 
 // Handle Control+S for saving.
@@ -942,7 +971,6 @@ document.addEventListener('keydown', function (event) {
     if (ctrl && event.key.match('s')) {
         event.preventDefault();
         onClickSave();
-        return;
     }
 }, false);
 

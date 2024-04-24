@@ -2,14 +2,14 @@ const mccompiled = {
 	operators: [ `<`, `>`, `{`, `}`, `=`, `(`, `)`, `+`, `-`, `*`, `/`, `%`, `!` ],
 	selectors: [ `@e`, `@a`, `@s`, `@p`, `@r` ],
 	preprocessor: [ `$add`, `$append`, `$assert`, `$call`, `$dec`, `$div`, `$else`, `$if`, `$inc`, `$include`, `$iterate`, `$json`, `$len`, `$log`, `$macro`, `$mean`, `$median`, `$mod`, `$mul`, `$pow`, `$prepend`, `$repeat`, `$reverse`, `$sort`, `$strfriendly`, `$strlower`, `$strupper`, `$sub`, `$sum`, `$swap`, `$unique`, `$var` ],
-	commands: [ `actionbar`, `assert`, `clear`, `damage`, `define`, `dialogue`, `dummy`, `effect`, `else`, `execute`, `explode`, `face`, `lookat`, `feature`, `fill`, `for`, `function`, `fn`, `give`, `globalactionbar`, `globalprint`, `globaltitle`, `halt`, `if`, `init`, `initialize`, `kill`, `lang`, `mc`, `command`, `cmd`, `move`, `particle`, `playsound`, `print`, `remove`, `replace`, `return`, `rotate`, `say`, `scatter`, `setblock`, `tag`, `test`, `throw`, `title`, `tp`, `teleport` ],
+	commands: [ `actionbar`, `assert`, `await`, `clear`, `damage`, `define`, `dialogue`, `dummy`, `effect`, `else`, `execute`, `explode`, `face`, `lookat`, `feature`, `fill`, `for`, `function`, `fn`, `give`, `globalactionbar`, `globalprint`, `globaltitle`, `halt`, `if`, `init`, `initialize`, `kill`, `lang`, `mc`, `command`, `cmd`, `move`, `particle`, `playsound`, `print`, `remove`, `repeat`, `replace`, `return`, `rotate`, `say`, `scatter`, `setblock`, `tag`, `test`, `throw`, `title`, `tp`, `teleport`, `while` ],
 	literals: [ `true`, `false`, `not`, `and`, `null`, `~`, `^` ],
-	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `extern`, `export`, `bind`, `auto`, `partial` ],
-	comparisons: [ `count`, `any`, `block`, `blocks`, `positioned` ],
+	types: [ `int`, `decimal`, `bool`, `time`, `struct`, `ppv`, `global`, `local`, `extern`, `export`, `bind`, `auto`, `partial`, `async` ],
+	comparisons: [ `until`, `count`, `any`, `block`, `blocks`, `positioned` ],
 	options: [ `dummies`, `autoinit`, `exploders`, `uninstall`, `tests`, `audiofiles`, `up`, `down`, `left`, `right`, `forward`, `backward`, `ascending`, `descending`, `survival`, `creative`, `adventure`, `spectator`, `removeall`, `times`, `subtitle`, `destroy`, `replace`, `hollow`, `outline`, `keep`, `new`, `open`, `change`, `lockinventory`, `lockslot`, `canplaceon:`, `candestroy:`, `enchant:`, `name:`, `lore:`, `author:`, `title:`, `page:`, `dye:`, `text:`, `button:`, `onOpen:`, `onClose:`, `align`, `anchored`, `as`, `at`, `facing`, `facing entity`, `in`, `positioned`, `positioned as`, `rotated`, `rotated as` ],
     tokenizer: {
         root: [
-            [ /@?[a-zA-Z$][\w]*/, {
+            [ /@?[a-zA-Z$]\w*/, {
                 cases: {
                     '@selectors': 'selectors',
                     '@preprocessor': 'preprocessor',
@@ -24,9 +24,16 @@ const mccompiled = {
 			{ include: '@handler' },
 			
 			[ /[<>{}=()+\-*/%!]+/, 'operators' ],
-            [ /"(?:[^"\\]|\\.)*"/, 'strings' ],
-            [ /'(?:[^'\\]|\\.)*'/, 'strings' ],
-            [ /\[.+\]/, 'selectors.properties' ],
+
+            // terminated strings
+            [ /"(?:[^"\\]|\\.)*"/, 'string' ],
+            [ /'(?:[^'\\]|\\.)*'/, 'string' ],
+
+            // unterminated strings
+			[ /"(?:[^"\\]|\\.)*$/, 'string' ],
+			[ /'(?:[^'\\]|\\.)*$/, 'string' ],
+
+            [ /\[.+]/, 'selectors.properties' ],
             [ /!?(?:\.\.)?\d+(?:\.\.)?\.?\d*[hms]?/, 'numbers' ]
         ],
 		comment: [
@@ -45,55 +52,55 @@ const mccompiled = {
 const mcc_operators = [
 	{
 		word: `<`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `>`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `{`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `}`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `=`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `(`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `)`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `+`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `-`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `*`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `/`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `%`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 	{
 		word: `!`,
-		docs: 'No documentation available for v1.17.'
+		docs: 'No documentation available for v1.18.'
 	},
 ]
 const mcc_selectors = [
@@ -251,11 +258,15 @@ const mcc_preprocessor = [
 const mcc_commands = [
 	{
 		word: `actionbar`,
-		docs: `Displays an actionbar on the screen of the executing player, or to the given one if specified. Supports format-strings.`
+		docs: `Displays an actionbar on the screen of the executing player, or to the given one if specified.`
 	},
 	{
 		word: `assert`,
 		docs: `Asserts that the given condition evaluates to true, at runtime. If the condition evaluates to false, the code is halted and info is displayed to the executing player(s).`
+	},
+	{
+		word: `await`,
+		docs: `Works in async functions. Awaits a certain amount of time, for a condition to be met, or another async function to complete executing.`
 	},
 	{
 		word: `clear`,
@@ -287,7 +298,7 @@ const mcc_commands = [
 	},
 	{
 		word: `execute`,
-		docs: `Begins a vanilla minecraft 1.19.70+ execute chain. Can be followed by a statement or code-block, but does not explicitly support the 'run' subcommand.`
+		docs: `Begins a vanilla Minecraft execute chain. Can be followed by a statement or code-block, but does not explicitly support the 'run' subcommand.`
 	},
 	{
 		word: `explode`,
@@ -327,15 +338,15 @@ const mcc_commands = [
 	},
 	{
 		word: `globalactionbar`,
-		docs: `Displays an actionbar on the screen of all players in the game. Can also be used to set the timings of the actionbar. Supports format-strings.`
+		docs: `Displays an actionbar on the screen of all players in the game. Can also be used to set the timings of the actionbar.`
 	},
 	{
 		word: `globalprint`,
-		docs: `Prints a chat message to all players in the game. Supports format-strings.`
+		docs: `Prints a chat message to all players in the game.`
 	},
 	{
 		word: `globaltitle`,
-		docs: `Displays a title on the screen of all players in the game. Can also be used to set the timings of the title. Supports format-strings.`
+		docs: `Displays a title on the screen of all players in the game. Can also be used to set the timings of the title.`
 	},
 	{
 		word: `halt`,
@@ -343,7 +354,7 @@ const mcc_commands = [
 	},
 	{
 		word: `if`,
-		docs: `Allows comparison of variables, along with a huge collection of other criteria. Can be chained together by the keyword 'and' and inverted by the keyword 'not'. Only runs the proceeding statement/code-block for entities where the condition returns true.`
+		docs: `Performs a comparison, only running the proceeding statement/code-block if the comparisons(s) are true. Multiple comparisons can be chained using the keyword 'and', and comparisons can be inverted using the keyword 'not'`
 	},
 	{
 		word: `init`,
@@ -387,11 +398,15 @@ const mcc_commands = [
 	},
 	{
 		word: `print`,
-		docs: `Prints a chat message to the executing player, or to the given one if specified. Supports format-strings.`
+		docs: `Prints a chat message to the executing player, or to the given one if specified.`
 	},
 	{
 		word: `remove`,
 		docs: `Teleports the given entities deep into the void, causing a silent death. Looking to rewrite this in the future to generate entity code for real removal.`
+	},
+	{
+		word: `repeat`,
+		docs: `Repeats the proceeding statement/code-block the given number of times. This command always runs at runtime.`
 	},
 	{
 		word: `replace`,
@@ -427,11 +442,11 @@ const mcc_commands = [
 	},
 	{
 		word: `throw`,
-		docs: `Throws an error, displaying it to the executing player(s). The code is halted immediately, so handle cleanup before calling throw. Supports format-strings.`
+		docs: `Throws an error, displaying it to the executing player(s). The code is halted immediately, so handle cleanup before calling throw.`
 	},
 	{
 		word: `title`,
-		docs: `Displays a title on the screen of the executing player, or to the given one if specified. Can also be used to set the timings of the title. Supports format-strings.`
+		docs: `Displays a title on the screen of the executing player, or to the given one if specified. Can also be used to set the timings of the title.`
 	},
 	{
 		word: `tp`,
@@ -440,6 +455,10 @@ const mcc_commands = [
 	{
 		word: `teleport`,
 		docs: `Alias of 'tp'. Teleports the executing/given entities to a specific position, selector, "name:type" of entity, or name of another managed entity (e.g., dummy entities).`
+	},
+	{
+		word: `while`,
+		docs: `Repeats the proceeding statement/code-block as long as a condition remains true.  Multiple comparisons can be chained using the keyword 'and', and comparisons can be inverted using the keyword 'not'`
 	},
 ]
 const mcc_literals = [
@@ -499,7 +518,11 @@ const mcc_types = [
 	},
 	{
 		word: `global`,
-		docs: `Makes a value global, meaning it will only be accessed in the context of the global fakeplayer, \`_\``
+		docs: `Makes a value global, never being assigned on an entity. Alternately used as a parameter for the 'async' attribute.`
+	},
+	{
+		word: `local`,
+		docs: `Makes a value local (default). Alternately used as a parameter for the 'async' attribute.`
 	},
 	{
 		word: `extern`,
@@ -521,8 +544,16 @@ const mcc_types = [
 		word: `partial`,
 		docs: `Makes a function partial, allowing it to be re-defined , appending to any previous code in it. When re-declaring a function, the partial attribute must be used in both.`
 	},
+	{
+		word: `async`,
+		docs: `Makes the given function asynchronous, either locally (state is attached to an entity) or globally (state is global only).`
+	},
 ]
 const mcc_comparisons = [
+	{
+		word: `until`,
+		docs: `Used in the 'await' command to wait UNTIL a condition is true.`
+	},
 	{
 		word: `count`,
 		docs: `Compare the number of entities that match a selector.`
