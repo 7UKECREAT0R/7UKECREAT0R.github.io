@@ -62,11 +62,18 @@ const takeover_extras = `
 
 // Encodes a base64 string.
 function encodeBase64(str) {
-    return btoa(str);
+    const utf8Bytes = new TextEncoder().encode(str);
+    return btoa(String.fromCharCode(...utf8Bytes));
 }
 // Decodes a base64 string.
 function decodeBase64(_str) {
-    return atob(_str);
+    const binaryStr = atob(_str);
+    const binaryLen = binaryStr.length;
+    const bytes = new Uint8Array(binaryLen);
+    for (let i = 0; i < binaryLen; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+    }
+    return new TextDecoder().decode(bytes);
 }
 // Returns the current code.
 function getCode() {
@@ -596,7 +603,8 @@ function action_setErrors(errors) {
 
     monaco.editor.setModelMarkers(model, 'mcc-lint', markers);
 }
- // 1.15 and under
+
+// 1.15 and under
 let userPPVs;
 let userVariables;
 let userFunctions;
