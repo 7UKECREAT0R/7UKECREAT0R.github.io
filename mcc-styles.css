@@ -49,6 +49,8 @@ main.panels {
     margin-bottom: 128px;
 }
 main.panels div.panel {
+    container-name: bog;
+    container-type: inline-size;
     padding: 20px;
     margin: 0;
     width: min(40%, 650px);
@@ -67,10 +69,13 @@ main.panels h2, main h3, main h4, main h5, main h6 {
 }
 main.panels h1 {
     color: white;
-    font-size: 3.5cqmin;
+    font-size: 8cqw;
     margin-top: 0;
     margin-bottom: 0;
 }
+main.panels h2 {
+     font-size: 5cqw;
+ }
 main.panels p {
     color: #c8c8c8;
     font-size: 1.1em;
