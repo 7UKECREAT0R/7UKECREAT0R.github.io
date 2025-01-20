@@ -1,65 +1,204 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 
 <head>
-  <!-- Primary Meta Tags -->
-  <title>MCCompiled</title>
+    <!-- Primary Meta Tags -->
+    <title>MCCompiled</title>
 
-  <meta name="title" content="MCCompiled" />
-  <meta name="description"
-    content="Skyrocket your creativity with the single most fleshed out command compiler for Minecraft: Bedrock Edition. " />
-  <link rel="stylesheet" href="mcc-styles.css">
+    <meta name="title" content="MCCompiled"/>
+    <meta name="description"
+          content="Build faster than ever with the world's most fleshed-out command compiler for Minecraft: Bedrock Edition"/>
+    <link rel="stylesheet" href="mcc-styles.css">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://lukecreator.dev/mcc.html" />
-  <meta property="og:title" content="MCCompiled" />
-  <meta property="og:description"
-    content="Skyrocket your creativity with the single most fleshed out command compiler for Minecraft: Bedrock Edition. " />
-  <meta property="og:image" content="https://lukecreator.dev/mcc.html" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://lukecreator.dev/mcc.html"/>
+    <meta property="og:title" content="MCCompiled"/>
+    <meta property="og:description"
+          content="Build faster than ever with the world's most fleshed-out command compiler for Minecraft: Bedrock Edition"/>
+    <meta property="og:image" content="https://lukecreator.dev/mcc.html"/>
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://lukecreator.dev/mcc.html" />
-  <meta property="twitter:title" content="MCCompiled" />
-  <meta property="twitter:description"
-    content="Skyrocket your creativity with the single most fleshed out command compiler for Minecraft: Bedrock Edition. " />
-  <meta property="twitter:image" content="https://lukecreator.dev/assets/mcc-banner.png" />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image"/>
+    <meta property="twitter:url" content="https://lukecreator.dev/mcc.html"/>
+    <meta property="twitter:title" content="MCCompiled"/>
+    <meta property="twitter:description"
+          content="Build faster than ever with the world's most fleshed-out command compiler for Minecraft: Bedrock Edition"/>
+    <meta property="twitter:image" content="https://lukecreator.dev/assets/mcc-banner.png"/>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <div id="navigation">
-    <button>HOME</button>
-    <button>FEATURES</button>
-    <button>IDE</button>
-    <button>DOWNLOAD</button>
-  </div>
+<div class="banner">
+    <div id="bg-logo"></div>
+    <h2>LET <strong class="mcc-brand">MCCOMPILED</strong> HANDLE THE COMMANDS. YOU HANDLE THE <strong>LOGIC</strong>.
+    </h2>
+    <h3>Build faster than ever with the world's most fleshed-out command compiler for Minecraft: Bedrock Edition</h3>
+</div>
 
-  <div class="section">
-    <img class="logoimg" src="assets/mcc-logo.png" alt="MCCompiled Logo">
-    <div>
-      <h1 class="titleText">MCCOMPILED</h1>
-      <h2 class="titleDesc">Bedrock-Edition Programming Language</h2>
+<div class="topic-picker">
+    <div class="topic-picker-item selected" id="features">
+        <i class="bx bxs-widget"></i>
+        <p>Features</p>
     </div>
-  </div>
-  <div class="sectionTop">
-    <p class="text">
-      Design, develop, and compile code using the most fleshed out command compiler for Minecraft: Bedrock Edition.<br /><br />
-      MCCompiled offers dozens of fleshed out features; typed variables with automatic tellraw construction, advanced inline operations, functions with parameters and return values, on-the-fly animation controller generation, /give with support for enchants/names/lore, and the list goes on.<br /><br />
-      Nearly two years of engineering and development packed into a small, 500KB compiler.
-    </p>
-  </div>
-  <div class="section">
-    <img src="assets/mcc/screenshot_0.jpg" width="50%"/>
-    <p class="text">/scatter in monolithic action</p>
-  </div>
-  <div class="sectionTop">
-    
-  </div>
+    <div class="topic-picker-item" id="examples">
+        <i class="bx bx-code-alt"></i>
+        <p>Examples</p>
+    </div>
+    <div class="topic-picker-item" id="wiki">
+        <i class="bx bxs-book"></i>
+        <p>Wiki</p>
+    </div>
+    <div class="topic-picker-item" id="ide">
+        <i class="bx bxs-window-alt"></i>
+        <p>IDE</p>
+    </div>
+    <div class="topic-picker-item" id="download">
+        <i class="bx bxs-download"></i>
+        <p>Download</p>
+    </div>
+</div>
+
+<main class="panels" id="content-features">
+    <div class="panel">
+        <h1>OVERVIEW</h1>
+        <p>MCCompiled is a programming language that shares a lot in common with vanilla commands
+            but includes simple but extremely powerful features to lift the development burden.
+            Syntax is straightforward, easy to read, but it can be as deep and complex as you want to make it.</p>
+        <h2>Simplicity-First</h2>
+        <p>Nothing in MCCompiled is without reason; it's designed from the ground-up with commands in
+            mind.
+            There's no complex syntax, and it's inspired by the best of existing languages.</p>
+    </div>
+    <div class="panel">
+        <h1>SUBFUNCTIONS</h1>
+        <p>Declare functions inside your MCCompiled code, which will automatically be sent to their respective files.
+            Functions may have parameters and return values as well, making them useful for more than just code
+            re-use.</p>
+        <img src="assets/mcc/function-example.png"
+             alt="An image depicting two functions being declared inside an MCCompiled file.">
+    </div>
+    <div class="panel">
+        <h1>VALUES</h1>
+        <p>Ditch scoreboard objectives for MCCompiled's robust implementation on top of them called <b>values</b>.
+            Values can use one of the built-in types,
+            each of which has implementations for type conversion, user display, and arithmetic.</p>
+        <p>Values can be made global, forcing them to never be attached to a specific entity.
+            Values can be operated with inline, with grouping, order of operations, and proper type conversion.</p>
+        <img src="assets/mcc/values-example.png" alt="An image showing off the values and types system.">
+    </div>
+    <div class="panel">
+        <h1>CONTROL FLOW</h1>
+        <p>Instead of writing dozens of <code>execute</code> commands and subfunctions, MCCompiled allows you to use
+            if-statements, else-statements, loops, etc. to control logic instead. It will automatically handle the
+            creation/organization of subfunctions for you, and you can focus on what actually matters (logic).</p>
+        <img src="assets/mcc/control-flow-example.png" alt="An image showing off if/else-statements and a for-loop.">
+        <p>
+            Many common patterns are included, including checking for a certain number of entities,
+            looping a certain number of times, looping over entities, or checking for specific blocks.
+            Or, if you have a specific case, the vanilla execute command is still available with full language support.
+        </p>
+    </div>
+    <div class="panel">
+        <h1>DISPLAY</h1>
+        <p>While we're ditching things, rawtext.
+            MCCompiled uses a simple format-string system for inlaying values into your messages.
+            Inlay values, selectors, and even perform operations, which will make a temporary variable for you
+            automatically.</p>
+        <img src="assets/mcc/display-example.png" alt="An image showing off the display system.">
+        <h2>Auto Localization</h2>
+        <p>Define a default language,
+            and MCCompiled will automatically send any/all text that can be localized into the .lang file automatically.
+            You'll never have to touch a lang file again,
+            and you can have peace of mind that MCCompiled generates context-aware key names for manual editing,
+            if needed.</p>
+    </div>
+    <div class="panel">
+        <h1>METAPROGRAMMING</h1>
+        <p>MCCompiled has an insanely dynamic metaprogramming system that can go as deep as you want to go.
+            Automate with JSON files, construct and call functions dynamically,
+            write macros for compile-time code reuse,
+            and give those macros compile-time checks and assertions for bug-free guarantees.</p>
+        <img src="assets/mcc/metaprogramming-example.png" alt="An image showing off metaprogramming.">
+    </div>
+    <div class="panel">
+        <h1>DIALOGUE</h1>
+        <p>Use MCCompiled's super simple dialogue format to write/manage dialogue directly inside your project files.
+            It integrates seamlessly with automatic localization support and inline MCCompiled code for event
+            responses.</p>
+        <p>You can even automate dialogue creation with metaprogramming, like with the rest of the language.</p>
+        <img src="assets/mcc/dialogue-example.png" alt="An image showing off the dialogue system.">
+    </div>
+    <div class="panel">
+        <h1>ASYNC</h1>
+        <p>Starting today, you've written your last timer.
+            MCCompiled has support for asynchronous functions
+            which are compiled to nothing more than a timer and a bunch of subfunctions.
+            You can wait for amounts of time, for conditions to be met, or for other async functions to finish.</p>
+        <img src="assets/mcc/async-example.png" alt="An image showing off an async function which does a countdown.">
+    </div>
+</main>
+
+<main id="content-examples" style="display: none;">
+    <div class="content">
+        <h1>EXAMPLES</h1>
+        <p>Balls</p>
+    </div>
+</main>
+
+<main id="content-wiki" style="display: none;">
+    <div class="panel">
+        <h1>Wiki</h1>
+    </div>
+</main>
+
+<main id="content-ide" style="display: none;">
+    <div class="panel">
+        <h1>IDE</h1>
+    </div>
+</main>
+
+<main id="content-download" style="display: none;">
+    <div class="panel">
+        <h1>Download</h1>
+    </div>
+</main>
 </body>
+
+<script>
+    const topicItems = document.getElementsByClassName("topic-picker-item");
+    const contentSections = {
+        features: document.getElementById("content-features"),
+        examples: document.getElementById("content-examples"),
+        wiki: document.getElementById("content-wiki"),
+        ide: document.getElementById("content-ide"),
+        download: document.getElementById("content-download"),
+    };
+
+    for (let i = 0; i < topicItems.length; i++) {
+        topicItems[i].onclick = function () {
+            for (let j = 0; j < topicItems.length; j++) {
+                topicItems[j].classList.remove("selected");
+            }
+
+            this.classList.add("selected");
+
+            for (let key in contentSections) {
+                contentSections[key].style.display = "none";
+            }
+            const sectionId = this.id;
+            if (contentSections[sectionId]) {
+                contentSections[sectionId].style.display = null;
+            }
+
+        }
+    }
+</script>
 
 </html>
