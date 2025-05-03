@@ -37,7 +37,8 @@
             "cpp": "assets/icon-cpp.png",
             "csharp": "assets/icon-csharp.png",
             "python": "assets/icon-python.png",
-            "mccompiled": "assets/icon-mcc.png"
+            "mccompiled": "assets/icon-mcc.png",
+            "spring-boot": "assets/icon-spring.png"
         };
 
         function h1HoverColor(color) {
@@ -69,7 +70,7 @@
             overlayElement.id = "overlay";
             overlayElement.className = "completeOverlay";
             overlayElement.onclick = function (e) {
-                if (e.target != overlayElement)
+                if (e.target !== overlayElement)
                     return;
                 setOverlay(false);
             }
@@ -151,8 +152,7 @@
 
                 const _dcolor = json["description-color"];
                 if (_dcolor) {
-                    const dcolor = `rgb(${_dcolor[0]}, ${_dcolor[1]}, ${_dcolor[2]})`;
-                    subtitleElement.style.color = dcolor;
+                    subtitleElement.style.color = `rgb(${_dcolor[0]}, ${_dcolor[1]}, ${_dcolor[2]})`;
                 }
 
                 if (json["tags"]) {

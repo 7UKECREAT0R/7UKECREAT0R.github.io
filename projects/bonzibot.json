@@ -8,14 +8,15 @@
   "html": {
     "sections": {
       "ABOUT": "BonziBot is a Discord bot carefully designed over 1.5 years that does everything extremely well. It focuses more on its infrastructure/core more than the application itself.",
-      "THE PROBLEM": "Bots like this that pledge to do everything are generally very watered down and uninspired. They do everything, but they do it very poorly. I set out to crack this problem with BonziBot. By putting over 80% of the development focus into BonziBot's framework, I was able to clear the way for polished features with extremely minimal tech debt. As a result, I've been able to keep BonziBot updated with the latest Discord improvements with extremely minimal overhead.",
+      "THE PROBLEM": "Bots like this that pledge to do everything are generally very watered down and uninspired. They do everything, but they do it very poorly. My goal was to avoid this with BonziBot. By putting over 80% of the development focus into the core framework, I was able to clear the way for polished features with extremely minimal tech debt. As a result, I've been able to keep BonziBot updated with the latest Discord improvements with extremely minimal overhead.",
       "_line0": "hr",
       "feature: SETTINGS": "Server settings allow you to use a GUI to configure Bonzi across your server. Configure smart filtering, custom words, tag privacy, logging, join/leave messages, join roles, rules board, disable commands, enable minigames, setup ban appeals/messages, scan for leaked tokens and setup a starboard!",
       "feature: SCRIPTING": "Use the built in scripting engine to create custom coded buttons, phrases, slash commands, and other events. With a completely sandboxed system of memory and storage, you can create tons of new things from the easy to use GUI.",
       "feature: MUSIC": "The custom music player is operated entirely through its animated UI, using dropdowns and buttons to streamline the playing experience. I took all the things I didn't like about traditional music bots and completley reworked them.",
       "feature: ECONOMY": "(it has to have economy, doesn't it?) A basic economy system with a shop to buy special commands. Gambling addiction is fueled, unlock the rest of the bot's features. It's like a win-win.",
       "_line1": "hr",
-      "... AND MORE": "And BonziBot has so much more to offer that you'll have to discover on your own. This sounds like an advertisement, doesn't it? Oh yeah, and the entire bot is open source and available for anyone to study; hell, use the infrastructure in your own bot (within license)! Check it out!"
+      "... AND MORE": "And BonziBot has so much more to offer that you'll have to discover on your own. This sounds like an advertisement, doesn't it? Oh yeah, and the entire bot is open source and available for anyone to study; hell, use the infrastructure in your own bot (within license)! Check it out!",
+      "WHAT I GAINED": "This project was really my first large production-level piece of software. It was built on the shoulders of many years of writing smaller, less complete bots in my free time. I feel like it came together really well and it's the first time I managed to pull together a huge codebase with lots of APIs and otherwise moving parts."
     },
     "links": {
       "GET BONZIBOT": "https://discord.com/api/oauth2/authorize?client_id=545806922209558537&permissions=2150927424&scope=applications.commands%20bot",

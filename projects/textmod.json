@@ -13,7 +13,8 @@
       "EMOJI": "Commands aren't the only thing TextMod can do. You can also create a list of images which will be resized to look like custom emojis when :filename: is in the text field.",
       "PLUGINS": "TextMod 2 has a basic API that compiles C# scripts on startup, allowing users to develop custom commands or other features for the client.",
       "RICH PRESENCE": "Additionally, a powerful rich presence system is present to animate and show off anything from plain text to ever-changing variables. Show your time, cpu, memory usage, etc... Or create custom variables using plugins.",
-      "TOOLS": "TextMod 2 also has a large collection of tools to enhance your experience, including: an automatic counter, text encryptor/decryptor, ascii art drawing tool, keyboard mods, id decoder, and a tool which shows you as typing for however long you specify."
+      "TOOLS": "TextMod 2 also has a large collection of tools to enhance your experience, including: an automatic counter, text encryptor/decryptor, ascii art drawing tool, keyboard mods, id decoder, and a tool which shows you as typing for however long you specify.",
+      "WHAT I GAINED": "This was an early project of mine, but I did loads of RnD for the mechanics I had in mind. Dabbled in UI automation, keyboard hooks, screen capturing, all the low-level stuff to make something truly unique. While the features I was RnD'ing for didn't end up coming to fruition, this project served to get me acquainted with the gigantic world of software development."
     },
     "links": {
       "DOWNLOAD": "https://github.com/7UKECREAT0R/TextMod2/releases",
