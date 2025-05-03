@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE HTML>
 
-<!-- SPOILER: i am NOT a web developer lmao -->
-
+<!--suppress ExceptionCaughtLocallyJS -->
 <html lang="en">
 <head>
     <link rel="stylesheet" href="styles.css" />
@@ -11,251 +10,330 @@
     <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-discord.png" />
     <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-yt.png" />
     <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-twitter.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
-	<meta name="viewport" content="width=device-width, initial-scale=0.5">
-	
-	<title>7UKECREAT0R</title>
-	<meta name="title" content="7UKECREAT0R">
-	<meta name="description" content="advanced books for computers">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&family=Roboto+Mono&family=Inter:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+    <title>lukecreator</title>
+    <meta name="title" content="lukecreator">
+    <meta name="description" content="my portfolio site">
 </head>
 
 <body>
-    <!-- main logo -->
-    <div id="collection" class="main">
-        <div id="insidecollection" class="maincl" onclick="toggleMenu()">
+    <!-- Header Section -->
+    <header id="header">
+        <div class="logo-container">
             <img src="http://7ukecreat0r.github.io/assets/logo.png" alt="LOGO" class="logo" />
-            <div id="textcontainer">
+            <div class="title-container">
                 <h1>LUKECREATOR</h1>
                 <h2>SOFTWARE DEVELOPER</h2>
             </div>
         </div>
+        <nav class="nav-menu">
+            <a href="#about" class="nav-item">ABOUT</a>
+            <a href="#projects" class="nav-item">PROJECTS</a>
+            <a href="#contact" class="nav-item">CONTACT</a>
+        </nav>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-content">
+            <h2 class="section-title">ABOUT</h2>
+            <div class="about-content">
+                <p>
+                    <b>Hey, I'm Luke; I'm a software developer based in South Carolina.</b><br />
+                    I'm very familiar with Java and C# backends along with a massive tech stack in low-level computing. Web and front-end terrify me.
+                    For the most part I'm extremely casual and never serious unless it's work-related. If you'd like to get in contact, just hit me up on Discord and we'll work something out!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="section-content">
+            <h2 class="section-title">PROJECTS</h2>
+            <div id="projects-container" class="projects-grid">
+                <!-- Projects will be loaded here from projectlist.json -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="section-content">
+            <h2 class="section-title">CONTACT</h2>
+            <div class="social-links">
+                <a href="https://www.youtube.com/7ukecreat0r" target="_blank" class="social-link">
+                    <img src="https://7ukecreat0r.github.io/assets/social-yt.png" class="social-icon" alt="YouTube" />
+                </a>
+                <a href="https://discord.com/invite/tJsEcseENM" target="_blank" class="social-link">
+                    <img src="https://7ukecreat0r.github.io/assets/social-discord.png" class="social-icon" alt="Discord" />
+                </a>
+                <a href="https://twitter.com/lukecreator" target="_blank" class="social-link">
+                    <img src="https://7ukecreat0r.github.io/assets/social-twitter.png" class="social-icon" alt="Twitter" />
+                </a>
+                <a href="mailto:luke@criswell.net" class="social-link">
+                    <img src="https://7ukecreat0r.github.io/assets/social-email.png" class="social-icon" alt="Email" />
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modal-content-container">
+                <!-- Project details will be loaded here (see loadProjects()) -->
+            </div>
+        </div>
     </div>
 
-    <!-- sub menu items-->
-    <div class="items" style="margin-top: 48px;">
-        <div class="item" id="i_home" selected="false" onclick="clicked(this)">
-            <p class="itemicon">⌂</p>
-            <p class="itemtext">home</p>
-        </div>
-        <div class="item" id="i_about" selected="false" onclick="clicked(this)">
-            <p class="itemicon">⌞</p>
-            <p class="itemtext">about</p>
-        </div>
-        <div class="item" id="i_projects" selected="false" onclick="clicked(this)">
-            <p class="itemicon">⌞</p>
-            <p class="itemtext">projects</p>
-        </div>
-        <div class="item" id="i_contact" selected="false" onclick="clicked(this)">
-            <p class="itemicon">⌞</p>
-            <p class="itemtext">contact</p>
-        </div>
-    </div>
-
-
-    <!-- loading screen -->
-    <div id="fill" class="fill" style="opacity: 1;">
-        <p class="fill">hey there</p>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <p>Loading...</p>
     </div>
 
     <script>
-        const homeInnerHTML = `
-<img src="http://7ukecreat0r.github.io/assets/logo.png" alt="LOGO" class="logo">
-<div id="textcontainer">
-    <h1>LUKECREATOR</h1>
-    <h2>SOFTWARE DEVELOPER</h2>
-</div>
-`;
-        const aboutInnerHTML = `
-<p class="text">
-    <b>Hey I'm Luke; I'm a software developer based in South Carolina.</b><br />
-    I'm very familiar with Java and C# backends along with a massive tech stack in low-level computing. Web and front-end terrify me.
-    For the most part I'm extremely casual and never serious unless it's work related. If you'd like to get in contact, just hit me up on Discord and we'll work something out!
-</p>
-`;
-        const projectsInnerHTML = `
-<button onclick="transitionPage('projects.html')">projects</button>
-`;
-        const contactInnerHTML = `
-<img src="https://7ukecreat0r.github.io/assets/social-yt.png" class="social" onclick="transitionPage('https://www.youtube.com/7ukecreat0r')"/>
-<img src="https://7ukecreat0r.github.io/assets/social-discord.png" class="social" onclick="transitionPage('https://discord.com/invite/tJsEcseENM')" />
-<img src="https://7ukecreat0r.github.io/assets/social-twitter.png" class="social" onclick="transitionPage('https://twitter.com/lukecreator')" />
-`
+        // Tag icons mapping
+        const tagIcons = {
+            "java": "assets/icon-java.png",
+            "c": "assets/icon-c.png",
+            "cpp": "assets/icon-cpp.png",
+            "csharp": "assets/icon-csharp.png",
+            "python": "assets/icon-python.png",
+            "mccompiled": "assets/icon-mcc.png",
+            "spring-boot": "assets/icon-spring.png"
+        };
 
-        // Element instances
-        var fadeElement; // element
-        var mainElement; // element
-        var itemElements; // element[]
+        // DOM Elements
+        const projectsContainer = document.getElementById('projects-container');
+        const modal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content-container');
+        const closeButton = document.querySelector('.close-button');
+        const loadingScreen = document.getElementById('loading-screen');
 
-        var activeTimeout = null;
-
-        // Item Actions Based on Index
-        function item_home() {
-            if (!menuOpen)
-                return;
-            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
-            titlePresent = true;
-            activeTimeout = setTimeout(function () {
-                mainElement.innerHTML = homeInnerHTML;
-                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
-            }, 300);
-        }
-        function item_about() {
-            if (!menuOpen)
-                return;
-            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
-            titlePresent = false;
-            activeTimeout = setTimeout(function () {
-                mainElement.innerHTML = aboutInnerHTML;
-                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
-            }, 300);
-        }
-        function item_projects() {
-            if (!menuOpen)
-                return;
-            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
-            titlePresent = false;
-            activeTimeout = setTimeout(function () {
-                mainElement.innerHTML = projectsInnerHTML;
-                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
-            }, 300);
-        }
-        function item_contact() {
-            if (!menuOpen)
-                return;
-            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
-            titlePresent = false;
-            activeTimeout = setTimeout(function () {
-                mainElement.innerHTML = contactInnerHTML;
-                const socials = document.getElementsByClassName("social");
-                var delay = 0.0;
-                for (const element of socials) {
-                    element.style.animationDelay = delay + 's';
-                    delay -= 0.4;
-                }
-                resetAnimation(mainElement, "logo-enter 0.3s ease forwards");
-            }, 300);
-        }
-        const itemFunctions = [
-            item_home,
-            item_about,
-            item_projects,
-            item_contact
-        ];
-
-        // Loading screen
-        const oStep = 0.1;
-        const itemDelay = 75;
-        var fadeTicks = 10;
-        var opacity = 1.0;
-        var fading = false;
-
-        // Menu
-        var menuOpen = false;
-        var titlePresent = true;
-
-        // Fade out loading element when DOM is loaded
-        window.addEventListener("load", function () {
-            fadeElement = this.document.getElementById("fill");
-            mainElement = this.document.getElementById("insidecollection");
-            itemElements = this.document.querySelectorAll(".item");
-            fading = true;
-
-            // Control loading screen fade
-            window.setInterval(function () {
-                if (fading) {
-                    if (fadeTicks-- < 1) {
-                        fadeElement.remove();
-                        fading = false;
-                        return;
-                    }
-                    opacity -= oStep;
-                    fadeElement.style.opacity = opacity;
-                }
-                for (var i = 0; i < itemElements.length; i++) {
-                    const menu = itemElements[i];
-                    menu.style.animationDelay = ((i + 1) * itemDelay) + "ms";
-                }
-            }, 16);
+        // Close modal when clicking the close button
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
 
-        function resetAnimation(e, animation) {
-            e.style.animation = "";
-            void e.offsetWidth;
-            e.style.animation = animation;
-        }
-        function transitionPage(url) {
-            menuOpen = false;
-            resetAnimation(mainElement, "logo-exit 0.3s ease forwards");
-            for (var i = 0; i < itemElements.length; i++) {
-                const menu = itemElements[i];
-                resetAnimation(menu, "itemdisable 0.2s ease-out both");
+        // Close modal when clicking outside it
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
+        });
 
-            activeTimeout = setTimeout(function () {
-                window.location.href = url;
-            }, 500);
-        }
-        function toggleMenu() {
-            if (!titlePresent)
-                return;
-            menuOpen = !menuOpen;
-            if (menuOpen) {
-                defaultItems();
-                resetAnimation(mainElement, "open-menu 0.4s ease forwards");
-            } else {
-                resetAnimation(mainElement, "open-menu 0.4s ease reverse");
-            }
-
-            for (var i = 0; i < itemElements.length; i++) {
-                const menu = itemElements[i];
-                if (menuOpen) {
-                    resetAnimation(menu, "itemenable 0.2s ease-out forwards");
-                } else {
-                    resetAnimation(menu, "itemdisable 0.2s ease-out both");
+        /**
+         * Loads a list of projects from a specified JSON file and processes each project.
+         * It fetches the project list, processes each URL in the list, and manages the display
+         * of the loading screen. If an error occurs during the process, it logs the error
+         * and updates the loading screen with an error message.
+         *
+         * @return {Promise<void>} A promise that resolves once all the projects are loaded and the loading screen is handled.
+         */
+        async function loadProjects() {
+            try {
+                const response = await fetch('projectlist.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load project list');
                 }
-            }
-        }
 
-        // When category is clicked, replace the title logo with looked up text.
-        function defaultItems() {
-            resetItems();
-            itemElements[0].setAttribute("selected", "true");
-        }
-        function resetItems() {
-            for (var i = 0; i < itemElements.length; i++) {
-                const disable = itemElements[i];
-                disable.setAttribute("selected", "false");
-            }
-        }
-        function resetTimeouts() {
-            if (activeTimeout)
-                clearTimeout(activeTimeout);
-            activeTimeout = null;
-        }
-        function clicked(element) {
+                const projectList = await response.json();
 
-            if (element.getAttribute("selected") === "true")
-                return;
-            resetItems();
-
-            element.setAttribute("selected", "true");
-
-            var index = -1;
-            for (var i = 0; i < itemElements.length; i++) {
-                if (itemElements[i].id == element.id) {
-                    index = i;
-                    break;
+                // Load each project
+                for (const projectUrl of projectList) {
+                    await loadProject(projectUrl);
                 }
-            }
 
-            if (index == -1) {
-                alert("unknown button");
-                return;
-            }
+                // Hide loading screen
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
 
-            resetTimeouts();
-            itemFunctions[index]();
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                loadingScreen.innerHTML = "<p>Error loading projects. Dang, maybe you shouldn't hire me!</p>";
+            }
         }
+
+        
+        /**
+         * Loads a project from the specified URL and dynamically creates a project card
+         * with details such as name, description, and tags. The card is styled and
+         * appended to the projects container. Handles errors during loading and
+         * rendering.
+         *
+         * @param {string} projectUrl - The URL of the project JSON file to load.
+         * @return {Promise<void>} A promise that resolves once the project has been
+         *         successfully loaded and rendered, or rejects if an error occurs.
+         */
+        async function loadProject(projectUrl) {
+            try {
+                const response = await fetch(projectUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to load project: ${projectUrl}`);
+                }
+
+                const project = await response.json();
+
+                // Create project card
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.id = project.id;
+
+                // Set background color to a desaturated version of the original color
+                const color = project.color;
+                // Desaturate the color by mixing it with gray (reduce saturation by 40%)
+                const desaturationFactor = 0.6; // 60% of original color, 40% desaturated
+                const grayValue = Math.round((color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114));
+                const r = Math.round(color[0] * desaturationFactor + grayValue * (1 - desaturationFactor));
+                const g = Math.round(color[1] * desaturationFactor + grayValue * (1 - desaturationFactor));
+                const b = Math.round(color[2] * desaturationFactor + grayValue * (1 - desaturationFactor));
+                projectCard.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+                // Add project content
+                projectCard.innerHTML = `
+                    <h3 class="project-title">${project.name}</h3>
+                    <p class="project-description">${project.description}</p>
+                    <div class="project-tags">
+                        ${project.tags ? project.tags.map(tag => {
+                            const hasIcon = tagIcons[tag];
+                            return `<span class="tag">
+                                ${hasIcon ? `<img src="${tagIcons[tag]}" alt="${tag}" class="tag-icon">` : ''}
+                                ${tag}
+                            </span>`;
+                        }).join('') : ''}
+                    </div>
+                `;
+
+                // Add click event to open modal
+                projectCard.addEventListener('click', () => {
+                    openProjectModal(project);
+                });
+
+                // Add to projects container
+                projectsContainer.appendChild(projectCard);
+
+            } catch (error) {
+                console.error(`Error loading project ${projectUrl}:`, error);
+            }
+        }
+
+        /**
+         * Opens the project modal and populates it with the specified project details.
+         * The modal is styled dynamically using the provided project's color scheme,
+         * and it includes sections and links defined in the project data.
+         *
+         * @param {Object} project The project object containing data for the modal content.
+         * @param {string} project.name The name of the project to display in the modal header.
+         * @param {Array<number>} project.color An array of RGB values representing the project's color.
+         * @param {Object} [project.html] The HTML content configuration for the modal.
+         * @param {Object} [project.html.sections] The content sections to display in the modal, where each key is a section title and the value is the section content.
+         * @param {Object} [project.html.links] The links to display in the modal, where each key is the link text and the value is the link URL.
+         *
+         * @return {void} This function does not return a value.
+         */
+        function openProjectModal(project) {
+            // Set modal content
+            modalContent.innerHTML = '';
+
+            // Apply project color to modal border
+            const color = project.color;
+            const desaturationFactor = 0.6;
+            const grayValue = Math.round((color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114));
+            const r = Math.round(color[0] * desaturationFactor + grayValue * (1 - desaturationFactor));
+            const g = Math.round(color[1] * desaturationFactor + grayValue * (1 - desaturationFactor));
+            const b = Math.round(color[2] * desaturationFactor + grayValue * (1 - desaturationFactor));
+            document.querySelector('.modal-content').style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
+
+            // Create header
+            const header = document.createElement('div');
+            header.className = 'modal-header';
+            header.innerHTML = `<h2>${project.name}</h2>`;
+            modalContent.appendChild(header);
+
+            // Create content sections
+            if (project.html && project.html.sections) {
+                const sections = project.html.sections;
+                const sectionsContainer = document.createElement('div');
+
+                for (const sectionTitle in sections) {
+                    const sectionContent = sections[sectionTitle];
+
+                    // Handle special sections (like horizontal rules)
+                    if (sectionTitle.startsWith('_')) {
+                        if (sectionContent === 'hr') {
+                            const hr = document.createElement('hr');
+                            sectionsContainer.appendChild(hr);
+                        }
+                        continue;
+                    }
+
+                    // Create regular section
+                    const section = document.createElement('div');
+                    section.className = 'modal-section';
+                    section.innerHTML = `
+                        <h3>${sectionTitle}</h3>
+                        <p>${sectionContent}</p>
+                    `;
+                    sectionsContainer.appendChild(section);
+                }
+
+                modalContent.appendChild(sectionsContainer);
+            }
+
+            // Create links
+            if (project.html && project.html.links) {
+                const links = project.html.links;
+                const linksContainer = document.createElement('div');
+                linksContainer.className = 'modal-links';
+
+                for (const linkText in links) {
+                    const url = links[linkText];
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.target = '_blank';
+                    link.className = 'project-link';
+                    link.textContent = linkText;
+                    // Apply project color to link
+                    link.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                    linksContainer.appendChild(link);
+                }
+
+                modalContent.appendChild(linksContainer);
+            }
+
+            // Show modal
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProjects();
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
