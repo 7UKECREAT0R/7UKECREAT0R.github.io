@@ -4,7 +4,7 @@
   "color": [ 11, 175, 116 ],
   "description": "completely external mod for Discord with utilities and commands.",
   "description-color": [ 255, 255, 255 ],
-  "tags": [ "csharp", "discord", "api", "rich-presence" ],
+  "tags": [ "csharp", "discord", "rich-presence" ],
 
   "html": {
     "sections": {

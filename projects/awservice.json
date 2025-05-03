@@ -1,7 +1,7 @@
 {
   "id": "aw",
   "name": "Ability Wars Service",
-  "color": [36, 0, 175 ],
+  "color": [ 51, 108, 242 ],
   "description": "The tank-like moderation backend for my friend's massive Roblox game",
   "tags": [ "java", "spring-boot", "discord-bot" ],
   

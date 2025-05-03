@@ -80,7 +80,7 @@
     <!-- Project Modal -->
     <div id="project-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button" onclick="closeModal()">&times;</span>
             <div id="modal-content-container">
                 <!-- Project details will be loaded here (see loadProjects()) -->
             </div>
@@ -112,11 +112,16 @@
         const loadingScreen = document.getElementById('loading-screen');
 
         // Close modal when clicking the close button
-        closeButton.addEventListener('click', () => {
+        function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-        });
+        }
 
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        })
         // Close modal when clicking outside it
         window.addEventListener('click', (event) => {
             if (event.target === modal) {
@@ -159,7 +164,7 @@
             }
         }
 
-        
+
         /**
          * Loads a project from the specified URL and dynamically creates a project card
          * with details such as name, description, and tags. The card is styled and
@@ -184,15 +189,17 @@
                 projectCard.className = 'project-card';
                 projectCard.id = project.id;
 
-                // Set background color to a desaturated version of the original color
+                // Set accent color from the project color
                 const color = project.color;
-                // Desaturate the color by mixing it with gray (reduce saturation by 40%)
-                const desaturationFactor = 0.6; // 60% of original color, 40% desaturated
-                const grayValue = Math.round((color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114));
-                const r = Math.round(color[0] * desaturationFactor + grayValue * (1 - desaturationFactor));
-                const g = Math.round(color[1] * desaturationFactor + grayValue * (1 - desaturationFactor));
-                const b = Math.round(color[2] * desaturationFactor + grayValue * (1 - desaturationFactor));
-                projectCard.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                // Create a subtle gradient with the project color
+                const r = color[0];
+                const g = color[1];
+                const b = color[2];
+                // Use the color for a subtle border and gradient overlay
+                projectCard.style.borderLeft = `3px solid rgb(${r}, ${g}, ${b})`;
+                projectCard.style.boxShadow = `inset 0 0 30px rgba(${r}, ${g}, ${b}, 0.1)`;
+                // Add a data attribute with the color for hover effects
+                projectCard.dataset.color = `${r},${g},${b}`;
 
                 // Add project content
                 projectCard.innerHTML = `
@@ -208,6 +215,19 @@
                         }).join('') : ''}
                     </div>
                 `;
+
+                // Add hover effect with project color
+                projectCard.addEventListener('mouseenter', () => {
+                    const [r, g, b] = projectCard.dataset.color.split(',');
+                    projectCard.style.boxShadow = `inset 0 0 50px rgba(${r}, ${g}, ${b}, 0.2), 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(${r}, ${g}, ${b}, 0.2)`;
+                    projectCard.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
+                });
+
+                projectCard.addEventListener('mouseleave', () => {
+                    const [r, g, b] = projectCard.dataset.color.split(',');
+                    projectCard.style.boxShadow = `inset 0 0 30px rgba(${r}, ${g}, ${b}, 0.1)`;
+                    projectCard.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
+                });
 
                 // Add click event to open modal
                 projectCard.addEventListener('click', () => {
@@ -237,24 +257,27 @@
          * @return {void} This function does not return a value.
          */
         function openProjectModal(project) {
-            // Set modal content
-            modalContent.innerHTML = '';
-
-            // Apply project color to modal border
+            // Apply project color to modal elements
             const color = project.color;
-            const desaturationFactor = 0.6;
-            const grayValue = Math.round((color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114));
-            const r = Math.round(color[0] * desaturationFactor + grayValue * (1 - desaturationFactor));
-            const g = Math.round(color[1] * desaturationFactor + grayValue * (1 - desaturationFactor));
-            const b = Math.round(color[2] * desaturationFactor + grayValue * (1 - desaturationFactor));
-            document.querySelector('.modal-content').style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
+            const r = color[0];
+            const g = color[1];
+            const b = color[2];
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = '<span class="close-button" onclick="closeModal()">&times;</span>';
+
+            // Apply color to modal border and add subtle glow
+            modalContent.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
+            modalContent.style.boxShadow = `0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(${r}, ${g}, ${b}, 0.2)`;
 
             // Create header
             const header = document.createElement('div');
             header.className = 'modal-header';
             header.innerHTML = `<h2>${project.name}</h2>`;
+            header.style.borderBottomColor = `rgba(${r}, ${g}, ${b}, 0.3)`;
             modalContent.appendChild(header);
 
+            let delay = 0.05;
+            
             // Create content sections
             if (project.html && project.html.sections) {
                 const sections = project.html.sections;
@@ -275,6 +298,8 @@
                     // Create regular section
                     const section = document.createElement('div');
                     section.className = 'modal-section';
+                    section.style.animationDelay = `${delay}s`;
+                    delay += 0.05;
                     section.innerHTML = `
                         <h3>${sectionTitle}</h3>
                         <p>${sectionContent}</p>
@@ -298,8 +323,18 @@
                     link.target = '_blank';
                     link.className = 'project-link';
                     link.textContent = linkText;
-                    // Apply project color to link
-                    link.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                    // Apply project color to link with subtle styling
+                    link.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+                    link.style.color = `rgb(${r}, ${g}, ${b})`;
+                    // Add hover effect with project color
+                    link.onmouseover = () => {
+                        link.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.15)`;
+                        link.style.boxShadow = `0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(${r}, ${g}, ${b}, 0.3)`;
+                    };
+                    link.onmouseout = () => {
+                        link.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        link.style.boxShadow = '';
+                    };
                     linksContainer.appendChild(link);
                 }
 
@@ -314,22 +349,6 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadProjects();
-
-            // Smooth scrolling for navigation
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
         });
     </script>
 </body>
