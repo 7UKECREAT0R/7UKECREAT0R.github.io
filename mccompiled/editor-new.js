@@ -832,14 +832,6 @@ const mccCompletionProvider = {
                     insertText: key.word
                 }
             }),
-            ...mcc_comparisons.map(key => {
-                return {
-                    label: key.word,
-                    detail: key.docs,
-                    kind: monaco.languages.CompletionItemKind.Operator,
-                    insertText: key.word
-                }
-            }),
             ...mcc_options.map(key => {
                 return {
                     label: key.word,
