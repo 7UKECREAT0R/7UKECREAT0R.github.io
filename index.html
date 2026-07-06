@@ -1,355 +1,86 @@
-﻿<!DOCTYPE HTML>
+<!--
+    Before anybody asks, yes this was made almost entirely by AI; no, I don't usually do this.
+    JetBrains gave me $30 to test out their Air IDE with agentic workflow or whatever, and to be honest...
+    It's pretty cool. I edited a lot of the parameters by hand and removed a bunch of hover animations and box shadows.
 
-<!--suppress ExceptionCaughtLocallyJS -->
+    It's cool that I just typed my ideas in and got a unique as hell personal site out of it, though!
+ -->
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lukecreator - Personal System</title>
+    
+    <!-- Google Fonts: Inter/Roboto for readable body, Roboto Mono for retro terminal elements -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="http://7ukecreat0r.github.io/assets/logo.png" />
-    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-discord.png" />
-    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-yt.png" />
-    <link rel="preload" as="image" href="https://7ukecreat0r.github.io/assets/social-twitter.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&family=Roboto+Mono&family=Inter:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=0.5">
-
-    <title>lukecreator</title>
-    <meta name="title" content="lukecreator">
-    <meta name="description" content="my portfolio site">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lobster&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <!-- Header Section -->
-    <header id="header">
-        <div class="logo-container">
-            <img src="http://7ukecreat0r.github.io/assets/logo.png" alt="LOGO" class="logo" />
-            <div class="title-container">
-                <h1>LUKECREATOR</h1>
-                <h2>SOFTWARE DEVELOPER</h2>
+    <div class="c64-monitor">
+        <!-- Commodore 64 Header / Boot Terminal Hero -->
+        <header class="c64-header">
+            <div class="c64-header-title">**** WACKY PERSONAL WEBSITE V1.0 ****</div>
+            <div class="c64-header-info">64K RAM SYSTEM  38911 BASIC BYTES FREE</div>
+            <div class="c64-header-status">READY.</div>
+            <div class="c64-header-cursor-line">
+                <span class="c64-cursor"></span>
             </div>
-        </div>
-        <nav class="nav-menu">
-            <a href="#about" class="nav-item">ABOUT</a>
-            <a href="#projects" class="nav-item">PROJECTS</a>
-            <a href="#contact" class="nav-item">CONTACT</a>
-        </nav>
-    </header>
+        </header>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="section-content">
-            <h2 class="section-title">ABOUT</h2>
-            <div class="about-content">
-                <p>
-                    <b>Hey, I'm Luke; I'm a software developer based in South Carolina.</b><br />
-                    I'm very familiar with Java and C# backends along with a massive tech stack in low-level computing. Web and front-end terrify me.
-                    For the most part I'm extremely casual and never serious unless it's work-related. If you'd like to get in contact, just hit me up on Discord and we'll work something out!
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="section-content">
-            <h2 class="section-title">PROJECTS</h2>
-            <div id="projects-container" class="projects-grid">
-                <!-- Projects will be loaded here from projectlist.json -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="section-content">
-            <h2 class="section-title">CONTACT</h2>
-            <div class="social-links">
-                <a href="https://www.youtube.com/7ukecreat0r" target="_blank" class="social-link">
-                    <img src="https://7ukecreat0r.github.io/assets/social-yt.png" class="social-icon" alt="YouTube" />
-                </a>
-                <a href="https://discord.com/invite/tJsEcseENM" target="_blank" class="social-link">
-                    <img src="https://7ukecreat0r.github.io/assets/social-discord.png" class="social-icon" alt="Discord" />
-                </a>
-                <a href="mailto:luke@criswell.net" class="social-link">
-                    <img src="https://7ukecreat0r.github.io/assets/social-email.png" class="social-icon" alt="Email" />
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Modal -->
-    <div id="project-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <div id="modal-content-container">
-                <!-- Project details will be loaded here (see loadProjects()) -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <p>Loading...</p>
-    </div>
-
-    <script>
-        // Tag icons mapping
-        const tagIcons = {
-            "java": "assets/icon-java.png",
-            "c": "assets/icon-c.png",
-            "cpp": "assets/icon-cpp.png",
-            "csharp": "assets/icon-csharp.png",
-            "python": "assets/icon-python.png",
-            "mccompiled": "assets/icon-mcc.png",
-            "spring-boot": "assets/icon-spring.png"
-        };
-
-        // DOM Elements
-        const projectsContainer = document.getElementById('projects-container');
-        const modal = document.getElementById('project-modal');
-        const modalContent = document.getElementById('modal-content-container');
-        const closeButton = document.querySelector('.close-button');
-        const loadingScreen = document.getElementById('loading-screen');
-
-        // Close modal when clicking the close button
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        })
-        // Close modal when clicking outside it
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        /**
-         * Loads a list of projects from a specified JSON file and processes each project.
-         * It fetches the project list, processes each URL in the list, and manages the display
-         * of the loading screen. If an error occurs during the process, it logs the error
-         * and updates the loading screen with an error message.
-         *
-         * @return {Promise<void>} A promise that resolves once all the projects are loaded and the loading screen is handled.
-         */
-        async function loadProjects() {
-            try {
-                const response = await fetch('projectlist.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load project list');
-                }
-
-                const projectList = await response.json();
-
-                // Load each project
-                for (const projectUrl of projectList) {
-                    await loadProject(projectUrl);
-                }
-
-                // Hide loading screen
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                loadingScreen.innerHTML = "<p>Error loading projects. Dang, maybe you shouldn't hire me!</p>";
-            }
-        }
-
-
-        /**
-         * Loads a project from the specified URL and dynamically creates a project card
-         * with details such as name, description, and tags. The card is styled and
-         * appended to the projects container. Handles errors during loading and
-         * rendering.
-         *
-         * @param {string} projectUrl - The URL of the project JSON file to load.
-         * @return {Promise<void>} A promise that resolves once the project has been
-         *         successfully loaded and rendered, or rejects if an error occurs.
-         */
-        async function loadProject(projectUrl) {
-            try {
-                const response = await fetch(projectUrl);
-                if (!response.ok) {
-                    throw new Error(`Failed to load project: ${projectUrl}`);
-                }
-
-                const project = await response.json();
-
-                // Create project card
-                const projectCard = document.createElement('div');
-                projectCard.className = 'project-card';
-                projectCard.id = project.id;
-
-                // Set accent color from the project color
-                const color = project.color;
-                // Create a subtle gradient with the project color
-                const r = color[0];
-                const g = color[1];
-                const b = color[2];
-                // Use the color for a subtle border and gradient overlay
-                projectCard.style.borderLeft = `3px solid rgb(${r}, ${g}, ${b})`;
-                projectCard.style.boxShadow = `inset 0 0 30px rgba(${r}, ${g}, ${b}, 0.1)`;
-                // Add a data attribute with the color for hover effects
-                projectCard.dataset.color = `${r},${g},${b}`;
-
-                // Add project content
-                projectCard.innerHTML = `
-                    <h3 class="project-title">${project.name}</h3>
-                    <p class="project-description">${project.description}</p>
-                    <div class="project-tags">
-                        ${project.tags ? project.tags.map(tag => {
-                            const hasIcon = tagIcons[tag];
-                            return `<span class="tag">
-                                ${hasIcon ? `<img src="${tagIcons[tag]}" alt="${tag}" class="tag-icon">` : ''}
-                                ${tag}
-                            </span>`;
-                        }).join('') : ''}
+        <!-- Contractor Bio Section -->
+        <section class="c64-about">
+            <div class="bio-container">
+<!--                <img src="assets/logo.png" alt="lukecreator Logo" class="bio-logo" /> waiting till I have an actually half-decent logo -->
+                <div class="bio-text-container">
+                    <h2 class="bio-heading">lukecreator</h2>
+                    <p class="bio-paragraph">
+                        Hey, I'm Luke, a professional independent contractor based in South Carolina with <strong>7 years of genuine experience</strong> building innovative software. I'm extremely familiar with Java and C# backends, along with a massive tech stack in low-level computing. Web and front-end terrify me.
+                    </p>
+                    <p class="bio-paragraph">
+                        I've learned over the years to write clean, highly documented and maintainable code. I work at Lifeboat, designing backend technologies for our DLC, making larger educational projects for schools and orchestrating plans/managing our team of younger volunteers.
+                    </p>
+                    <!-- Retro Framed Social Icons -->
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/7ukecreat0r" target="_blank" class="social-link" title="YouTube">
+                            <img src="assets/social-yt.png" alt="YouTube" class="social-icon">
+                        </a>
+                        <a href="https://discord.com/invite/tJsEcseENM" target="_blank" class="social-link" title="Discord">
+                            <img src="assets/social-discord.png" alt="Discord" class="social-icon">
+                        </a>
+                        <button class="social-link" title="Email" id="email-btn">
+                            <img src="assets/social-email.png" alt="Email" class="social-icon">
+                        </button>
+                        <span class="clipboard-notice" id="clipboard-notice">COPIED TO CLIPBOARD!</span>
                     </div>
-                `;
+                </div>
+            </div>
+        </section>
 
-                // Add hover effect with project color
-                projectCard.addEventListener('mouseenter', () => {
-                    const [r, g, b] = projectCard.dataset.color.split(',');
-                    projectCard.style.boxShadow = `inset 0 0 50px rgba(${r}, ${g}, ${b}, 0.2), 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(${r}, ${g}, ${b}, 0.2)`;
-                    projectCard.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
-                });
+        <!-- Projects / Portfolio Section -->
+        <section class="projects-section">
+            <h2 class="projects-title">PROJECT DIRECTORY</h2>
+            <div class="projects-layout">
+                <!-- Project Tab list -->
+                <div class="projects-tabs" id="project-tabs" role="tablist" aria-label="Project Tabs">
+                    <!-- Project tabs will be loaded dynamically -->
+                </div>
+                
+                <!-- Project details card -->
+                <div class="project-details" id="project-details">
+                    <!-- Project details content will load here dynamically -->
+                    <div class="details-placeholder">
+                        <p class="blink-fast">LOADING PROJECT DATA...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
-                projectCard.addEventListener('mouseleave', () => {
-                    const [r, g, b] = projectCard.dataset.color.split(',');
-                    projectCard.style.boxShadow = `inset 0 0 30px rgba(${r}, ${g}, ${b}, 0.1)`;
-                    projectCard.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
-                });
-
-                // Add click event to open modal
-                projectCard.addEventListener('click', () => {
-                    openProjectModal(project);
-                });
-
-                // Add to projects container
-                projectsContainer.appendChild(projectCard);
-
-            } catch (error) {
-                console.error(`Error loading project ${projectUrl}:`, error);
-            }
-        }
-
-        /**
-         * Opens the project modal and populates it with the specified project details.
-         * The modal is styled dynamically using the provided project's color scheme,
-         * and it includes sections and links defined in the project data.
-         *
-         * @param {Object} project The project object containing data for the modal content.
-         * @param {string} project.name The name of the project to display in the modal header.
-         * @param {Array<number>} project.color An array of RGB values representing the project's color.
-         * @param {Object} [project.html] The HTML content configuration for the modal.
-         * @param {Object} [project.html.sections] The content sections to display in the modal, where each key is a section title and the value is the section content.
-         * @param {Object} [project.html.links] The links to display in the modal, where each key is the link text and the value is the link URL.
-         *
-         * @return {void} This function does not return a value.
-         */
-        function openProjectModal(project) {
-            // Apply project color to modal elements
-            const color = project.color;
-            const r = color[0];
-            const g = color[1];
-            const b = color[2];
-            const modalContent = document.querySelector('.modal-content');
-            modalContent.innerHTML = '<span class="close-button" onclick="closeModal()">&times;</span>';
-
-            // Apply color to modal border and add subtle glow
-            modalContent.style.borderLeftColor = `rgb(${r}, ${g}, ${b})`;
-            modalContent.style.boxShadow = `0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(${r}, ${g}, ${b}, 0.2)`;
-
-            // Create header
-            const header = document.createElement('div');
-            header.className = 'modal-header';
-            header.innerHTML = `<h2>${project.name}</h2>`;
-            header.style.borderBottomColor = `rgba(${r}, ${g}, ${b}, 0.3)`;
-            modalContent.appendChild(header);
-
-            let delay = 0.05;
-            
-            // Create content sections
-            if (project.html && project.html.sections) {
-                const sections = project.html.sections;
-                const sectionsContainer = document.createElement('div');
-
-                for (const sectionTitle in sections) {
-                    const sectionContent = sections[sectionTitle];
-
-                    // Handle special sections (like horizontal rules)
-                    if (sectionTitle.startsWith('_')) {
-                        if (sectionContent === 'hr') {
-                            const hr = document.createElement('hr');
-                            sectionsContainer.appendChild(hr);
-                        }
-                        continue;
-                    }
-
-                    // Create regular section
-                    const section = document.createElement('div');
-                    section.className = 'modal-section';
-                    section.style.animationDelay = `${delay}s`;
-                    delay += 0.05;
-                    section.innerHTML = `
-                        <h3>${sectionTitle}</h3>
-                        <p>${sectionContent}</p>
-                    `;
-                    sectionsContainer.appendChild(section);
-                }
-
-                modalContent.appendChild(sectionsContainer);
-            }
-
-            // Create links
-            if (project.html && project.html.links) {
-                const links = project.html.links;
-                const linksContainer = document.createElement('div');
-                linksContainer.className = 'modal-links';
-
-                for (const linkText in links) {
-                    const url = links[linkText];
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.target = '_blank';
-                    link.className = 'project-link';
-                    link.textContent = linkText;
-                    // Apply project color to link with subtle styling
-                    link.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
-                    link.style.color = `rgb(${r}, ${g}, ${b})`;
-                    // Add hover effect with project color
-                    link.onmouseover = () => {
-                        link.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.15)`;
-                        link.style.boxShadow = `0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(${r}, ${g}, ${b}, 0.3)`;
-                    };
-                    link.onmouseout = () => {
-                        link.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                        link.style.boxShadow = '';
-                    };
-                    linksContainer.appendChild(link);
-                }
-
-                modalContent.appendChild(linksContainer);
-            }
-
-            // Show modal
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProjects();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

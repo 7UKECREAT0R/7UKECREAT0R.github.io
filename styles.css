@@ -1,584 +1,658 @@
-/* Base Styles */
-html, body {
-    background-color: #000000; /* True OLED black */
-    color: #ffffff; /* Pure white for better contrast */
-    font-family: 'Inter', sans-serif;
+/* --- Commodore 64 Theme & Palette Root Variables --- */
+:root {
+    /* C64 Colors */
+    --c64-dark-blue: #352879;     /* Screen main workspace background */
+    --c64-light-blue: #6c5eb5;    /* Border/frame, headings, cursors */
+    --c64-white: #ffffff;         /* Primary crisp text */
+    --c64-lavender: #a0a5eb;      /* High contrast supportive text */
+    
+    /* Project accent color slots (dynamically populated by JS) */
+    --project-accent: var(--c64-light-blue);
+    --project-accent-alpha: rgba(108, 94, 181, 0.15);
+
+    /* Fonts */
+    --font-monospace: 'Jetbrains Mono', Courier, monospace;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-company-name: 'Lobster';
+
+    /* Button colors (replaced by script later) */
+    --btn-color: rgb(0, 0, 0);
+    --btn-hover-color: rgba(0, 0, 0, 0.15);
+}
+
+/* --- Base Body / Outer Frame CSS --- */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+body {
+    background-color: var(--c64-light-blue);
+    font-family: var(--font-sans), serif;
+    color: var(--c64-white);
     line-height: 1.6;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-}
-
-::selection {
-    background: #ffffff;
-    color: #000000;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #000000; /* True OLED black */
-}
-
-::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #ffffff; /* Pure white on hover for better contrast */
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', cursive;
-    margin: 0;
-    line-height: 1.2;
-}
-
-h1 {
-    font-size: 72px;
-    font-weight: 400;
-    color: #ffffff;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-h2 {
-    font-size: 32px;
-    font-weight: 400;
-    color: #ffffff;
-}
-
-h3 {
-    font-size: 28px;
-    font-weight: 400;
-    color: #ffffff;
-}
-
-p, li {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #ffffff;
-}
-
-
-a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: all 0.3s ease-out;
-}
-
-a:hover {
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
-
-/* Layout */
-.section {
-    padding: 50px 0;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.section-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.section-title {
-    font-size: 48px;
-    margin-bottom: 40px;
-    position: relative;
-    display: inline-block;
-    letter-spacing: 2px;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    transition: width 0.4s ease-out;
-}
-
-.section-title:hover::after {
-    width: 100%;
-}
-
-/* Header */
-#header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     padding: 20px 0;
-    background-color: rgba(0, 0, 0, 0.9); /* True OLED black with transparency */
-    backdrop-filter: blur(10px);
-    z-index: 1000;
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    margin-left: 40px;
-    transition: transform 0.4s ease-out;
-}
-
-.logo-container:hover {
-    transform: scale(1.05);
-}
-
-.logo {
-    height: 50px;
-    margin-right: 15px;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
-}
-
-.title-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.title-container h1 {
-    font-size: 36px;
-    margin: 0;
-    line-height: 1;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-.title-container h2 {
-    font-size: 16px;
-    margin: 0;
-    letter-spacing: 1px;
-    opacity: 0.8;
-}
-
-.nav-menu {
-    display: flex;
-    margin-right: 40px;
-}
-
-.nav-item {
-    margin: 0 15px;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 2px;
-    position: relative;
-    padding: 5px 0;
-    transition: all 0.3s cubic-bezier(0,.29,.18,.99);
-}
-
-.nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #ffffff;
-    transition: width 0.3s cubic-bezier(0,.29,.18,.99), box-shadow 0.3s cubic-bezier(0,.29,.18,.99);
-}
-
-.nav-item:hover {
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
-
-.nav-item:hover::after {
-    width: 100%;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* About Section */
-#about {
-    padding-top: 100px;
-}
-
-.about-content {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: rgba(10, 10, 10, 0.5);
+/* --- Centered Monitor retro container (Widescreen vs Mobile Portrait) --- */
+.c64-monitor {
+    background-color: var(--c64-dark-blue);
+    width: 50%; /* Widescreen default width */
+    min-width: 800px;
+    max-width: 1200px;
+    border: 12px double var(--c64-light-blue);
     padding: 30px;
-    border-left: 3px solid #ffffff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.1);
-    transition: transform 0.4s cubic-bezier(0,.29,.18,.99), box-shadow 0.4s cubic-bezier(0,.29,.18,.99);
 }
 
-.about-content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 255, 255, 0.15);
-}
-
-/* Projects Section */
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.project-card {
-    background-color: #000000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
-    cursor: pointer;
-    position: relative;
-    padding: 20px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-}
-
-.project-card:hover {
-    border-color: #ffffff;
-}
-
-.project-title {
-    font-size: 24px;
-    margin-bottom: 10px;
-    font-family: 'Bebas Neue', cursive;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-    transition: text-shadow 0.2s ease-out;
-}
-
-.project-description {
+/* --- Boot Terminal Header Hero --- */
+.c64-header {
+    font-family: var(--font-monospace), monospace;
     font-size: 14px;
-    color: #ffffff;
-    flex-grow: 1;
-    opacity: 0.8;
-    transition: opacity 0.2s ease-out;
+    letter-spacing: 0.5px;
+    margin-bottom: 40px;
+    color: var(--c64-lavender);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
 }
 
-.project-card:hover .project-description {
-    opacity: 1;
+.c64-header-title {
+    text-align: center;
+    font-weight: bold;
+    color: var(--c64-white);
+    margin-bottom: 10px;
 }
 
-.project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 15px;
+.c64-header-info {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.tag {
+.c64-header-status {
+    color: var(--c64-white);
+    margin-bottom: 5px;
+}
+
+.c64-header-cursor-line {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    margin-right: 8px;
-    transition: background-color 0.3s cubic-bezier(0,.29,.18,.99), transform 0.3s cubic-bezier(0,.29,.18,.99);
-}
-.tag:hover {
-    background-color: rgba(255, 255, 255, 0.15);
 }
 
-.project-card:hover .tag {
-    transform: translateY(-2px);
+.c64-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    background-color: var(--c64-light-blue);
+    animation: c64-blink 1s steps(2, start) infinite;
 }
 
-.tag-icon {
-    height: 14px;
-    margin-right: 5px;
-    filter: brightness(1.2);
+@keyframes c64-blink {
+    to {
+        visibility: hidden;
+    }
 }
 
-/* Contact Section */
+/* --- Contractor Bio Section --- */
+.c64-about {
+    border: 4px solid var(--c64-light-blue);
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    margin-bottom: 40px;
+}
+
+.bio-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.bio-logo {
+    width: 120px;
+    height: auto;
+    margin: 10px;
+}
+
+.bio-text-container {
+    flex: 1;
+}
+
+.bio-heading {
+    font-family: var(--font-company-name), cursive;
+    color: var(--c64-light-blue);
+    font-size: 48px;
+    margin-top: -18px;
+    letter-spacing: 1px;
+}
+
+.bio-paragraph {
+    font-size: 15px;
+    color: var(--c64-lavender);
+    margin-bottom: 15px;
+}
+
+.bio-paragraph strong {
+    color: var(--c64-white);
+    font-weight: 600;
+}
+
+/* Retro-framed Social links */
 .social-links {
     display: flex;
-    justify-content: center;
-    margin-top: 40px;
+    gap: 15px;
+    margin-top: 25px;
 }
 
 .social-link {
-    margin: 0 20px;
-    transition: transform 0.2s ease-out;
-    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border: 3px solid var(--c64-light-blue);
+    background-color: var(--c64-dark-blue);
 }
 
-.social-link::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background-color: #ffffff;
-    transition: width 0.3s cubic-bezier(0,.29,.18,.99);
-}
-
-.social-link:hover::after {
-    width: 100%;
+.social-link:hover {
+    border-color: var(--c64-white);
+    background-color: var(--c64-light-blue);
 }
 
 .social-icon {
-    width: 50px;
-    height: 50px;
-    transition: transform 0.4s ease-out, filter 0.4s ease-out;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0));
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 
-.social-link:hover .social-icon {
-    transform: scale(1.2) translateY(-5px);
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0);
-    z-index: 2000;
-    overflow-y: auto;
-    transition: background-color 0.5s cubic-bezier(0,.29,.18,.99);
-}
-
-.modal-content {
-    background-color: #000000;
-    margin: 50px auto;
-    padding: 30px;
-    width: 80%;
-    max-width: 800px;
-    border-radius: 5px;
-    position: relative;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.1);
-    border-left: 3px solid #ffffff;
-    transform: translateY(-30px) scale(0.95);
-    opacity: 0;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out, box-shadow 0.5s ease-out;
-}
-
-/* Animation for modal opening */
-.modal[style*="display: block"] {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.modal[style*="display: block"] .modal-content {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-}
-
-.modal-content > div > hr {
-    border: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 12px;
-    margin-bottom: 30px;
-}
-
-.close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.6);
+button.social-link {
     cursor: pointer;
-    transition: color 0.3s cubic-bezier(0,.29,.18,.99), transform 0.3s cubic-bezier(0,.29,.18,.99);
 }
 
-.close-button:hover {
-    color: #ffffff;
-    transform: rotate(90deg);
+.clipboard-notice {
+    display: none;
+    align-items: center;
+    font-family: var(--font-monospace), monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--c64-white);
+    border: 3px solid var(--c64-light-blue);
+    background-color: var(--c64-dark-blue);
+    padding: 0 12px;
+    height: 44px;
+    white-space: nowrap;
 }
 
-.modal-header {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.clipboard-notice.visible {
+    display: inline-flex;
 }
 
-.modal-header h2 {
-    font-size: 36px;
-    color: #ffffff;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+/* --- Projects Portfolio Directory Section --- */
+.projects-section {
+    border: 4px solid var(--c64-light-blue);
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 25px;
 }
 
-.modal-section {
-    margin-bottom: 30px;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: fadeInUp 0.3s cubic-bezier(0,.29,.18,.99) forwards;
-}
-
-@keyframes fadeInUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-section h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #ffffff;
+.projects-title {
+    font-family: var(--font-monospace), monospace;
+    color: var(--c64-light-blue);
+    font-size: 20px;
+    margin-bottom: 25px;
     letter-spacing: 1px;
+    text-align: center;
 }
 
-.modal-section p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+/* Grid / Flex layout for Split Tab System */
+.projects-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 30px;
+    min-height: 450px;
 }
 
-.modal-links {
+/* Projects Side Tab Buttons List */
+.projects-tabs {
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    transform: translateY(20px);
-    opacity: 0;
-    animation: fadeInUp 0.5s ease-out forwards;
-    animation-delay: 0.4s;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 2px solid rgba(108, 94, 181, 0.3);
+    padding-right: 15px;
 }
 
-.project-link {
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    padding: 10px 20px;
-    margin-right: 15px;
-    border-radius: 3px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 14px;
-    letter-spacing: 1px;
-    transition: all 0.3s cubic-bezier(0,.29,.18,.99);
-    position: relative;
+.project-tab-btn {
+    font-family: var(--font-monospace), monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--c64-lavender);
+    background: transparent;
+    border: 3px solid var(--c64-light-blue);
+    padding: 12px 16px;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-overflow: ellipsis;
 }
 
-.project-link::before {
-    content: '';
+.project-tab-btn:hover {
+    color: var(--c64-white);
+    border-color: var(--c64-white);
+    background-color: rgba(108, 94, 181, 0.15);
+}
+
+.project-tab-btn.active {
+    color: var(--c64-white);
+    background-color: var(--c64-light-blue);
+    border-color: var(--c64-white);
+}
+
+/* Dynamic Accent-colored project details card */
+.project-details {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    overflow-y: auto;
+    border: 4px solid var(--project-accent);
+    padding: 25px;
+    background-color: rgba(0, 0, 0, 0.25);
+    position: relative; /* anchor for the C64 tape-loading overlay */
+}
+
+/* While a program is "loading", hide the scrollbar for a cleaner CRT look */
+.project-details.c64-loading {
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ *
+ *  C64 TAPE-LOADING ANIMATION STYLES
+ * ------------------------------------------------------------------ */
+
+/* Full-card overlay that shows the classic colorful loader bars */
+.c64-tape-overlay {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s cubic-bezier(0,.29,.18,.99);
+    inset: 0;
+    z-index: 5;
+    overflow: hidden;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: c64-tape-in 90ms steps(2, start);
 }
 
-.project-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+/* The pulsing horizontal color bars (datasette loader stripes) */
+.c64-tape-stripes {
+    position: absolute;
+    inset: 0;
+    --stripe-a: #6c5eb5;
+    --stripe-b: #a0a5eb;
+    background-image: repeating-linear-gradient(
+        0deg,
+        var(--stripe-a) 0,
+        var(--stripe-a) 6px,
+        var(--stripe-b) 6px,
+        var(--stripe-b) 12px
+    );
+    animation: c64-stripe-scroll 0.18s linear infinite;
+    opacity: 0.92;
 }
 
-.project-link:hover::before {
-    left: 100%;
+/* Rolling motion of the loader bars */
+@keyframes c64-stripe-scroll {
+    to { background-position: 0 24px; }
 }
 
-/* Loading Screen */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000000; /* True OLED black */
+@keyframes c64-tape-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* The central "FOUND / LOADING" datasette readout panel */
+.c64-tape-readout {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-monospace), monospace;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--c64-white);
+    background-color: rgba(0, 0, 0, 1.0);
+    border: 4px solid var(--c64-white);
+    padding: 18px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 220px;
+}
+
+.c64-tape-label {
+    color: var(--c64-lavender);
+    font-size: 18px;
+}
+
+.c64-tape-name {
+    font-weight: bold;
+    font-size: 18px;
+    word-break: break-word;
+}
+
+.c64-tape-status {
+    color: var(--c64-white);
+    font-weight: bold;
+}
+
+.c64-tape-bytes {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Custom Scrollbar for Project Details */
+.project-details::-webkit-scrollbar {
+    width: 8px;
+}
+
+.project-details::-webkit-scrollbar-track {
+    background: var(--c64-dark-blue);
+}
+
+.project-details::-webkit-scrollbar-thumb {
+    background: var(--project-accent);
+}
+
+/* Custom Scrollbar for Projects Tabs */
+.projects-tabs::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.projects-tabs::-webkit-scrollbar-track {
+    background: var(--c64-dark-blue);
+}
+
+.projects-tabs::-webkit-scrollbar-thumb {
+    background: var(--project-accent);
+}
+
+/* Details Card Content elements */
+.details-placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3000;
-    transition: opacity 0.5s ease-out;
+    height: 100%;
 }
 
-.loading-screen p {
+.details-placeholder p {
+    font-family: var(--font-monospace), monospace;
+    color: var(--c64-lavender);
+}
+
+.blink-fast {
+    animation: c64-blink-fast 0.8s steps(2, start) infinite;
+}
+
+@keyframes c64-blink-fast {
+    to {
+        visibility: hidden;
+    }
+}
+
+.details-header {
+    margin-bottom: 25px;
+}
+
+.details-project-name {
+    font-family: var(--font-monospace), monospace;
     font-size: 24px;
-    color: #ffffff;
-    position: relative;
-    animation: pulse 1.5s infinite ease-out;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    color: var(--c64-white);
+    margin-bottom: 8px;
 }
 
-.loading-screen p::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
+.details-project-desc {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    max-width: 400px;
+}
+
+.details-project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.project-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-monospace), monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--c64-lavender);
+    border: 1px solid var(--c64-light-blue);
+    padding: 4px 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.tag-pill-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+/* Dynamic Details Body & Custom HTML Sections styling */
+.details-body {
+    flex: 1;
+}
+
+.retro-divider {
+    border: none;
+    height: 4px;
+    background-image: repeating-linear-gradient(90deg, var(--project-accent), var(--project-accent) 4px, transparent 4px, transparent 8px);
+    margin: 25px 0;
+    opacity: 0.7;
+}
+
+.details-section {
+    margin-bottom: 25px;
+}
+
+.details-section-heading {
+    font-family: var(--font-monospace), monospace;
+    color: var(--project-accent);
+    font-size: 24px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.details-section-content {
+    font-size: 14px;
+    color: var(--c64-lavender);
+    text-align: justify;
+}
+
+.details-section-content a {
+    color: var(--c64-white);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.details-section-content a:hover {
+    color: var(--project-accent);
+}
+
+.details-section-content strong,
+.details-section-content b {
+    color: var(--c64-white);
+}
+
+.details-section-content code {
+    font-family: var(--font-monospace), monospace;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--project-accent);
+    padding: 2px 6px;
+    font-size: 12px;
+    color: var(--c64-white);
+}
+
+.details-section-content ol {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.details-section-content li {
+    margin-bottom: 8px;
+}
+
+/* Feature custom section */
+.feature-section {
+    background-color: var(--project-accent-alpha);
+    border-left: 4px solid var(--project-accent);
+    padding: 15px;
+}
+
+.feature-section .details-section-heading {
+    border-bottom: none;
+    padding-bottom: 0;
+    font-weight: bold;
+}
+
+/* External Link Buttons */
+.details-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+    border-top: 2px solid rgba(108, 94, 181, 0.3);
+    padding-top: 25px;
+}
+
+.details-link-btn {
+    font-family: var(--font-monospace), monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--btn-color);
+    background-color: transparent;
+    border: 3px solid var(--btn-color);
+    padding: 12px 24px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ffffff, transparent);
-    animation: loadingBar 2s infinite ease-out;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.5; transform: scale(0.98); }
-    50% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0.5; transform: scale(0.98); }
+.details-link-btn:hover {
+    color: var(--c64-white);
+    background-color: var(--btn-hover-color);
+    border-color: var(--c64-white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes loadingBar {
-    0% { transform: scaleX(0.1); opacity: 0; }
-    50% { transform: scaleX(1); opacity: 1; }
-    100% { transform: scaleX(0.1); opacity: 0; }
+/* Retro C64 device error styling */
+.c64-error-box {
+    font-family: var(--font-monospace), monospace;
+    color: var(--c64-light-blue);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-/* Responsive Styles */
+/* --- RESPONSIVE MEDIA QUERIES (Landscape Widescreen vs Portrait Mobile) --- */
+
+@media (max-width: 1024px) {
+    .c64-monitor {
+        width: 80%;
+        min-width: 0;
+    }
+}
+
+/* Mobile Portrait or small screens stacked view */
 @media (max-width: 768px) {
-    .logo-container {
-        margin-left: 20px;
+    body {
+        padding: 10px;
+        align-items: stretch;
     }
 
-    .nav-menu {
-        margin-right: 20px;
+    .c64-monitor {
+        width: 100%;
+        min-width: 0;
+        border-width: 6px;
+        padding: 15px;
     }
 
-    .nav-item {
-        margin: 0 10px;
-        font-size: 14px;
+    .c64-header {
+        font-size: 12px;
+        margin-bottom: 30px;
     }
 
-    .section {
-        padding: 60px 0;
+    .bio-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
     }
 
-    .section-title {
-        font-size: 36px;
+    .bio-logo {
+        width: 160px;
+        height: auto;
     }
 
-    .projects-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    .bio-text-container {
+        text-align: center;
     }
 
-    .modal-content {
-        width: 90%;
-        padding: 20px;
+    .social-links {
+        justify-content: center;
+    }
+
+    /* Shift projects panel layout to stacked view with horizontal tab bar */
+    .projects-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        min-height: auto;
+    }
+
+    /* Horizontal, touch-friendly swipable/scrollable bar on mobile portrait */
+    .projects-tabs {
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 2px solid rgba(108, 94, 181, 0.3);
+        padding-right: 0;
+        padding-bottom: 15px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+
+    /* Prevent text wrapping on horizontal buttons to enable swiping */
+    .project-tab-btn {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        white-space: nowrap;
+    }
+
+    .project-details {
+        height: 450px;
+        padding: 15px;
+    }
+    
+    .retro-divider {
+        margin: 20px 0;
+    }
+    
+    .details-project-name {
+        font-size: 20px;
+    }
+    
+    .details-links {
+        flex-direction: column;
+    }
+    
+    .details-link-btn {
+        width: 100%;
     }
 }
