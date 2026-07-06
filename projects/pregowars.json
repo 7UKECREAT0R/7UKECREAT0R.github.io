@@ -2,16 +2,17 @@
   "id": "pregowars",
   "name": "Prego Wars",
   "color": [ 208, 85, 43 ],
-  "description": "fast paced ridiculous first person shooter deathmatch; 2025",
+  "description": "fast paced ridiculous first person shooter deathmatch; releases 2027",
   "description-color": [ 220, 220, 220 ],
   "tags": [ "csharp", "game" ],
 
   "html": {
     "sections": {
-      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 2 years (on-and-off), bringing tons of new skills to the table and forcing me to seriously plan my work out.",
-      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Preston. They are all actual real life models I put together with PIFuHD and given the most ridiculous abilities and weapons we could think of. More news to come.",
-      "STEAM": "The game will be on Steam for $5-$10 USD <s>some time early 2023 some time in 2024</s> late 2025. It will run on full peer-to-peer with friends and will include 32 achievements, tons of match mutators, gamemodes, and more.",
-      "WHAT I GAINED": "One: That game development is HARD, and everything always takes three times as long as you predict. Two: Lots of things! Steam integration, publishing, multiplayer networking, UI design, loads of abstractions, animations, a bit of graphics programming, and lots of out-of-IDE work. Game development's not just coding, it's about working with people, organizing/setting deadlines with people, working with sketchy contractors, and literally anything else creative you can think of. It's too much for one guy. That said, working on this project is so much fun regardless of the downright ridiculous number of things to juggle constantly."
+      "THE GAME": "Prego Wars will be a fast paced, character based, first person shooter, deathmach (in that order). It's been a passion project that I've been working with my friends for the past 5 years (on-and-off), bringing tons of new skills to the table and forcing me to seriously plan my work out.",
+      "CHARACTERS": "Featuring the first wave of 8 characters that will be in the game on launch: Zipdip, Plasma, Salty, Luke (me), Onyx, Yucky, Checken, and Preston. They are all actual real life models I hired a contractor to produce from front/back image pairs of us.",
+      "OTHER": "Additionally to add some uniqueness and spice to the game... 32 absolutely crazy match mutators that completely change up how the game's played, and a full user-friendly map editor with Steam Workshop support. A huge chunk of engineering into this game is purely the asset pipeline for the map editor; combining ease of use with multiple levels of robustness and freedom.",
+      "STEAM": "The game will be on Steam for $7 USD <s>some time early 2023 some time in 2024 some time in 2025 some time in 2026</s> in 2027. It will run on full peer-to-peer with friends.",
+      "WHAT I GAINED": "One: That game development is HARD, and everything always takes three times as long as you predict. Two: Lots of things! Steam integration, publishing, multiplayer networking, UI design, loads of abstractions, animations, a bit of graphics programming, and lots of out-of-IDE work. Game development's not just coding, it's about working with people, engineering, marketing, artwork, and literally anything else creative you can think of. It's too much for one guy. That said, working on this project is so much fun regardless of the downright ridiculous number of things to juggle constantly."
     },
     "links": {
       "STEAM PAGE": "https://store.steampowered.com/app/3085060/Prego_Wars/"
